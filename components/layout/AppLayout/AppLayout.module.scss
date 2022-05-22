@@ -1,0 +1,157 @@
+@import "/styles/mixins.scss";
+
+.appLayout {
+    background: #FFFFFF;
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    width: 100%;
+
+    .wrap {
+        display: flex;
+        flex: 1;
+        width: 100%;
+
+        .appSideBar {
+            background: #F8F8F8;
+            display: flex;
+            height: 100vh;
+            width: 70px;
+            overflow-y: scroll;
+
+            .appList {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                align-items: center;
+                padding-top: 20px;
+                gap: 20px;
+
+                .appItem {
+                    border-radius: 10px;
+                    color: #222;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 50px;
+                    width: 50px;
+
+                    .appLink {
+                        border-left: 4px transparent solid;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        padding: 15px 18px;
+                        align-items: center;
+
+                        .icon {
+                            font-variation-settings: 'FILL' 1;
+                            color: #222;
+                            font-size: 3rem;
+                        }
+    
+                        .appName {
+                            font-size: 1.4rem;
+                            font-weight: 400;
+                        }
+
+                        &.selected {
+                            border-left: 4px var(--greenDark) solid;
+                            
+                            .icon {
+                                color: var(--greenDark);
+                            }
+
+                            .appName {
+                                color: var(--greenDark);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        .sidebar {
+            background: #F6F6F6;
+            box-shadow: -10px 0px 30px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-self: flex-start;
+            height: 100vh;
+            width: 300px;
+
+            .logo {
+                display: flex;
+                padding: 30px 20px;
+            }
+
+            .filter {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 40px;
+
+                .title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 20px;
+
+                    .text {
+                        color: #333;
+                        font-size: 1.8rem;
+                        font-weight: 600;
+                    }
+
+                    .link {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .filterItem {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 20px;
+
+                    .link {
+                        border-radius: 5px;
+                        display: flex;
+                        flex: 1;
+                        align-items: center;
+                        gap: 10px;
+                        padding: 10px;
+                        margin: 0 10px;
+                        font-size: 1.6rem;
+                        font-weight: 500;
+
+                        &.selected {
+                            background: var(--greenDark);
+                            color: var(--white);
+
+                            &:hover {
+                                background: var(--greenDark);
+                            }
+
+                            .icon {
+                                color: var(--white);
+                            }
+                        }
+
+                        &:hover {
+                            background: #DDD;
+                        }
+                    }
+                }
+            }
+        }
+
+        .content {
+            display: flex;
+            flex: 1;
+            background: #FAFAFA;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+    }
+}

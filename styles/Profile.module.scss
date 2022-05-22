@@ -1,0 +1,203 @@
+@import './mixins.scss';
+
+.profile {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 0 50px;
+}
+
+.account {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    margin: 40px 0;
+
+    .media {
+        display: flex;
+        height: 200px;
+        width: 200px;
+    }
+    .image {
+        background: #DDD;
+        border-radius: 50%;
+
+        display: flex;
+        flex: 1;
+    }
+
+    .details {
+        display: flex;
+        flex: 4;
+        flex-direction: column;
+        justify-content: center;
+
+        .actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 30px;
+       
+            .nameHolder {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+
+                .verify {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+
+            h1.name {
+                display: flex;
+                font-size: 3rem;
+                font-weight: bold;
+                margin: 0;
+            }
+
+            .editProfile {
+                display: flex;
+
+                .secondaryButton {
+                    background: var(--background);
+                    border: 1px var(--blue) solid;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 5px;
+                    color: var(--blue);
+                    padding: 10px 15px;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+
+                    i {
+                        color: var(--blue);
+                        padding-right: 10px;
+                    }
+
+                    &:hover {
+                        background: var(--blue);
+                        color: var(--white);
+
+                        i {
+                            color: var(--white);
+                        }
+                    }
+                }
+            }
+
+            .partnerProfile {
+                display: flex;
+                gap: 20px;
+
+                .primaryButton {
+                    background: var(--blue);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 5px;
+                    color: var(--white);
+                    padding: 10px 15px;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+
+                    &:hover {
+                        background: var(--blueDark);
+                    }
+
+                    &.following {
+                        background: var(--green);
+                        color: var(--white);
+
+                        &:hover {
+                            background: var(--red);
+                        }
+                    }
+                }
+
+                .secondaryButton {
+                    background: #EEE;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 5px;
+                    color: #212121;
+                    padding: 10px 15px;
+                    font-size: 1.5rem;
+                    font-weight: bold;
+
+                    &:hover {
+                        background: var(--green);
+                        color: var(--white);
+                    }
+
+                    i {
+                        color: #000;
+                        padding-right: 10px;
+                    }
+                }
+            }
+        }
+
+        h2.username {
+            display: flex;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+
+        .community {
+            display: flex;
+            gap: 30px;
+            padding: 10px 0;
+
+            .communityItem {
+                font-size: 1.8rem;
+                font-weight: 600;
+
+                &:hover {
+                    color: var(--blue);
+                }
+            }
+        }
+
+        p.description {
+            display: flex;
+            font-size: 1.8rem;
+            font-weight: 400;
+        }
+    }
+}
+.navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25px;
+    list-style: none;
+    gap: 50px;
+
+    .link {
+        border: 1px transparent solid;
+        border-radius: 30px;
+        display: block;
+        font-size: 1.8rem;
+        font-weight: 600;
+        padding: 5px 20px;
+
+        &:hover {
+            background: #EEE;
+            color: var(--blue);
+        }
+
+        &.selected {
+            background: var(--blue);
+            color: var(--white);
+
+            &:hover {
+                background: var(--blue);
+            }
+        }
+    }
+}

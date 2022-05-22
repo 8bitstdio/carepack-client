@@ -1,0 +1,25 @@
+.footer {
+    display: flex;
+    flex: 1 1;
+    padding: 2rem 0;
+    border-top: 1px solid #eaeaea;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+
+    ul {
+        display: flex;
+        list-style: none;
+        gap: 40px;
+
+        li {
+            display: flex;
+
+            a {
+                color: #212121;
+                font-size: 1.6rem;
+                font-weight: 700;
+            }
+        }
+    }
+}

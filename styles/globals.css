@@ -1,8 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Acme&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Righteous&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
+  background-color: var(--background);
+  color: var(--black);
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 10px;
 }
@@ -17,18 +25,51 @@ a {
 }
 
 :root {
-  --background: #edf2f7;
-  --primaryColor: #007bff;
+  --background: #fafafa;
+  --primaryColor: #007AFF; 
   --secondaryColor: #BB1717;
   --input-background: #FFFFFF;
-  --blue: #007BFF;
-  --blueDark: #0069D9;
-  --blueLight: #3D94F2;
-  --blueLightest:#edf2f7;
-  --blueLighter: #d4dce4;
-  --red: #BB1717;
-  --redDark: #E91A1A;
-  --green: #0E8813;
-  --greenDark: #0FB416;
-  --white: #FFFFFF;
+
+  --blueLight: #479EFE;
+  --blue: #007AFF;
+  --blueDark: #0071EC;
+
+  --red: #DD4343;
+  --redLight: #f78d88;
+  --redDark: #d31d13;
+
+  --purple: #7B56FF;
+  --green: #00B48B;
+  --greenDark: #008164;
+  --greenLight: #44D7B6;
+  --green100: #F4FFFD;
+  --green200: #EBFFFA;
+  --green300: #7FE2C9;
+  --green600: #013E30;
+
+  --yellow: #f5f0ae;
+  --yellowDark: #fcc55c;
+
+  --orange: #f7941e;
+  --orangeDark: #f76707;
+
+  --aqua: #b1e2be;
+  --aquaDark: #9cd3ab;
+
+  --white: #FFF;
+  --white100: #FAF6EB;
+  --white200: #f1ecd5;
+
+  --black: #000000;
+
+  --pageWidth: 1200px;
+}
+
+.Toastify__toast {
+  font-size: 1.8rem;
+}
+
+::selection {
+  background: var(--primaryColor);
+  color: var(--white);
 }

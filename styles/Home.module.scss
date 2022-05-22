@@ -1,0 +1,153 @@
+@import "./mixins.scss";
+
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 80px;
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+
+    @include respond(desktop) {
+      min-height: 500px;
+    }
+
+    .title {
+      font-size: 4rem;
+      font-weight: bold;
+
+      @include respond(desktop) {
+        font-size: 6rem;
+      }
+    }
+
+    .tag {
+      display: flex;
+      gap: 10px;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+
+      @include respond(desktop) {
+        font-size: 3.5rem;
+      }
+
+      .green {
+        color: var(--green);
+      }
+
+      .purple {
+        color: var(--purple);
+      }
+
+      .red {
+        color: var(--red);
+      }
+
+      .blue {
+        color: var(--blue);
+      }
+
+      .orange {
+        color: var(--orange);
+      }
+    }
+  }
+
+  .featured {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 10rem;
+    min-height: 400px;
+
+    @include respond(desktop) {
+      min-height: 500px;
+    }
+
+    .wrap {
+      display: flex;
+      flex-direction: column;
+      width: var(--pageWidth);
+
+      .title {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 4rem;
+
+        h1 {
+          font-size: 2.5rem;
+          font-weight: bold;
+
+          @include respond(desktop) {
+            font-size: 3.5rem;
+          }
+        }
+
+        h2 {
+          font-size: 1.5rem;
+          font-weight: 400;
+
+          @include respond(desktop) {
+            font-size: 2rem;
+          }
+        }
+      }
+
+      .cards {
+        flex: 1;
+        display: flex;
+        gap: 30px;
+  
+        .card {
+          background: #EEE;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          height: calc((var(--pageWidth) - 60px) / 3);
+          overflow: hidden;
+          position: relative;
+
+          .metaData {
+            background: rgb(0,0,0);
+            background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,138,255,0) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: absolute;
+            bottom: 0;
+            padding: 20px;
+            font-size: 1.8rem;
+            height: 30%;
+            width: 100%;
+
+            .name {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            }
+
+            h2 {
+              color: #FFF;
+              font-weight: bold;
+            }
+
+            h3 {
+              color: var(--yellow);
+              font-weight: 600;
+            }
+          }
+        }
+      }
+    }
+  }
+}

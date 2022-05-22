@@ -1,0 +1,19 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    min-width: 380px;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+}

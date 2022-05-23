@@ -4,6 +4,9 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import {
+  Tooltip,
+} from 'react-tippy';
 
 import { truncate_address, getAccount } from "/utils/helper";
 import { appItems } from "/utils/common";
@@ -33,7 +36,7 @@ export default function Profile(props) {
         name: 'Partners',
         href: `/${account.username}/partners`,
         icon: 'handshake',
-    }, {
+      }, {
           name: 'Members',
           href: `/${account.username}/members`,
           icon: 'group',
@@ -101,12 +104,23 @@ export default function Profile(props) {
                           <h1 className={styles.name}>{account.name || 'No Name'}</h1>
                           <div className={styles.verify}>
                               {account.isVerified && (
-                              <Image
-                                src="/images/verify.png"
-                                alt="verify"
-                                height="20px"
-                                width="20px"
-                              />)}
+                                  <Tooltip
+                                    title="Verified"
+                                    position="top"
+                                    trigger="mouseenter"
+                                    distance={10}
+                                    animation="shift"
+                                    duration={200}
+                                    size="big"
+                                  >
+                                    <Image
+                                        src="/images/verify.png"
+                                        alt="verify"
+                                        height="20px"
+                                        width="20px"
+                                      />
+                                  </Tooltip>
+                              )}
                           </div>
                       </div>
                       {renderAction(viewer.username === account.username)}

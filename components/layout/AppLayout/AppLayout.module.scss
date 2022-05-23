@@ -17,7 +17,7 @@
             display: flex;
             height: 100vh;
             width: 70px;
-            overflow-y: scroll;
+            overflow-y: auto;
 
             .appList {
                 display: flex;
@@ -73,22 +73,64 @@
         
         .sidebar {
             background: #F6F6F6;
+            border-right: 1px solid #E6E6E6;
             box-shadow: -10px 0px 30px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             align-self: flex-start;
             height: 100vh;
             width: 300px;
+            overflow: hidden;
+            overflow-y: auto;
+
+            /* width */
+            &::-webkit-scrollbar {
+                background-color: transparent;
+                width: 5px;
+                margin: 0;
+                padding: 0;
+                z-index: 100;
+            }
+            
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: transparent;
+                width: 0;
+                margin: 0;
+                padding: 0; 
+            }
+            
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                display: none;
+                background: #888; 
+                border-radius: 3px;
+            }
+
+            &:hover::-webkit-scrollbar-thumb {
+                display: block;
+            }
+            
+            /* Handle on hover */
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
 
             .logo {
-                display: flex;
-                padding: 30px 20px;
+                background: #F6F6F6;
+                border-bottom: 1px #E1E1E1 solid;
+                position: sticky;
+                top: 0;
+                align-self: flex-start;
+                padding: 20px;
+                width: 100%;
             }
 
             .filter {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                margin-top: 20px;
                 margin-bottom: 40px;
 
                 .title {
@@ -98,7 +140,7 @@
                     padding: 0 20px;
 
                     .text {
-                        color: #333;
+                        color: #666;
                         font-size: 1.8rem;
                         font-weight: 600;
                     }
@@ -112,7 +154,6 @@
                 .filterItem {
                     display: flex;
                     align-items: center;
-                    margin-right: 20px;
 
                     .link {
                         border-radius: 5px;

@@ -6,6 +6,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import Logo from 'assets/Logo';
 
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-tippy/dist/tippy.css'
+
 import styles from './AppLayout.module.scss';
 
 const AppLayout = (props) => {

@@ -2,81 +2,53 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Partnerships {
-  address payable public sender;
-  address payable public receiver;
-  address payable[] private _partners;
-  address payable[] private _agreed;
-  uint private _adjustment;
-  uint[] public _amount;
 
-  event Partner(address indexed from, address indexed to, uint amount);
-  event Agreed(address indexed from, address indexed to, uint amount);
-
-  function setAmount(uint amount) public {
-    _amount.push(amount);
+  struct Partner {
+    string name;
+    address sender;
+    address payable receiver;
+    uint amount;
+    bool completed;
   }
 
-  function setParties(address payable _receiver) public {
-    sender = payable(msg.sender);
-    receiver = _receiver;
+  mapping(uint => Partner) public partners;
+
+  event PartnershipResult(string name, uint amount);
+  
+  function Partnership() public {}
+
+  function createPartnership(uint id, address _receiver, string memory _name, uint _amount) public {
+    partners[id].name = _name;
+    partners[id].sender = msg.sender;
+    partners[id].receiver = payable(_receiver);
+    partners[id].amount = _amount * 1 ether;
+    partners[id].completed = false;
   }
 
-  function createPartnership(uint amount) public {
-    this.setAmount(amount);
-    _partners = [sender, receiver];
-    emit Partner(sender, receiver, amount);
+  function adjustAmount(uint id, uint _amount) public {
+    require(msg.sender == partners[id].receiver, "Only the receiver can adjust amount higher");
+    require(partners[id].receiver.balance > _amount * 1 ether);
+    partners[id].amount = _amount * 1 ether;
   }
 
-  function requestAdjustment(uint amount) public {
-    delete _agreed;
-    if (msg.sender == sender) {
-      this.setAdjustment(amount);
-      _agreed = [sender];
-    }
+  function lowerAmount(uint id, uint _amount) public {
+    require(msg.sender != partners[id].receiver, "Only the sender can lower amount. Use adjustAmount instead");
+    require(partners[id].amount > _amount * 1 ether);
+    require(partners[id].receiver.balance > _amount * 1 ether);
+    partners[id].amount = _amount * 1 ether;
   }
 
-  function agreeAdjustment(address payable to) public {
-    if (to == receiver) {
-      _agreed.push(receiver);
-      uint amount = _adjustment * (1 ether);
-      this.setAmount(amount);
-    }
+  function isActive(uint id) public view returns (bool active) {
+    active = partners[id].completed;
+    return active;
   }
 
-  function getAdjustment(address payable from) public view returns (uint[] memory) {
-    if (msg.sender == from) {
-      return _amount;
-    }
-    return _amount;
-  }
-
-  function setAdjustment(uint amount) public {
-    _adjustment = amount;
-  }
-
-  function setAgreed(address payable partner) public {
-    _agreed.push(partner);
-  }
-
-  function isAgreed(address payable partner) public view returns (bool) {
-    for (uint i = 0; i < _agreed.length; i++) {
-      if (_agreed[i] == partner) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  function getAgreed() public view returns (address payable[] memory) {
-    return _agreed;
-  }
-
-  function fullfilled() public {
-    if (_agreed.length == 2) {
-      receiver.transfer(_amount[_amount.length - 1]);
-      emit Agreed(sender, receiver, _amount[_amount.length - 1]); // Agreed saved to blockchain.
-      delete _partners;// empty partnership.
-      delete _agreed; // empty agreement.
-    }
+  function end(uint id) public {
+    require(msg.sender == partners[id].sender, "Only the sender can end"); // only the sender can end.
+    require(isActive(id), "Partnership already ended");
+    partners[id].completed = true;
+    (bool sent,) = partners[id].receiver.call{value: partners[id].amount}("");
+    require(sent, "Failed to transfer");
+    emit PartnershipResult(partners[id].name, partners[id].amount);
   }
 }

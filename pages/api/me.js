@@ -21,6 +21,7 @@ const getUser = async (req, res) => {
         }
       );
       const { data } = await response.json();
+      console.log(data);
       if (data?.wallet) {
         const sess = {
           user_id: data?.id,

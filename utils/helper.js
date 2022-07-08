@@ -1,10 +1,10 @@
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
-import jwt from 'jsonwebtoken';
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
+import jwt from "jsonwebtoken";
 import { server } from "/config";
-import { getTokenCookie, MAX_AGE, removeWalletCookie } from './auth-cookies';
-import { signMessage } from './signature';
-import { getCookie, setCookie } from './cookies';
+import { getTokenCookie, MAX_AGE, removeWalletCookie } from "./auth-cookies";
+import { signMessage } from "./signature";
+import { getCookie, setCookie } from "./cookies";
 
 export const truncate_address = (str) => {
   if (!str) return;
@@ -15,15 +15,15 @@ export const truncate_address = (str) => {
 };
 
 export const fetchDefaultOptions = () => ({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-})
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const showSignMessage = (cb, failure) => async (evt) => {
-    evt.preventDefault();
-    const AUTH_SIGNATURE_MESSAGE = `
+  evt.preventDefault();
+  const AUTH_SIGNATURE_MESSAGE = `
         Welcome to Carepack.
 
         Click to sign in to your account and accept the CarePack Terms of Service.
@@ -31,33 +31,33 @@ export const showSignMessage = (cb, failure) => async (evt) => {
 
         Your authentication will reset after 48 hours.
     `;
-    if (!isEmpty(getCookie('cpsign'))) {
-      cb && cb();
-      return;
-    }
-    const response = await signMessage(AUTH_SIGNATURE_MESSAGE);
+  if (!isEmpty(getCookie("cpsign"))) {
+    cb && cb();
+    return;
+  }
+  const response = await signMessage(AUTH_SIGNATURE_MESSAGE);
 
-    if(isEmpty(response.error)) {
-      const createdAt = new Date();
-      const obj = {...response, iss: 'Carepack', createdAt, maxAge: MAX_AGE};
-      const token = jwt.sign(obj, process.env.NEXT_PUBLIC_TOKEN_SECRET, {
-          expiresIn: MAX_AGE,
-      });
-      setCookie('cpsign', token, {
-        maxAge: (24 * 60 * 60 * 1000),
-        expires: new Date(Date.now() + (24 * 60 * 60 * 1000)),
-        path: '/',
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true,
-      });
-      cb && cb();
-    } else {
-      failure && failure();
-    }
-}
+  if (isEmpty(response.error)) {
+    const createdAt = new Date();
+    const obj = { ...response, iss: "Carepack", createdAt, maxAge: MAX_AGE };
+    const token = jwt.sign(obj, process.env.NEXT_PUBLIC_TOKEN_SECRET, {
+      expiresIn: MAX_AGE,
+    });
+    setCookie("cpsign", token, {
+      maxAge: 24 * 60 * 60 * 1000,
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      path: "/",
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+    });
+    cb && cb();
+  } else {
+    failure && failure();
+  }
+};
 
-export const getAccount = async (ctx, isProtected=true, enabled=false) => {
+export const getAccount = async (ctx, isProtected = true, enabled = false) => {
   const token = getTokenCookie(ctx.req);
   const res = await fetch(`${server}/api/me`, {
     method: "GET",
@@ -69,40 +69,40 @@ export const getAccount = async (ctx, isProtected=true, enabled=false) => {
   const data = await res.json();
   const account = get(data, "data", null);
 
-  if(!enabled) {
+  if (!enabled) {
     return {
-      redirect : {
-        destination : '/',
-        permanent : true,
-      }
-    }
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
   }
 
   if (isEmpty(token) && isProtected) {
     removeWalletCookie(ctx.res);
     return {
-      redirect : {
-        destination : '/',
-        permanent : true,
-      }
-    }
+      redirect: {
+        destination: "/",
+        permanent: true,
+      },
+    };
   }
 
   if (isEmpty(account) && isProtected) {
-      return {
-          redirect : {
-              destination : '/signup/create',
-              permanent : true,
-          }
-      }
+    return {
+      redirect: {
+        destination: "/signup/create",
+        permanent: true,
+      },
+    };
   }
 
   return {
     props: {
       account,
-    }
+    },
   };
-}
+};
 
 // print todays date in format: Day of the week, day, month.
 export const getTodaysDate = () => {
@@ -137,4 +137,5 @@ export const getTodaysDate = () => {
   ];
 
   return `${days[day]} ${dayOfMonth} ${months[month]}`;
-}
+};
+

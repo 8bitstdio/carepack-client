@@ -1,203 +1,247 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { isEmpty } from 'lodash';
-import { Formik } from 'formik';
-import { useRouter } from 'next/router';
-import { getAccount } from 'utils/helper';
-import { settingsMenu } from 'utils/common';
-import Button from 'components/button';
-import { toast } from 'react-toastify';
+import Head from "next/head";
+import Link from "next/link";
+import { isEmpty } from "lodash";
+import { Formik } from "formik";
+import { useRouter } from "next/router";
+import { getAccount } from "utils/helper";
+import { settingsMenu } from "utils/common";
+import Button from "components/button";
+import { toast } from "react-toastify";
 
-import styles from '/styles/Settings.module.scss';
-import { getLocalURL } from 'utils/urls';
-import { appItems } from 'utils/common';
-import AppLayout from 'components/layout/AppLayout';
+import styles from "/styles/Settings.module.scss";
+import { getLocalURL } from "utils/urls";
+import { appItems } from "utils/common";
+import AppLayout from "components/layout/AppLayout";
 
 export default function SettingsPage(props) {
-    const { account } = props;
-    const router = useRouter();
-    const { slug } = router.query;
+  const { account } = props;
+  const router = useRouter();
+  const { slug } = router.query;
 
-    const goBack = () => {
-        router.back();
+  const goBack = () => {
+    router.back();
+  };
+
+  const getTab = () => {
+    if (isEmpty(slug)) {
+      return `/settings${settingsMenu[0].href}`;
     }
+    return `/settings/${slug[0]}`;
+  };
 
-    const getTab = () => {
-        if(isEmpty(slug)) {
-            return `/settings${settingsMenu[0].href}`;
-        }
-        return `/settings/${slug[0]}`;
-    }
+  const isSelected = (url) =>
+    getTab() === `/settings${url}`
+      ? `${styles.link} ${styles.selected}`
+      : styles.link;
 
-    const isSelected = url => getTab() === `/settings${url}` ?
-        `${styles.link} ${styles.selected}`: styles.link;
-
-    const renderMenu = () => settingsMenu.map((item, index) => (
-        <li key={index} className={styles.item}>
-            <Link href={`/settings${item.href}`}>
-                <a className={isSelected(item.href)}>
-                    <div className={styles.holder}>
-                        <i className={`${styles.icon} material-symbols-outlined`}>
-                            {item.icon}
-                        </i>
-                        <span className={styles.text}>{item.name}</span>
-                    </div>
-                    <i className={`${styles.icon} material-symbols-outlined`}>
-                        chevron_right
-                    </i>
-                </a>
-            </Link>
-        </li>
+  const renderMenu = () =>
+    settingsMenu.map((item, index) => (
+      <li key={index} className={styles.item}>
+        <Link href={`/settings${item.href}`}>
+          <a className={isSelected(item.href)}>
+            <div className={styles.holder}>
+              <i className={`${styles.icon} material-symbols-outlined`}>
+                {item.icon}
+              </i>
+              <span className={styles.text}>{item.name}</span>
+            </div>
+            <i className={`${styles.icon} material-symbols-outlined`}>
+              chevron_right
+            </i>
+          </a>
+        </Link>
+      </li>
     ));
 
-    const submitHandler = async values => {
-        const response =  await fetch(`${getLocalURL()}/api/editAccount`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                name: values.name,
-                username: values.username,
-                email: values.email,
-                website: values.website,
-                description: values.description,
-                wallet: account.wallet,
-                id: account.id,
-                photo: account.photo,
-            })
-        });
-        const { success } = await response.json();
-        if (success) {
-            toast('Profile Updated', {
-                type: 'success',
-            });
-            router.push(`/${values.username}`);
-        }
+  const submitHandler = async (values) => {
+    const response = await fetch(`${getLocalURL()}/api/editAccount`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: values.name,
+        username: values.username,
+        email: values.email,
+        website: values.website,
+        description: values.description,
+        wallet: account.wallet,
+        id: account.id,
+        photo: account.photo,
+      }),
+    });
+    const { success } = await response.json();
+    if (success) {
+      toast("Profile Updated", {
+        type: "success",
+      });
+      router.push(`/${values.username}`);
     }
+  };
 
-    const renderProfileContent = () => {
-        const copyWallet = () => {
-            navigator.clipboard.writeText(account.wallet);
-            toast('Wallet address copied', {
-                type: 'success',
-            });
-        }
-        return (
-            <>
-                <div className={styles.header}>
-                    <h1 className={styles.title}>Profile</h1>
-                </div>
-                <Formik
-                    initialValues={{
-                        name: account.name,
-                        email: account.email,
-                        username: account.username,
-                        description: account.description,
-                        website: account.website,
-                    }}
-                    onSubmit={submitHandler}
-                >
-                    {({ handleSubmit, handleChange, values }) => (
-                        <form className={styles.form} onSubmit={handleSubmit}>
-                            <div className={styles.input}>
-                                <label>Wallet</label>
-                                <div className={styles.value}>
-                                    <span className={styles.text}>{account.wallet}</span>
-                                    <i onClick={copyWallet} className={`${styles.icon} material-symbols-outlined`}>
-                                        content_copy
-                                    </i>
-                                </div>
-                            </div>
-                            <div className={styles.input}>
-                                <label htmlFor="name">Name</label>
-                                <input type="text" name="name" id="name" autoComplete='off' onChange={handleChange} value={values.name} />
-                            </div>
-                            <div className={styles.input}>
-                                <label htmlFor="email">Email</label>
-                                <input type="text" name="email" id="email" autoComplete='off' onChange={handleChange} value={values.email.replace(/\s/g, '')} />
-                            </div>
-                            <div className={styles.input}>
-                                <label htmlFor="username">Username</label>
-                                <input type="text" name="username" id="username" autoComplete='off' onChange={handleChange} value={values.username.replace(/\s/g, '')} />
-                            </div>
-                            <div className={styles.input}>
-                                <label htmlFor="description">Description</label>
-                                <textarea name="description" id="description" autoComplete='off' onChange={handleChange} value={values.description} />
-                            </div>
-                            <div className={styles.input}>
-                                <label htmlFor="website">Website</label>
-                                <input type="text" autoComplete='off' name="website" id="website" onChange={handleChange} value={values.website.replace(/\s/g, '')} />
-                            </div>
-                            <Button className={styles.button} type="primary">Save</Button>
-                        </form>
-                    )}
-                </Formik>
-            </>
-        );
-    }
-
-    const renderTabContent = () => {
-        if (slug[0] === 'profile') {
-            return renderProfileContent();
-        }
-    }
-
+  const renderProfileContent = () => {
+    const copyWallet = () => {
+      navigator.clipboard.writeText(account.wallet);
+      toast("Wallet address copied", {
+        type: "success",
+      });
+    };
     return (
-        <>
-            <Head>
-                <title>
-                    CarePack: Partner and Transact with businesses securely on the
-                    Blockchain.
-                </title>
-                <meta name="description" content="Generated by create next app" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <AppLayout
-                apps={appItems}
-                account={account}
-                hasBackButton
-                title="Settings"
-                appUrl="settings"
-                appName="Settings"
-            >
-                <div className={styles.main}>
-                    <div className={styles.sideBar}>
-                        <ul className={styles.menu}>
-                            {renderMenu()}
-                        </ul>
-                    </div>
-                    <div className={styles.content}>
-                        {renderTabContent()}
-                    </div>
+      <>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Profile</h1>
+        </div>
+        <Formik
+          initialValues={{
+            name: account.name,
+            email: account.email,
+            username: account.username,
+            description: account.description,
+            website: account.website,
+          }}
+          onSubmit={submitHandler}
+        >
+          {({ handleSubmit, handleChange, values }) => (
+            <form className={styles.form} onSubmit={handleSubmit}>
+              <div className={styles.input}>
+                <label>Wallet</label>
+                <div className={styles.value}>
+                  <span className={styles.text}>{account.wallet}</span>
+                  <i
+                    onClick={copyWallet}
+                    className={`${styles.icon} material-symbols-outlined`}
+                  >
+                    content_copy
+                  </i>
                 </div>
-            </AppLayout>
-        </>
+              </div>
+              <div className={styles.input}>
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  autoComplete="off"
+                  onChange={handleChange}
+                  value={values.name}
+                />
+              </div>
+              <div className={styles.input}>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  autoComplete="off"
+                  onChange={handleChange}
+                  value={values.email.replace(/\s/g, "")}
+                />
+              </div>
+              <div className={styles.input}>
+                <label htmlFor="username">Username</label>
+                <input
+                  type="text"
+                  name="username"
+                  id="username"
+                  autoComplete="off"
+                  onChange={handleChange}
+                  value={values.username.replace(/\s/g, "")}
+                />
+              </div>
+              <div className={styles.input}>
+                <label htmlFor="description">Description</label>
+                <textarea
+                  name="description"
+                  id="description"
+                  autoComplete="off"
+                  onChange={handleChange}
+                  value={values.description}
+                />
+              </div>
+              <div className={styles.input}>
+                <label htmlFor="website">Website</label>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  name="website"
+                  id="website"
+                  onChange={handleChange}
+                  value={values.website.replace(/\s/g, "")}
+                />
+              </div>
+              <Button className={styles.button} type="primary">
+                Save
+              </Button>
+            </form>
+          )}
+        </Formik>
+      </>
     );
+  };
+
+  const renderTabContent = () => {
+    if (slug[0] === "profile") {
+      return renderProfileContent();
+    }
+  };
+
+  return (
+    <>
+      <Head>
+        <title>
+          CarePack: Partner and Transact with businesses securely on the
+          Blockchain.
+        </title>
+        <meta name="description" content="Generated by create next app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <AppLayout
+        apps={appItems}
+        account={account}
+        hasBackButton
+        title="Settings"
+        appUrl="settings"
+        appName="Settings"
+      >
+        <div className={styles.main}>
+          <div className={styles.sideBar}>
+            <ul className={styles.menu}>{renderMenu()}</ul>
+          </div>
+          <div className={styles.content}>{renderTabContent()}</div>
+        </div>
+      </AppLayout>
+    </>
+  );
 }
 
 export async function getServerSideProps(ctx) {
-    const {slug} = ctx.query;
-    const signature = ctx.req.cookies['cpsign'];
+  const { slug } = ctx.query;
+  const signature = ctx.req.cookies["cpsign"];
 
-    if(isEmpty(signature)) {
-        return {
-            redirect: {
-                destination: '/?error=signature',
-                permanent: true,
-            }
-        }
-    }
+  if (isEmpty(signature)) {
+    return {
+      redirect: {
+        destination: "/?error=signature",
+        permanent: true,
+      },
+    };
+  }
 
-    if (isEmpty(slug)) {
-        return {
-            redirect: {
-                destination: '/settings/profile',
-                permanent: true,
-            }
-        }
-    }
+  if (isEmpty(slug)) {
+    return {
+      redirect: {
+        destination: "/settings/profile",
+        permanent: true,
+      },
+    };
+  }
 
-    const account = await getAccount(ctx, true, true);
-    return account;
+  const accountData = await getAccount(ctx, true, true);
+  return {
+    ...accountData,
+    props: {
+      ...accountData.props,
+    },
+  };
 }
+

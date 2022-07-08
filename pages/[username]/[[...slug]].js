@@ -160,8 +160,13 @@ export default function Profile(props) {
     return <div className={styles.home}></div>;
   };
 
-  const followUser = () => {
-    alert(`Following ${account.username}`);
+  const followUser = (isLoggedIn) => () => {
+    isLoggedIn && alert(`Following ${account.username}`);
+    !isLoggedIn && router.push("/login");
+  };
+
+  const partnerUser = () => {
+    alert(`Partner with ${account.username}`);
   };
 
   const onSuccess = () => {
@@ -175,6 +180,7 @@ export default function Profile(props) {
   };
 
   const renderActions = () => {
+    const isLoggedIn = !isEmpty(props.viewer);
     return isOwner() ? (
       <li className={styles.action}>
         <Button
@@ -189,11 +195,15 @@ export default function Profile(props) {
     ) : (
       <>
         <li className={styles.action}>
-          <Button onClick={followUser}>Follow</Button>
+          <Button onClick={followUser(isLoggedIn)}>Follow</Button>
         </li>
-        <li className={styles.action}>
-          <Button type="primary">Partner</Button>
-        </li>
+        {isLoggedIn && (
+          <li className={styles.action}>
+            <Button onClick={partnerUser} type="primary">
+              Partner
+            </Button>
+          </li>
+        )}
       </>
     );
   };
@@ -226,7 +236,7 @@ export default function Profile(props) {
       </Head>
       <AppLayout
         apps={appItems}
-        account={account}
+        account={viewer}
         title={account.name}
         hasBackButton
         appUrl={account.username}

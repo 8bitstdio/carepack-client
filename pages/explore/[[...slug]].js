@@ -109,7 +109,7 @@ export default function ExplorePage(props) {
 }
 
 export async function getServerSideProps(ctx) {
-  const account = await getAccount(ctx, true, true);
+  const accountData = await getAccount(ctx, true, true);
   const { data: users } = await fetch(`${apiURL}/api/users`).then((res) =>
     res.json()
   );
@@ -122,8 +122,9 @@ export async function getServerSideProps(ctx) {
     return pages;
   };
   return {
+    ...accountData,
     props: {
-      account: { ...account.props.account },
+      ...accountData.props,
       users,
       pages: getPageNumbers(),
     },

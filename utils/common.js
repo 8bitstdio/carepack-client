@@ -15,6 +15,10 @@ const handleLogout = async (callback) => {
   callback && callback();
 };
 
+const handleLogin = async (callback) => {
+  callback && callback();
+};
+
 const AUTH_SIGNATURE_MESSAGE = `
     Welcome to Carepack.
 

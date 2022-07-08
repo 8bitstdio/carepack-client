@@ -1,0 +1,128 @@
+.inbox {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+
+    .wrap {
+        border-top: 1px #DDD solid;
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+        width: 100%;
+
+        .sidebar {
+            background: #FFF;
+            border-right: 1px #DDD solid;
+            display: flex;
+            flex-direction: column;
+            flex: 3;
+
+            .header {
+                border-bottom: 1px #DDD solid;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 60px;
+                font-size: 1.8rem;
+                font-weight: 600;
+            }
+
+            .threads {
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+                overflow-y: auto;
+
+                .thread {
+                    display: flex;
+                    flex-direction: column;
+                    border-bottom: 1px #DDD solid;
+                    padding: 10px;
+
+                    &:last-child {
+                        border-bottom: none;
+                    }
+
+                    .link {
+                        display: flex;
+                        align-items: center;
+                        border-radius: 8px;
+                        padding: 10px;
+                        gap: 10px;
+
+                        &.selected {
+                            background: var(--blue);
+                            color: #FFF;
+                        }
+
+                        &:hover {
+                            background: #EEE;
+                        }
+
+                        .details {
+                            display: flex;
+                            flex-direction: column;
+                        }
+
+                        .title {
+                            display: flex;
+                            align-items: center;
+                            font-size: 1.5rem;
+                            font-weight: bold;
+                            gap: 5px;
+                        }
+    
+                        .content {
+                            background: transparent;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: flex-start;
+                            align-items: flex-start;
+                            gap: 5px;
+    
+                            .subject {
+                                font-size: 1.3rem;
+                                font-weight: 500;
+                            }
+    
+                            .blurb {
+                                font-size: 1.2rem;
+                                opacity: 0.7;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .content {
+            background: #FFF;
+            display: flex;
+            flex: 5;
+            justify-content: center;
+            align-items: center;
+
+            .emptyThread {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+
+                i {
+                    font-size: 10rem;
+                    color: #222;
+                }
+
+                .text {
+                    color: #222;
+                    display: flex;
+                    font-size: 2.5rem;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

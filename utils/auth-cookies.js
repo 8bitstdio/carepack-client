@@ -38,6 +38,30 @@ export const removeTokenCookie = (res) => {
     res.setHeader('Set-Cookie', cookie);
 }
 
+export const removeSessionCookie = (res) => {
+    const cookie = serialize('cpsign', '', {
+        maxAge: -1,
+        path: '/'
+    });
+    res.setHeader('Set-Cookie', cookie);
+}
+
+export const removeCookies = (res) => {
+    const token = serialize('token', '', {
+        maxAge: -1,
+        path: '/'
+    });
+    const session = serialize('cpsign', '', {
+        maxAge: -1,
+        path: '/'
+    });
+    const wallet = serialize('wallet', '', {
+        maxAge: -1,
+        path: '/'
+    });
+    res.setHeader('Set-Cookie', [token, session, wallet]);
+}
+
 export const removeWalletCookie = (res) => {
     const cookie = serialize('wallet', '', {
         maxAge: -1,

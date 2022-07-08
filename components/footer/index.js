@@ -10,11 +10,11 @@ export default function Footer() {
                     <Link href="/">Home</Link>
                 </li>
                 <li>
-                    <Link href="/blog">Blog</Link>
+                    <Link href="/terms">Terms</Link>
                 </li>
                 <li>
-                    <Link href="https://www.twitter.com/carepackio">
-                        <a target='_blank'>Twitter</a>
+                    <Link href="/privacy">
+                        Privacy
                     </Link>
                 </li>
                 <li>

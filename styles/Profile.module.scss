@@ -1,203 +1,285 @@
-@import './mixins.scss';
-
 .profile {
     display: flex;
-    flex: 1;
     flex-direction: column;
-    padding: 0 50px;
-}
+    padding: 50px;
+    width: 100%;
 
-.account {
-    display: flex;
-    flex-direction: row;
-    gap: 50px;
-    margin: 40px 0;
-
-    .media {
+    .header {
         display: flex;
-        height: 200px;
-        width: 200px;
-    }
-    .image {
-        background: #DDD;
-        border-radius: 50%;
-
-        display: flex;
-        flex: 1;
-    }
-
-    .details {
-        display: flex;
-        flex: 4;
         flex-direction: column;
-        justify-content: center;
+        margin-bottom: 50px;
 
-        .actions {
+        .details {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            gap: 30px;
-       
-            .nameHolder {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
+            gap: 25px;
 
-                .verify {
+            .avatar_holder {
+                background: #FFF;
+                border-radius: 16px;
+                box-shadow:
+                    0px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+                    0px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+                    0px 12.5px 10px rgba(0, 0, 0, 0.042),
+                    0px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+                    0px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+                    0px 100px 80px rgba(0, 0, 0, 0.02);
+
+                display: flex;
+                height: 175px;
+                width: 175px;
+                overflow: hidden;
+
+                .avatar {
+                    background: var(--white);
+                    border-radius: 10px;
                     display: flex;
-                    align-items: center;
-                    justify-content: center;
+                    flex: 1;
+                    position: relative;
+
+                    .loader {
+                        background: rgba(255, 255, 255, 0.8);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 100;
+                        width: 100%;
+                        height: 100%;
+
+                        .icon {
+                            font-size: 4rem;
+                            animation: spin .5s infinite;
+                        }
+                    }
+
+                    .curtain {
+                        display: none;
+                        flex: 1;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        background: rgba(0,0,0,0.8);
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 100;
+                        width: 100%;
+                        height: 100%;
+
+                        .icon {
+                            color: #FFF;
+                            display: flex;
+                            flex: 1;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 3rem;
+                        }
+                    }
+
+                    &:hover .curtain {
+                        display: flex;
+                    }
                 }
             }
 
-            h1.name {
+            .user_info {
                 display: flex;
-                font-size: 3rem;
-                font-weight: bold;
-                margin: 0;
-            }
+                flex: 1;
+                flex-direction: column;
+                gap: 5px;
 
-            .editProfile {
-                display: flex;
-
-                .secondaryButton {
-                    background: var(--background);
-                    border: 1px var(--blue) solid;
+                .profileActions {
                     display: flex;
-                    justify-content: center;
+                    flex: 1;
+                    justify-content: space-between;
                     align-items: center;
-                    border-radius: 5px;
-                    color: var(--blue);
-                    padding: 10px 15px;
-                    font-size: 1.5rem;
-                    font-weight: bold;
 
-                    i {
-                        color: var(--blue);
-                        padding-right: 10px;
+                    .name {
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+    
+                        h2.text {
+                            display: flex;
+                            font-size: 2.5rem;
+                            font-weight: bold;
+                        }
                     }
 
-                    &:hover {
-                        background: var(--blue);
-                        color: var(--white);
+                    .actions {
+                        display: flex;
+                        gap: 10px;
+                    }
+                }
 
-                        i {
-                            color: var(--white);
+                .username {
+                    display: flex;
+
+                    .text {
+                        font-size: 2rem;
+                        font-weight: 500;
+                    }
+
+                    .joined {
+                        background: #EEE;
+                        border-radius: 20px;
+                        color: #555;
+                        display: flex;
+                        font-size: 1.2rem;
+                        font-weight: bold;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 0 15px;
+                        margin-left: 10px;
+                    }
+                }
+
+                .description {
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 1.6rem;
+                    font-weight: 400;
+                }
+
+                .website {
+                    display: block;
+
+                    .text {
+                        display: inline-block;
+                        color: var(--blueDark);
+                        font-size: 1.6rem;
+                        font-weight: 600;
+
+                        &:hover {
+                            text-decoration: underline;
                         }
                     }
                 }
-            }
 
-            .partnerProfile {
+                .community {
+                    display: flex;
+                    gap: 20px;
+                    padding-top: 10px;
+
+                    .text {
+                        font-size: 1.8rem;
+
+                        &:hover {
+                            color: var(--blueDark);
+                        }
+                        
+                        .number {
+                            font-weight: bold;
+                        }
+                    }
+                }
+
+                .wallet {
+                    color: #212121;
+                    cursor: pointer;
+                    padding: 5px 0;
+                    display: flex;
+                    align-items: center;
+                    margin: 5px 0;
+                    gap: 5px;
+
+                    .icon {
+                        display: flex;
+                    }
+
+                    .text {
+                        font-size: 1.6rem;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+
+    .navigation {
+        display: flex;
+        align-self: center;
+        gap: 5px;
+        margin: 20px 0;
+
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            a.text {
+                display: flex;
+                padding: 5px 20px;
+                font-size: 1.6rem;
+                font-weight: bold;
+
+                &.selected {
+                    background: var(--blue);
+                    border-radius: 30px;
+                    color: var(--white);
+                }
+            }
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+
+        .community {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-column-gap: 0px;
+            grid-row-gap: 60px;
+            margin-top: 60px;
+
+            .item {
                 display: flex;
                 gap: 20px;
 
-                .primaryButton {
-                    background: var(--blue);
+                .link {
+                    background: #FFF;
+                    border: 2px #DDD dashed;
+                    border-radius: 15px;
                     display: flex;
-                    justify-content: center;
+                    flex-direction: column;
+                    justify-content: flex-end;
                     align-items: center;
-                    border-radius: 5px;
-                    color: var(--white);
-                    padding: 10px 15px;
-                    font-size: 1.5rem;
-                    font-weight: bold;
+                    height: 175px;
+                    width: 175px;
+
+                    .icon {
+                        display: flex;
+                        color: #AAA;
+                        flex: 1;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 5rem;
+                    }
+
+                    .text {
+                        color: var(--black);
+                        margin-bottom: 6px;
+                        font-size: 1.5rem;
+                        padding: 5px 15px;
+                    }
 
                     &:hover {
-                        background: var(--blueDark);
-                    }
-
-                    &.following {
-                        background: var(--green);
-                        color: var(--white);
-
-                        &:hover {
-                            background: var(--red);
-                        }
-                    }
-                }
-
-                .secondaryButton {
-                    background: #EEE;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 5px;
-                    color: #212121;
-                    padding: 10px 15px;
-                    font-size: 1.5rem;
-                    font-weight: bold;
-
-                    &:hover {
-                        background: var(--green);
-                        color: var(--white);
-                    }
-
-                    i {
-                        color: #000;
-                        padding-right: 10px;
+                        background: #F1F1F1;
                     }
                 }
             }
-        }
-
-        h2.username {
-            display: flex;
-            font-size: 2rem;
-            font-weight: 500;
-        }
-
-        .community {
-            display: flex;
-            gap: 30px;
-            padding: 10px 0;
-
-            .communityItem {
-                font-size: 1.8rem;
-                font-weight: 600;
-
-                &:hover {
-                    color: var(--blue);
-                }
-            }
-        }
-
-        p.description {
-            display: flex;
-            font-size: 1.8rem;
-            font-weight: 400;
         }
     }
 }
-.navigation {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 25px;
-    list-style: none;
-    gap: 50px;
 
-    .link {
-        border: 1px transparent solid;
-        border-radius: 30px;
-        display: block;
-        font-size: 1.8rem;
-        font-weight: 600;
-        padding: 5px 20px;
-
-        &:hover {
-            background: #EEE;
-            color: var(--blue);
-        }
-
-        &.selected {
-            background: var(--blue);
-            color: var(--white);
-
-            &:hover {
-                background: var(--blue);
-            }
-        }
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }

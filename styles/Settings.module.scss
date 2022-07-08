@@ -1,105 +1,151 @@
 .main {
+    border-top: 1px #DDD solid;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    min-height: 400px;
+    height: 100%;
+    width: 100%;
 
-    .heavyText {
-        display: inline-block;
-        height: fit-content;
-        padding: 10px 15px;
-        margin-bottom: 50px;
-        font-size: 4rem;
-        font-weight: 700;
-    }
-
-    .imageUpload {
-        background: var(--yellow);
-        border: 1px var(--yellowDark) solid;
-        border-radius: 50%;
-        cursor: pointer;
+    .sideBar {
+        background: #FFF;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 50px;
-        height: 150px;
-        width: 150px;
-
-        .icon {
-            font-size: 2rem;
-            font-weight: bold;
-        }
-    }
-
-    .inputPhoto {
-        display: none;
-    }
-
-    .errorSection {
-        background: var(--redLight);
-        border: 1px var(--redLight) solid;
-        border-radius: 5px;
-        box-shadow:
-            0px 0.6px 2.2px rgba(0, 0, 0, 0.07),
-            0px 1.4px 5.3px rgba(0, 0, 0, 0.05),
-            0px 2.6px 10px rgba(0, 0, 0, 0.042),
-            0px 4.7px 17.9px rgba(0, 0, 0, 0.035),
-            0px 8.8px 33.4px rgba(0, 0, 0, 0.028),
-            0px 21px 80px rgba(0, 0, 0, 0.02);      
-        color: var(--redDark);
-        display: flex;
+        flex: 1;
+        border-right: 1px #DDD solid;
         flex-direction: column;
-        font-size: 1.5rem;
+        padding-top: 25px;
 
-        ul {
+        .menu {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            list-style: none;
-            padding: 0;
-            padding-left: 20px;
-            margin: 10px 15px;
-            list-style: disc;
 
-            li {
-                font-size: 1.8rem;
+            .item {
+                display: flex;
+                flex: 1;
+                align-items: center;
+
+                .link {
+                    border-left: 3px transparent solid;
+                    display: flex;
+                    flex: 1;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 15px 10px;
+                    gap: 10px;
+                    font-size: 1.6rem;
+                    font-weight: 400;
+
+                    .holder {
+                        display: flex;
+                        gap: 10px;
+
+                        .icon {
+                            display: flex;
+                            color: var(--black);
+                        }
+    
+                        .text {
+                            display: flex;
+                        }
+                    }
+
+                    .icon {
+                        color: #888;
+                    }
+
+                    &:hover {
+                        background: #EEE;
+                    }
+    
+                    &.selected {
+                        background: #EEE;
+                        border-left: 3px var(--blueDark) solid;
+                    }
+                }
             }
         }
     }
 
-    .form {
+    .content {
         display: flex;
+        flex: 2;
         flex-direction: column;
-        gap: 20px;
-        width: 450px;
+        padding: 10px 50px;
 
-        .input {
-            background: #F1F1F1;
-            border: 2px #DDD solid;
-            border-radius: 5px;
-            padding: 10px;
-            font-size: 18px;
+        .header {
+            display: flex;
+            margin-bottom: 20px;
 
-            &.error {
-                border: 2px var(--redDark) solid;
+            .title {
+                display: flex;
+                font-size: 3rem;
+                font-weight: bold;
             }
+        }
 
-            &.valid {
-                border: 2px var(--green) solid;
+        .form {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            gap: 30px;
+
+            .input {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                .value {
+                    color: #777;
+                    display: flex;
+                    justify-content: space-between;
+                    background: #F5F5F5;
+                    border: 2px #DDD solid;
+                    border-radius: 5px;
+                    padding: 10px;
+
+                    .text {
+                        font-size: 1.8rem;
+                        font-weight: 500;
+                    }
+
+                    .icon {
+                        display: flex;
+                        color: #AAA;
+                        transform: rotateX(180deg);
+                        cursor: pointer;
+
+                        &:hover {
+                            color: #777;
+                        }
+                    }
+                }
+
+                label {
+                    font-size: 1.8rem;
+                    font-weight: 600;
+                }
+
+                input {
+                    display: flex;
+                    flex: 1;
+                    border: 2px #DDD solid;
+                    border-radius: 5px;
+                    padding: 10px;
+                    font-size: 1.8rem;
+                    width: 100%;
+                }
+
+                textarea {
+                    display: flex;
+                    border: 2px #DDD solid;
+                    border-radius: 5px;
+                    padding: 10px;
+                    font-size: 1.6rem;
+                    width: 100%;
+                    height: 125px;
+                    resize: none;
+                }
             }
-
-            &:focus {
-                outline: none;
-                border: 2px var(--blue) solid;
-            }
-
-            &.error::placeholder {
-                color: var(--redDark);
-            }
-
-            &.error:focus {
-                border: 2px var(--red) solid;
+            .button {
+                padding: 10px;
+                font-size: 2rem;
             }
         }
     }

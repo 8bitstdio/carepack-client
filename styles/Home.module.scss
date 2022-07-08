@@ -11,10 +11,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 400px;
+    min-height: 300px;
 
     @include respond(desktop) {
-      min-height: 500px;
+      min-height: 400px;
     }
 
     .title {

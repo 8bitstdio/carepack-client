@@ -1,3 +1,5 @@
+@import "../../styles/mixins.scss";
+
 .main {
     background: var(--background);
     display: flex;
@@ -14,7 +16,6 @@
         display: inherit;
         justify-content: space-between;
         align-items: center;
-        padding: 0px 20px;
         height: inherit;
         width: var(--pageWidth);
 
@@ -35,6 +36,30 @@
             }
         }
 
+        .search {
+            display: none;
+            flex: 1;
+            margin: 0 20px;
+
+            @include respond('desktop') {
+                display: flex;
+            }
+
+            .input {
+                display: flex;
+                flex: 1;
+                border: 2px #DDD solid;
+                border-radius: 5px;
+                font-size: 1.5rem;
+                font-weight: 500;
+                padding:8px;
+
+                &:focus {
+                    border: 2px var(--blue) solid;
+                }
+            }
+        }
+
         .nav {
             display: flex;
             align-items: center;
@@ -43,6 +68,14 @@
             li.item {
                 display: flex;
                 margin-left: 40px;
+
+                &.searchIcon {
+                    display: flex;
+
+                    @include respond('desktop') {
+                        display: none;
+                    }
+                }
 
                 &:last-child {
                     margin-left: 40px;

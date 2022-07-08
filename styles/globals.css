@@ -25,14 +25,14 @@ a {
 }
 
 :root {
-  --background: #fafafa;
+  --background: #ffffff;
   --primaryColor: #007AFF; 
   --secondaryColor: #BB1717;
   --input-background: #FFFFFF;
 
   --blueLight: #479EFE;
   --blue: #007AFF;
-  --blueDark: #0071EC;
+  --blueDark: #0062CD;
 
   --red: #DD4343;
   --redLight: #f78d88;
@@ -62,6 +62,9 @@ a {
 
   --black: #000000;
 
+  --selectionColor: #0062CD;
+  --placeholderColor: #8E8E8E;
+
   --pageWidth: 1200px;
 }
 
@@ -70,6 +73,10 @@ a {
 }
 
 ::selection {
-  background: var(--primaryColor);
+  background: var(--selectionColor);
   color: var(--white);
+}
+
+input::placeholder {
+  color: var(--placeholderColor);
 }

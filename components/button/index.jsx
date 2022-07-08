@@ -3,9 +3,7 @@ import styles from './button.module.scss';
 
 const Button = props => {
     const handleClick = (e) => {
-        if (props.onClick) {
-            props.onClick(e);
-        }
+        props.onClick && props.onClick(e);
     }
 
     const isNegative = () => {
@@ -16,29 +14,30 @@ const Button = props => {
         return props.type ? ` ${styles[props.type]}` : '';
     }
 
-    return (
-        <> {props.asLink ? (
-            <Link 
-                href={props.href?props.href:'/'}>
-                    <a className={`${styles.button}${isNegative()}${getType()}`}
+    const getStyle= () => {
+        return props.className ? ` ${props.className}` : '';
+    }
+
+    return  props.asLink ? (
+                <Link 
+                    href={props.href?props.href:'/'}>
+                    <a className={`${styles.button}${isNegative()}${getType()}${getStyle()}`}
                         onClick={handleClick}
                         id={props.id}
                     >
                         {props.children}
                     </a>
-            </Link>
-        ): (
-            <button
-                disabled={props.disabled}
-                id={props.id}
-                type="submit"
-                className={`${styles.button}${isNegative()}${getType()}`}
-                onClick={handleClick}>
-                    {props.children}
-            </button>
-        )}
-        </>
-    );
+                </Link>
+            ): (
+                <button
+                    disabled={props.disabled}
+                    id={props.id}
+                    type="submit"
+                    className={`${styles.button}${isNegative()}${getType()}${getStyle()}`}
+                    onClick={handleClick}>
+                        {props.children}
+                </button>
+            );
 }
 
 export default Button;

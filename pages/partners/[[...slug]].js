@@ -1,32 +1,16 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import isEmpty from 'lodash/isEmpty';
 
-
-import AppLayout from '/components/layout/AppLayout';
 import { getAccount } from '/utils/helper';
 import { appItems } from 'utils/common';
 
 import styles from '/styles/feed.module.scss';
+import AppLayout from 'components/layout/AppLayout';
 
-export default function ExplorePage(props) {
+export default function PartnerPage(props) {
     const {account} = props;
     const router = useRouter();
-    const { slug } = router.query;
-
-    const menuItems = [
-        {
-            name: 'On Going',
-            href: '/partners/current',
-            icon: 'schedule',
-        }, {
-            name: 'Requests',
-            href: '/partners/requests',
-            icon: 'inbox',
-        }, {
-            name: 'History',
-            href: '/partners/history',
-            icon: 'history',
-        }];
 
     return (
         <>
@@ -39,15 +23,14 @@ export default function ExplorePage(props) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <AppLayout
-                account={account}
-                slug={slug}
                 apps={appItems}
-                menu={menuItems}
-                appName="Partners"
-                appUrl='partners'
-                title='Partners'
-            >
-                Explore
+                account={account}
+                title="Partnerships"
+                appUrl="partners"
+                appName="Partners">
+                <div className={styles.partners}>
+                    hello
+                </div>
             </AppLayout>
         </>
     );

@@ -1,10 +1,9 @@
 import { ToastContainer } from 'react-toastify';
-import Footer from "../footer";
 
 import 'react-toastify/dist/ReactToastify.css';
 import styles from "./layout.module.scss";
 
-function Layout({ children, ...props }) {
+function Layout({ children }) {
   return (
     <>
       <main className={styles.main}>{children}</main>

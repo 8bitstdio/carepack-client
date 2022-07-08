@@ -1,0 +1,99 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 80px;
+    min-height: 600px;
+    width: var(--pageWidth);
+
+    .title {
+        display: flex;
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-top: 50px;
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 50px;
+        gap: 10px;
+        width: 400px;
+
+        .inputtext {
+            border: 2px #BBB solid;
+            border-radius: 5px;
+            display: flex;
+            padding: 10px;
+            font-size: 1.8rem;
+            font-weight: 500;
+
+            &:focus {
+                border: 2px var(--blue) solid;
+            }
+        }
+
+        .preview {
+            color: #555;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .image_upload {
+            display: flex;
+            cursor: pointer;
+            justify-content: center;
+            align-items: center;
+            border: 2px #BBB dashed;
+            border-radius: 5px;
+            height: 200px;
+
+            .icon {
+                color: #BBB;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 5rem;
+            }
+
+            &:hover {
+                background: #EEE;
+            }
+        }
+
+        .textarea {
+            border: 2px #BBB solid;
+            border-radius: 5px;
+            display: flex;
+            padding: 10px;
+            font-size: 1.8rem;
+            font-weight: 500;
+            resize: none;
+
+            &:focus {
+                border: 2px var(--blue) solid;
+            }
+        }
+
+        .button {
+            border: 2px transparent solid;
+            border-radius: 5px;
+            box-shadow: 0px 5px 5px -2px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            background-color: var(--blue);
+            color: white;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--blueDark);
+                color: var(--white);
+            }
+        }
+    }
+}

@@ -1,31 +1,16 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import isEmpty from 'lodash/isEmpty';
 
-
-import AppLayout from '/components/layout/AppLayout';
 import { getAccount } from '/utils/helper';
 import { appItems } from 'utils/common';
 
-import styles from '/styles/feed.module.scss';
+import styles from '/styles/notifications.module.scss';
+import AppLayout from 'components/layout/AppLayout';
 
-export default function FeedPage({account}) {
+export default function NotificationsPage(props) {
+    const {account} = props;
     const router = useRouter();
-    const { slug } = router.query;
-
-    const menuItems = [
-        {
-            name: 'What\'s New',
-            href: '/home/for-you',
-            icon: 'space_dashboard',
-        }, {
-            name: 'Trending',
-            href: '/home/trending',
-            icon: 'mode_heat',
-        }, {
-            name: 'Insights',
-            href: '/home/insights',
-            icon: 'insights',
-        }];
 
     return (
         <>
@@ -38,15 +23,14 @@ export default function FeedPage({account}) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <AppLayout
-                account={account}
-                slug={slug}
                 apps={appItems}
-                menu={menuItems}
-                appName="For You"
-                appUrl='home'
-                showMessages
-            >
-                Test
+                account={account}
+                title="Notifications"
+                appUrl="notifications"
+                appName="Notifications">
+                <div className={styles.notifications}>
+                    hello
+                </div>
             </AppLayout>
         </>
     );

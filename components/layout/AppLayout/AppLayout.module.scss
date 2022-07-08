@@ -5,182 +5,79 @@
     display: flex;
     flex: 1;
     justify-content: center;
-    width: 100%;
+    align-items: center;
 
     .wrap {
         display: flex;
         flex: 1;
-        width: 100%;
+        width: var(--pageWidth);
 
-        .appSideBar {
-            background: #F8F8F8;
+        .sidebar {
+            border-right: 1px solid #E0E0E0;
             display: flex;
+            flex-direction: column;
             height: 100vh;
-            width: 70px;
-            overflow-y: auto;
+            width: 250px;
+
+            .logoLink {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 20px;
+                cursor: pointer;
+            }
 
             .appList {
                 display: flex;
                 flex: 1;
                 flex-direction: column;
-                align-items: center;
-                padding-top: 20px;
-                gap: 20px;
+                gap: 10px;
 
                 .appItem {
                     border-radius: 10px;
                     color: #222;
                     display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 50px;
-                    width: 50px;
+                    margin-right: 10px;
 
                     .appLink {
                         border-left: 4px transparent solid;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        padding: 15px 18px;
-                        align-items: center;
-
-                        .icon {
-                            font-variation-settings: 'FILL' 1;
-                            color: #222;
-                            font-size: 3rem;
-                        }
-    
-                        .appName {
-                            font-size: 1.4rem;
-                            font-weight: 400;
-                        }
-
-                        &.selected {
-                            border-left: 4px var(--greenDark) solid;
-                            
-                            .icon {
-                                color: var(--greenDark);
-                            }
-
-                            .appName {
-                                color: var(--greenDark);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        .sidebar {
-            background: #F6F6F6;
-            border-right: 1px solid #E6E6E6;
-            box-shadow: -10px 0px 30px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            align-self: flex-start;
-            height: 100vh;
-            width: 300px;
-            overflow: hidden;
-            overflow-y: auto;
-
-            /* width */
-            &::-webkit-scrollbar {
-                background-color: transparent;
-                width: 5px;
-                margin: 0;
-                padding: 0;
-                z-index: 100;
-            }
-            
-            /* Track */
-            &::-webkit-scrollbar-track {
-                background: transparent;
-                width: 0;
-                margin: 0;
-                padding: 0; 
-            }
-            
-            /* Handle */
-            &::-webkit-scrollbar-thumb {
-                display: none;
-                background: #888; 
-                border-radius: 3px;
-            }
-
-            &:hover::-webkit-scrollbar-thumb {
-                display: block;
-            }
-            
-            /* Handle on hover */
-            &::-webkit-scrollbar-thumb:hover {
-                background: #555;
-            }
-
-            .logo {
-                background: #F6F6F6;
-                border-bottom: 1px #E1E1E1 solid;
-                position: sticky;
-                top: 0;
-                align-self: flex-start;
-                padding: 20px;
-                width: 100%;
-            }
-
-            .filter {
-                display: flex;
-                flex-direction: column;
-                gap: 10px;
-                margin-top: 20px;
-                margin-bottom: 40px;
-
-                .title {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 0 20px;
-
-                    .text {
-                        color: #666;
-                        font-size: 1.8rem;
-                        font-weight: 600;
-                    }
-
-                    .link {
-                        display: flex;
-                        align-items: center;
-                    }
-                }
-
-                .filterItem {
-                    display: flex;
-                    align-items: center;
-
-                    .link {
                         border-radius: 5px;
                         display: flex;
                         flex: 1;
                         align-items: center;
-                        gap: 10px;
-                        padding: 10px;
-                        margin: 0 10px;
-                        font-size: 1.6rem;
-                        font-weight: 500;
+                        padding: 10px 15px;
+                        gap: 20px;
+
+                        .icon {
+                            font-variation-settings: 'FILL' 0;
+                            color: var(--black);
+                            font-size: 3rem;
+                        }
+    
+                        .appName {
+                            font-size: 1.8rem;
+                            font-weight: 400;
+                        }
 
                         &.selected {
-                            background: var(--greenDark);
-                            color: var(--white);
-
-                            &:hover {
-                                background: var(--greenDark);
-                            }
+                            background: var(--blue);
 
                             .icon {
+                                font-variation-settings: 'FILL' 1;
                                 color: var(--white);
+                            }
+
+                            .appName {
+                                color: var(--white);
+                            }
+
+                            &:hover {
+                                background: var(--blue);
                             }
                         }
 
                         &:hover {
-                            background: #DDD;
+                            background: #EEE;
                         }
                     }
                 }
@@ -188,11 +85,98 @@
         }
 
         .content {
+            border-right: 1px #DDD solid;
             display: flex;
+            flex-direction: column;
             flex: 1;
-            background: #FAFAFA;
-            height: 100vh;
-            overflow-y: scroll;
+            min-height: 100vh;
+            position: relative;
+
+            .header {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                display: flex;
+                justify-content: space-between;
+                min-height: 40px;
+                position: sticky;
+                top: 0;
+                width: 100%;
+                z-index: 1000;
+
+                .title {
+                    display: flex;
+                    padding: 10px;
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .icon {
+                        font-variation-settings: 'FILL' 0;
+                        color: var(--black);
+                        font-size: 2.5rem;
+                        cursor: pointer;
+                        padding: 5px;
+                        border-radius: 100%;
+
+                        &:hover {
+                            background: #EEE;
+                        }
+                    }
+
+                    h1 {
+                        display: flex;
+                        font-size: 2rem;
+                        font-weight: bold;
+                        margin-left: 10px;
+                    }
+                }
+
+                .searchBox {
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+
+                    .input {
+                        background: #EFEFEF;
+                        border: 2px transparent solid;
+                        border-radius: 5px;
+                        display: flex;
+                        padding: 5px;
+                        margin: 10px;
+                        font-size: 1.6rem;
+                        font-weight: 400;
+                        color: #000;
+                        outline: none;
+                        transition: all 0.3s ease-in-out;
+                        width: 350px;
+    
+                        &:focus {
+                            border: 2px var(--blue) solid;
+                        }
+                    }
+
+                    .result {
+                        background: var(--white);
+                        border-radius: 5px;
+                        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                        display: flex;
+                        min-height: 200px;
+                        width: calc(100% - 20px);
+                        position: absolute;
+                        top: 48px;
+                        left: 0;
+                        margin-left: 10px;
+                    }
+                }
+            }
+        }
+
+        .rightCol {
+            background: #F6F6F6;
+            border-left: 1px solid #E6E6E6;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 300px;
         }
     }
 }

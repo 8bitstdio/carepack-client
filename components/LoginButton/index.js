@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useWeb3React } from "@web3-react/core"
 import isEmpty from "lodash/isEmpty";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 import Button from "../button";
 import { injected } from '../../utils/injector';
 import { getCookie, setCookie } from "../../utils/cookies";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
+import { showSignMessage } from "utils/helper";
 
 import styles from './LoginButton.module.scss';
 
@@ -69,13 +71,12 @@ const LoginButton = (props) => {
         if (data.success) {
             setCookie('wallet', wallet);
             setLogin(true);
+            router.reload();
         } else {
             setCookie('wallet', wallet);
             setLogin(true);
             router.push('/signup/create');
         }
-
-        setCookie('wallet', wallet);
         setLogin(true);
     }
 
@@ -89,6 +90,7 @@ const LoginButton = (props) => {
         });
         setLogin(false);
         setCookie('wallet', '', -1);
+        setCookie('cp_usign', '', -1);
         callback && callback();
     }
 
@@ -104,6 +106,10 @@ const LoginButton = (props) => {
         if (login && isEmpty(wallet)) {
             handleLogin(account);
         }
+        window.ethereum.on('accountsChanged', (accounts) => {
+            handleLogin(accounts[0]);
+            router.reload();
+        });
     }, [connected, account, login])
 
     const renderAccount = () => {
@@ -118,16 +124,34 @@ const LoginButton = (props) => {
         );
     }
 
+    const afterSign = () => {
+        router.push("/settings");
+        setMenuVisible(false);
+    }
+
+    const signFailure = () => {
+        setMenuVisible(false);
+        toast("Request not signed. Sign to continue.", {
+            type: "error",
+            autoClose: 2000,
+            position: "top-right",
+        });
+    }
+
+    const closeMenu = () => {
+        setMenuVisible(false);
+    }
+
     const renderMenu = () => {
         return (
-            <div ref={menuRef} className={styles.userMenu} expanded={true}>
+            <div ref={menuRef} className={styles.userMenu} expanded={menuVisible ? "true": "false"}>
                 <div role="link" className={styles.avatar} onClick={() => setMenuVisible(!menuVisible)}>
                     {renderAccount()}
                 </div>
                 {menuVisible && <ul className={styles.menu}>
                     <li className={styles.item}>
-                        <Link href={`/account`}>
-                            <a className={styles.link}>
+                        <Link href={`/${props.account.username}`}>
+                            <a className={styles.link} onClick={closeMenu}>
                                 <span className="material-symbols-outlined">
                                     person
                                 </span>
@@ -136,18 +160,8 @@ const LoginButton = (props) => {
                         </Link>
                     </li>
                     <li className={styles.item}>
-                        <Link href={`/account/wallet`}>
-                            <a className={styles.link}>
-                                <span className="material-symbols-outlined">
-                                    account_balance_wallet
-                                </span>
-                                <span className={styles.text}>Wallet</span>
-                            </a>
-                        </Link>
-                    </li>
-                    <li className={styles.item}>
-                        <Link href={`/account/settings`}>
-                            <a className={styles.link}>
+                        <Link href={`/settings`}>
+                            <a className={styles.link} onClick={showSignMessage(afterSign, signFailure)}>
                                 <span className="material-symbols-outlined">
                                     settings
                                 </span>
@@ -174,7 +188,7 @@ const LoginButton = (props) => {
         <>
             { (login || !isEmpty(props.account)) ?
                 renderMenu() :
-                <Button href="/" asLink onClick={connect}>Sign in</Button>
+                <Button href="/" asLink onClick={connect}>Connect</Button>
             }
         </>
     );

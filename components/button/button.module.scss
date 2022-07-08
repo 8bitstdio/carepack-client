@@ -1,9 +1,9 @@
-.button {
+.button, button.button {
     background: var(--black);
-    border: 0px;
+    border: 1px transparent solid;
     border-radius: 5px;
     cursor: pointer;
-    color: var(--white) !important;
+    color: var(--white);
     font-weight: 700;
     font-size: 1.7rem;
     text-decoration: none;
@@ -14,7 +14,9 @@
     transform: scale(1);
 
     &:hover {
-        background: var(--blue);
+        background: var(--white);
+        color: var(--black);
+        border: 1px var(--black) solid;
         opacity: 1 !important;
     }
 
@@ -24,11 +26,24 @@
         }
     }
 
+    &.white {
+        background: var(--white);
+        border: 1px #DDD solid;
+        color: var(--black);
+
+        &:hover {
+            background: #EEE;
+            color: var(--black);
+        }
+    }
+
     &.primary {
         background: var(--blue);
         
         &:hover {
             background: var(--blueDark);
+            border: 1px transparent solid;
+            color: #FFF;
         }
     }
 }

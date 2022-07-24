@@ -119,7 +119,7 @@ export async function getServerSideProps(ctx) {
   if (!isEmpty(account.props.account)) {
     return {
       redirect: {
-        destination: "/explore",
+        destination: "/home",
         permanent: true,
       }
     }

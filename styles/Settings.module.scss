@@ -143,6 +143,21 @@
                     resize: none;
                 }
             }
+
+            .checkbox {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+
+                label {
+                    font-size: 1.6rem;
+                    font-weight: bold;
+                }
+
+                input {
+                    border: 2px #BBB solid;
+                }
+            }
             .button {
                 padding: 10px;
                 font-size: 2rem;

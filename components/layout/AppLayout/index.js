@@ -1,11 +1,15 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/router";
+import throttle from "lodash/throttle";
 import isEmpty from "lodash/isEmpty";
 import { useWeb3React } from "@web3-react/core";
 import { ToastContainer, toast } from "react-toastify";
 
 import { showSignMessage } from "utils/helper";
+import { getLocalURL } from "utils/urls";
+import { setCookie } from "utils/cookies";
 import useShortcuts from "hooks/useShortcuts";
 import useOutsideAlerter from "hooks/useOutsideAlerter";
 
@@ -20,6 +24,8 @@ import LoginButton from "components/LoginButton";
 const AppLayout = (props) => {
   const router = useRouter();
   const [searchResultVisible, setSearchResultVisible] = useState(false);
+  const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
   const searchBoxRef = useRef(null);
   const { deactivate } = useWeb3React();
@@ -29,10 +35,11 @@ const AppLayout = (props) => {
   const arrayContains = (needle, haystack) => haystack[0] === needle[0];
   const getSlug = () => (slug === undefined ? [appUrl] : [appUrl, ...slug]);
   const cleanHref = (href) => href.split("/").splice(1, href.split("/").length);
-  const checkSlug = (href, isExact = false) =>
-    isExact
+  const checkSlug = (href, isExact = false) => {
+    return isExact
       ? `/${href.split("/")[1]}/${slug}` === href
       : arrayContains(getSlug(), cleanHref(href));
+  };
 
   useShortcuts("/", () => {
     const elem = inputRef.current;
@@ -44,6 +51,53 @@ const AppLayout = (props) => {
       elem.focus();
     }
   });
+
+  const handleLogout = async () => {
+    await fetch("/api/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
+    setCookie("wallet", "", -1);
+    setCookie("cp_usign", "", -1);
+  };
+
+  const handleLogin = async (wallet) => {
+    setCookie("active_wallet", wallet, 100000);
+    if (isEmpty(wallet)) return;
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        wallet,
+      }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      router.reload();
+    } else {
+      handleLogout();
+      router.reload();
+    }
+  };
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", (accounts) => {
+      handleLogin(accounts[0]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      handleSearch.cancel();
+    };
+  }, []);
 
   useShortcuts("Escape", () => {
     const elem = inputRef.current;
@@ -65,7 +119,7 @@ const AppLayout = (props) => {
           toast("Signed off successfully", {
             type: "success",
           });
-          router.push("/");
+          router.reload();
         });
       }
 
@@ -86,12 +140,14 @@ const AppLayout = (props) => {
         onClick = action(showSignMessage(afterSign, signFailure));
       }
 
+      const url = name === "Profile" ? `/${account?.username}` : href;
+
       return (
         <li key={index} className={styles.appItem}>
-          <Link href={name === "account" ? `/${account?.username}` : href}>
+          <Link href={name === "Profile" ? `/${account?.username}` : href}>
             <a
               className={
-                checkSlug(href)
+                checkSlug(url)
                   ? `${styles.appLink} ${styles.selected}`
                   : `${styles.appLink}`
               }
@@ -108,20 +164,81 @@ const AppLayout = (props) => {
       );
     });
 
-  const handleSearch = (e) => {
-    const value = e.target.value;
-    if (value.length > 0) {
-      setSearchResultVisible(true);
-    } else {
-      setSearchResultVisible(false);
-    }
+  const performSearch = async (query) => {
+    const response = await fetch(
+      `${getLocalURL()}/api/account/typeahead?query=${query}`
+    );
+    const { data } = await response.json();
+    setSearchResult(data);
+    setLoading(false);
   };
+
+  const handleSearch = throttle(
+    async (e) => {
+      const value = e.target.value;
+      if (value.length > 0) {
+        setSearchResultVisible(true);
+
+        if (searchResult.length === 0) {
+          setLoading(true);
+        }
+        // perform search.
+        performSearch(value);
+      } else {
+        setSearchResultVisible(false);
+      }
+    },
+    500,
+    { leading: false }
+  );
 
   const handleSearchFocus = (e) => {
     const value = e.target.value;
     if (value.length > 0) {
       setSearchResultVisible(true);
     }
+  };
+
+  const goToProfile = () => {
+    setSearchResultVisible(!searchResultVisible);
+    setSearchResult([]);
+    inputRef.current.value = "";
+  };
+
+  const showResults = () => {
+    return searchResult.map((item, index) => (
+      <li key={index} className={styles.item}>
+        <Link href={`/${item.username}`}>
+          <a className={styles.link} onClick={goToProfile}>
+            <div className={styles.image}>
+              <Image
+                src={item.photo}
+                height="40"
+                width="40"
+                className={styles.photo}
+                layout="fixed"
+                alt="profile"
+              />
+            </div>
+            <div className={styles.details}>
+              <div className={styles.name}>{item.name}</div>
+              {item.isVerified && (
+                <div className={styles.verified}>
+                  <Image
+                    src="/images/verify.png"
+                    height="16"
+                    width="16"
+                    className={styles.photo}
+                    layout="fixed"
+                    alt="profile"
+                  />
+                </div>
+              )}
+            </div>
+          </a>
+        </Link>
+      </li>
+    ));
   };
 
   return (
@@ -165,7 +282,16 @@ const AppLayout = (props) => {
                 ref={inputRef}
               />
               {searchResultVisible && (
-                <div className={styles.result}>Search Result</div>
+                <ul className={styles.result}>
+                  {showResults()}
+                  {loading && (
+                    <li className={styles.loading}>
+                      <i className={`${styles.icon} material-symbols-outlined`}>
+                        sync
+                      </i>
+                    </li>
+                  )}
+                </ul>
               )}
             </div>
           </div>

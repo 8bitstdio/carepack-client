@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Web3ReactProvider } from "@web3-react/core";
+import { useState, useEffect } from "react";
+import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
 import Head from "next/head";
 import { isEmpty } from "lodash";
 
@@ -31,6 +31,7 @@ function CarePack({ Component, pageProps, props }) {
       setHelpMenuVisible(false);
     }
   });
+
   const getCurrentAccount = () =>
     isEmpty(pageProps.viewer) ? pageProps.account : pageProps.viewer;
 

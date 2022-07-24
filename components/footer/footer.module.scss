@@ -1,23 +1,47 @@
 .footer {
+    background: #FFF;
     display: flex;
     padding: 2rem 0;
     justify-content: center;
-    align-items: center;
-    height: 80px;
+    align-items: flex-start;
     width: 100%;
 
-    ul {
+    .wrap {
         display: flex;
-        list-style: none;
-        gap: 40px;
+        justify-content: space-between;
+        align-items: center;
+        width: var(--pageWidth);
 
-        li {
+        .copyright {
             display: flex;
-
-            a {
-                color: #212121;
-                font-size: 1.6rem;
-                font-weight: 700;
+            font-size: 1.8rem;
+            font-weight: 800;
+        }
+    
+        ul {
+            display: flex;
+            list-style: none;
+            margin-left: 30px;
+            gap: 40px;
+    
+            li {
+                display: flex;
+    
+                a {
+                    font-size: 1.6rem;
+                    font-weight: 700;
+                }
+            }
+        }
+    
+        .madeIn {
+            display: flex;
+            font-size: 1.6rem;
+            font-weight: 700;
+    
+            .heart {
+                color: #ff0000;
+                padding: 0 5px;
             }
         }
     }

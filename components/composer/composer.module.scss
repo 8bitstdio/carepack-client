@@ -1,0 +1,23 @@
+.editor {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    gap: 10px;
+
+    .photo {
+        border-radius: 25px;
+        display: flex;
+        height: 40px;
+        width: 40px;
+        align-self: flex-start;
+        overflow: hidden;
+    }
+
+    .input {
+        flex: 1;
+
+        * {
+            font-size: 1.8rem;
+        }
+    }
+}

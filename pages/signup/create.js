@@ -7,32 +7,66 @@ import get from 'lodash/get';
 import * as Yup from 'yup'
 import { toast } from 'react-toastify';
 
-import Button from '../../components/button';
+import Button from 'components/button';
+import Logo from 'assets/Logo';
 
-import styles from '../../styles/Settings.module.scss'
-import apiURL, {getLocalURL} from '../../utils/urls';
-import { getCookie } from '../../utils/cookies';
+import apiURL, {getLocalURL} from 'utils/urls';
+import { getCookie } from 'utils/cookies';
+
+import styles from 'styles/Register.module.scss'
 
 export default function EditProfile(props) {
     const [valid, setValid] = useState(false);
     const router = useRouter();
-    useEffect(() => {
-        const wallet = getCookie('wallet');
-        if (isEmpty(wallet)) return router.push('/');
-    }, []);
+
+    const checkUsername = async (value)=> {
+        try {
+            const username = value;
+            const response = await fetch(`${getLocalURL()}/api/account/checkUsername?username=${username}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            const {success} = await response.json();
+            return success;
+        } catch(err) {
+            console.log(err);
+            return false;
+        }
+    }
+
+    const checkEmail = async (value)=> {
+        try {
+            const response = await fetch(`${getLocalURL()}/api/account/checkEmail?email=${value}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            const {success} = await response.json();
+            return success;
+        } catch(err) {
+            console.log(err);
+            return false;
+        }
+    }
 
     const EditProfileSchema = Yup.object().shape({
         name: Yup.string()
             .required('Name is required'),
         username: Yup.string()
+            .test('unique username', 'Username is already taken', checkUsername)
             .required('Username is required'),
         email: Yup.string()
-            .email('Email is invalid'),
+            .test('unique email', 'Email is already taken', checkEmail)
+            .required('Email is required'),
     });
 
     const renderErrors = (errors, touched) => {
         const touchedItems = Object.keys(touched);
         const errorItems = Object.keys(errors);
+
         return errorItems.some(i => touchedItems.includes(i)) && (
             <div className={styles.errorSection}>
                 <ul>
@@ -45,7 +79,7 @@ export default function EditProfile(props) {
     }
 
     const handleFormSubmit = (values) => {
-        const wallet = getCookie('wallet');
+        const wallet = getCookie('active_wallet');
         fetch("/api/register", {
             method: "POST",
             headers: {
@@ -57,7 +91,6 @@ export default function EditProfile(props) {
                 name: values.name,
                 username: values.username,
                 email: values.email,
-                description: values.description,
             })
         }).then(res => res.json())
         .then(json => {
@@ -70,13 +103,6 @@ export default function EditProfile(props) {
         });
     }
 
-    const handleBlur = (err) => () => {
-        console.log("error ",err);
-        if (isEmpty(err?.username)) {
-            setValid(true);
-        }
-    }
-
     return (
     <>
         <Head>
@@ -85,33 +111,14 @@ export default function EditProfile(props) {
             <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className={styles.main}>
-            <h1 className={styles.heavyText}>Set Up Your Account</h1>
             <Formik
                 initialValues={{
                     name: get(props, 'account.name', ''),
                     username: get(props, 'account.username', ''),
-                    email: props.account?.email || '',
-                    description: get(props, 'account.description', ''),
+                    email: get(props, 'account.email', ''),
                 }}
                 validationSchema={EditProfileSchema}
-                validate={values => {
-                    const errors = {};
-                    console.log('values', values);
-                    return values?.username && fetch(`${apiURL}/api/users/username/${values.username}`)
-                        .then(res => res.json())
-                        .then(json => {
-                            if (json.success) {
-                                return {
-                                    username: 'Username already exists',
-                                };
-                            }
-                            return errors;
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            return {};
-                        });
-                }}
+                validateOnChange={false}
                 onSubmit={handleFormSubmit}
             >
                 {({
@@ -122,11 +129,16 @@ export default function EditProfile(props) {
                     touched 
                 }) => (
                     <form className={styles.form} onSubmit={handleSubmit}>
+                        <Logo
+                            mainStyle={styles.logo}
+                            color="#000"
+                        />
                         {renderErrors(errors, touched)}
                         <Field
                             type="text"
                             placeholder='Name'
                             name="name"
+                            autoComplete="off"
                             className={touched.name && errors.name ? `${styles.input} ${styles.error}` : styles.input}
                             onChange={handleChange}
                             value={values.name}
@@ -135,7 +147,7 @@ export default function EditProfile(props) {
                             type='text'
                             placeholder='Username'
                             name="username"
-                            onBlur={handleBlur(errors)}
+                            autoComplete="off"
                             className={touched.username && errors.username ? `${styles.input} ${styles.error}` : valid ? `${styles.input} ${styles.valid}` : styles.input}
                             onChange={handleChange}
                             value={values.username}
@@ -144,11 +156,12 @@ export default function EditProfile(props) {
                             type='email'
                             placeholder='Email'
                             name="email"
+                            autoComplete="off"
                             className={touched.email && errors.email ? `${styles.input} ${styles.error}` : styles.input}
                             onChange={handleChange}
                             value={values.email}
                         />
-                        <Button type='primary'>Submit</Button>
+                        <Button type='primary'>Register</Button>
                     </form>
                 )}
             </Formik>
@@ -167,6 +180,7 @@ export async function getServerSideProps(ctx) {
         },
     });
     const data = await res.json();
+    console.log('data', isEmpty(data.data));
     if (isEmpty(data.data)) {
         return {
             props: {

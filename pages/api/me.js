@@ -21,7 +21,6 @@ const getUser = async (req, res) => {
         }
       );
       const { data } = await response.json();
-      console.log(data);
       if (data?.wallet) {
         const sess = {
           user_id: data?.id,
@@ -46,6 +45,7 @@ const getUser = async (req, res) => {
       res.json({
         message: "Please login to continue",
         success: false,
+        data: {},
       });
     }
   } else {

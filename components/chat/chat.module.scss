@@ -1,0 +1,30 @@
+.main {
+    display: flex;
+    flex: 1;
+    min-height: 500px;
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        .editor {
+            display: flex; 
+            flex-direction: column;
+            margin: 10px;
+            padding: 10px;
+
+            * {
+                font-size: 2rem;
+            }
+        }
+
+        .updates {
+            background: #FBFBFB;
+            border-bottom: 1px #DDD solid;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+    }
+}

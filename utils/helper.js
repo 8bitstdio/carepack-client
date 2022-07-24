@@ -138,4 +138,3 @@ export const getTodaysDate = () => {
 
   return `${days[day]} ${dayOfMonth} ${months[month]}`;
 };
-

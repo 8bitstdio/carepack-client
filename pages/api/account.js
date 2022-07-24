@@ -10,6 +10,7 @@ const account = async (req, res) => {
       },
     });
     const { data } = await response.json();
+
     res.statusCode = 200;
     res.json({
       data,

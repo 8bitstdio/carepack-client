@@ -15,10 +15,6 @@ const handleLogout = async (callback) => {
   callback && callback();
 };
 
-const handleLogin = async (callback) => {
-  callback && callback();
-};
-
 const AUTH_SIGNATURE_MESSAGE = `
     Welcome to Carepack.
 
@@ -30,19 +26,9 @@ const AUTH_SIGNATURE_MESSAGE = `
 
 export const appItems = [
   {
-    name: "Explore",
-    href: "/explore",
-    icon: "explore",
-  },
-  {
-    name: "Partnerships",
-    href: "/partners",
-    icon: "handshake",
-  },
-  {
-    name: "Messages",
-    href: "/inbox",
-    icon: "inbox",
+    name: "Home",
+    href: "/home",
+    icon: "public",
   },
   {
     name: "Notifications",
@@ -51,7 +37,7 @@ export const appItems = [
   },
   {
     name: "Profile",
-    href: "/carepack",
+    href: "/account",
     icon: "account_circle",
   },
   {
@@ -76,24 +62,43 @@ export const appItems = [
 
 export const profileTabs = [
   {
-    name: "Communities",
+    name: "Channels",
     href: "/",
+  },
+  {
+    name: "Drops",
+    href: "/drops",
   },
   {
     name: "Partners",
     href: "/partners",
   },
   {
-    name: "NFTs",
-    href: "/nfts",
+    name: "Following",
+    href: "/following",
   },
   {
     name: "Followers",
     href: "/followers",
   },
+];
+
+export const communityTabs = [
   {
-    name: "Following",
-    href: "/following",
+    name: "Discussions",
+    href: "/",
+  },
+  {
+    name: "Announcements",
+    href: "/announcements",
+  },
+  {
+    name: "Rules",
+    href: "/rules",
+  },
+  {
+    name: "Events",
+    href: "/events",
   },
 ];
 

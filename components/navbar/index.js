@@ -1,13 +1,13 @@
-import {useEffect, useRef} from 'react';
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import useShortcuts from 'hooks/useShortcuts';
+import useShortcuts from "hooks/useShortcuts";
 
 import LoginButton from "../LoginButton";
 
 import styles from "./navbar.module.scss";
-import Logo from '../../assets/logo';
+import Logo from "../../assets/Logo";
 
 const NavBar = (props) => {
   const router = useRouter();
@@ -15,9 +15,11 @@ const NavBar = (props) => {
 
   useShortcuts("/", () => {
     const elem = inputRef.current;
-    if(document.activeElement !== elem &&
-       document.activeElement.nodeName != 'INPUT' &&
-       document.activeElement.nodeName != 'TEXTAREA') {
+    if (
+      document.activeElement !== elem &&
+      document.activeElement.nodeName != "INPUT" &&
+      document.activeElement.nodeName != "TEXTAREA"
+    ) {
       elem.focus();
     }
   });
@@ -34,55 +36,57 @@ const NavBar = (props) => {
     } else {
       navbar.classList.remove(styles.sticky);
     }
-  }
+  };
 
-  useEffect(() =>{
-    window.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-    }
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const renderMenu = () => {
-    const items = [{
-      name: 'Search',
-      icon: 'search',
-      href: '/'
-    },{
-      name: 'Explore',
-      icon: 'explore',
-      href: '/explore',
-    }, {
-      name: 'Partners',
-      icon: 'handshake',
-      href: '/partners',
-    }, {
-      name: 'Inbox',
-      icon: 'sailing',
-      href: '/inbox',
-    }];
+    const items = [
+      {
+        name: "Search",
+        icon: "search",
+        href: "/",
+      },
+      {
+        name: "Home",
+        icon: "public",
+        href: "/home",
+      },
+    ];
 
-    return items.map(({name, icon, href}, index) => {
-      const path = `/${router.pathname.split('/')[1]}`;
+    return items.map(({ name, icon, href }, index) => {
+      const path = `/${router.pathname.split("/")[1]}`;
       return (
-        <li key={index} className={index === 0?`${styles.item} ${styles.searchIcon}`:styles.item}>
+        <li
+          key={index}
+          className={
+            index === 0 ? `${styles.item} ${styles.searchIcon}` : styles.item
+          }
+        >
           <Link href={href}>
             <a
               className={
-                path === href? 
-                `${styles.link} ${styles.selected} material-symbols-outlined` : 
-                `${styles.link} material-symbols-outlined`}
-                title={name}>
+                path === href
+                  ? `${styles.link} ${styles.selected} material-symbols-outlined`
+                  : `${styles.link} material-symbols-outlined`
+              }
+              title={name}
+            >
               {icon}
             </a>
           </Link>
         </li>
       );
     });
-  }
+  };
 
-  const getMode = () => props.mode === 'full' ?
-    `${styles.wrap} ${styles.full}` : styles.wrap;
+  const getMode = () =>
+    props.mode === "full" ? `${styles.wrap} ${styles.full}` : styles.wrap;
 
   return (
     <div id="navbar" className={styles.main}>
@@ -98,7 +102,7 @@ const NavBar = (props) => {
             type="text"
             placeholder="Search Communities and Users"
             name="q"
-            autoComplete='off'
+            autoComplete="off"
             className={styles.input}
           />
         </div>

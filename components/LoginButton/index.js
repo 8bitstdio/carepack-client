@@ -56,6 +56,7 @@ const LoginButton = (props) => {
   }
 
   const handleLogin = async (wallet) => {
+    setCookie("active_wallet", wallet, 100000);
     if (isEmpty(wallet)) return;
     const res = await fetch("/api/auth", {
       method: "POST",
@@ -69,11 +70,9 @@ const LoginButton = (props) => {
     const data = await res.json();
 
     if (data.success) {
-      setCookie("wallet", wallet);
       setLogin(true);
-      router.reload();
+      router.push(window.location.href);
     } else {
-      setCookie("wallet", wallet);
       setLogin(true);
       router.push("/signup/create");
     }
@@ -99,6 +98,7 @@ const LoginButton = (props) => {
     if (wallet) {
       connect(null);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -110,6 +110,7 @@ const LoginButton = (props) => {
       handleLogin(accounts[0]);
       router.reload();
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, account, login]);
 
   const renderAccount = () => {

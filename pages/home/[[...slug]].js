@@ -31,15 +31,27 @@ export default function ExplorePage(props) {
                     <Image
                       src={user.photo}
                       alt={user.name}
-                      width={285}
-                      height={285}
+                      className={styles.photo}
+                      height={250}
+                      width={250}
                       layout="fixed"
+                      loading="lazy"
                     />
                   )}
                 </div>
                 <div className={styles.account_info}>
-                  <div className={styles.details}>
+                  <div className={styles.info}>
                     <div className={styles.name}>{user.name}</div>
+                    {user.isVerified && (
+                      <Image
+                        src="/images/verify.png"
+                        alt="Verified"
+                        className={styles.verified}
+                        layout="fixed"
+                        height={16}
+                        width={16}
+                      />
+                    )}
                   </div>
                   <div className={styles.username}>@{user.username}</div>
                 </div>
@@ -60,7 +72,7 @@ export default function ExplorePage(props) {
         (router.query.page === undefined && page === 1);
       return (
         <li key={index}>
-          <Link href={`/explore?page=${page}`}>
+          <Link href={`/home?page=${page}`}>
             <a
               className={
                 selected ? `${styles.link} ${styles.selected}` : styles.link
@@ -96,9 +108,9 @@ export default function ExplorePage(props) {
       <AppLayout
         apps={appItems}
         account={account}
-        title={"Explore"}
-        appUrl="explore"
-        appName="Explore"
+        title={"Home"}
+        appUrl="home"
+        appName="Home"
       >
         <div className={styles.explore}>
           <div className={styles.content}>{renderList()}</div>

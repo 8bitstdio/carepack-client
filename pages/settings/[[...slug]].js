@@ -68,6 +68,7 @@ export default function SettingsPage(props) {
         wallet: account.wallet,
         id: account.id,
         photo: account.photo,
+        isPrivate: values.isPrivate,
       }),
     });
     const { success } = await response.json();
@@ -98,6 +99,7 @@ export default function SettingsPage(props) {
             username: account.username,
             description: account.description,
             website: account.website,
+            isPrivate: account.isPrivate,
           }}
           onSubmit={submitHandler}
         >
@@ -155,7 +157,7 @@ export default function SettingsPage(props) {
                   id="description"
                   autoComplete="off"
                   onChange={handleChange}
-                  value={values.description}
+                  value={values?.description}
                 />
               </div>
               <div className={styles.input}>
@@ -166,8 +168,18 @@ export default function SettingsPage(props) {
                   name="website"
                   id="website"
                   onChange={handleChange}
-                  value={values.website.replace(/\s/g, "")}
+                  value={values?.website?.replace(/\s/g, "")}
                 />
+              </div>
+              <div className={styles.checkbox}>
+                <input
+                  type="checkbox"
+                  name="isPrivate"
+                  id="isPrivate"
+                  onChange={handleChange}
+                  checked={values.isPrivate}
+                />
+                <label htmlFor="isPrivate">Private Account</label>
               </div>
               <Button className={styles.button} type="primary">
                 Save
@@ -244,4 +256,3 @@ export async function getServerSideProps(ctx) {
     },
   };
 }
-

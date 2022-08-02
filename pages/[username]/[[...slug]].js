@@ -14,6 +14,7 @@ import AppLayout from "components/layout/AppLayout";
 import Chat from "components/chat";
 import Subscriber from "components/subscriber";
 import Drops from "components/Drops";
+import Partners from "components/Partners";
 
 import { truncate_address, getAccount } from "/utils/helper";
 import { showSignMessage } from "utils/helper";
@@ -261,19 +262,25 @@ export default function Profile(props) {
     return <Drops />;
   };
 
+  const renderPartners = () => {
+    return <Partners />;
+  };
+
   const renderContent = () => {
     const tab = currentTab();
     switch (tab) {
       case "/":
-        return renderChannels();
+        return renderDrops();
       case "/drops":
         return renderDrops();
+      case "/partners":
+        return renderPartners();
       case "/following":
         return renderFollowing();
       case "/followers":
         return renderFollowers();
       default:
-        return renderChannels();
+        return renderDrops();
     }
   };
 
@@ -323,8 +330,8 @@ export default function Profile(props) {
                     {account.photo && (
                       <NextImage
                         src={account.photo}
-                        width={175}
-                        height={175}
+                        width={135}
+                        height={135}
                         className={styles.photo}
                         layout="fixed"
                         alt="verified"
@@ -369,10 +376,10 @@ export default function Profile(props) {
                     </span>
                   </div>
                   <div className={styles.community}>
-                    <Link href={`/${account.username}/partners`}>
+                    <Link href={`/${account.username}`}>
                       <a className={styles.text}>
                         <span className={styles.number}>0</span>
-                        <span className={styles.label}>Partners</span>
+                        <span className={styles.label}>Updates</span>
                       </a>
                     </Link>
                     <Link href={`/${account.username}/following`}>
@@ -418,7 +425,7 @@ export default function Profile(props) {
             <ul className={styles.navigation}>{renderTabs()}</ul>
             <div className={styles.content}>{renderContent()}</div>
           </div>
-          <div className={styles.rightCol}></div>
+          <div className={styles.rightCol}>{renderChannels()}</div>
         </div>
       </AppLayout>
       <form style={{ display: "none" }}>
@@ -436,7 +443,7 @@ export default function Profile(props) {
 export async function getServerSideProps(ctx) {
   const { username } = ctx.params;
 
-  const viewer = await getAccount(ctx, true, true);
+  const result = await getAccount(ctx, true, true);
 
   const response = await fetch(`${getLocalURL()}/api/account`, {
     method: "POST",
@@ -448,16 +455,16 @@ export async function getServerSideProps(ctx) {
   const data = await response.json();
   const account = get(data, "data", {});
 
-  const getFollowers = async () => {
+  const getFollowers = async (cursor = 0) => {
     const subs_r = await fetch(
-      `${getLocalURL()}/api/account/followers?id=${account.id}&cursor=${0}`
+      `${getLocalURL()}/api/account/followers?id=${account.id}&cursor=${cursor}`
     );
     return await subs_r.json();
   };
 
-  const getFollowing = async () => {
+  const getFollowing = async (cursor = 0) => {
     const result = await fetch(
-      `${getLocalURL()}/api/account/following?id=${account.id}&cursor=${0}`
+      `${getLocalURL()}/api/account/following?id=${account.id}&cursor=${cursor}`
     );
     return await result.json();
   };
@@ -466,7 +473,7 @@ export async function getServerSideProps(ctx) {
   const followingData = await getFollowing();
 
   const isSubscribed = followersData.data.some(
-    (item) => item.id === viewer.props.account.id
+    (item) => item.id === result.props?.account.id
   );
 
   if (isEmpty(account)) {
@@ -476,9 +483,10 @@ export async function getServerSideProps(ctx) {
   }
 
   return {
+    ...result,
     props: {
       account,
-      viewer: { ...viewer?.props?.account },
+      viewer: { ...result?.props?.account },
       isSubscribed,
       followers: followersData.data,
       following: followingData.data,

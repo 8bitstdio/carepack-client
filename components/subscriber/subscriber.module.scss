@@ -4,13 +4,17 @@
     padding: 20px;
     gap: 10px;
 
+    &:first-child {
+        border-top: 0;
+    }
+
     &:hover {
         background-color: #FAFAFA;
     }
 
     .photo {
         display: flex;
-        border-radius: 5px;
+        border-radius: 100px;
     }
 
     .details {

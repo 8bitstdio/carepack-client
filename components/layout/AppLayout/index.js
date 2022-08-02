@@ -108,8 +108,8 @@ const AppLayout = (props) => {
     setSearchResultVisible(false);
   });
 
-  const renderApps = () =>
-    apps.map(({ name, href, icon, action }, index) => {
+  const renderMenu = (items) =>
+    items.map(({ name, href, icon, action }, index) => {
       let hasAction = false;
       let onClick = () => {};
       if (icon === "logout") {
@@ -255,7 +255,7 @@ const AppLayout = (props) => {
               <LoginButton />
             </span>
           )}
-          {isLoggedIn && <ul className={styles.appList}>{renderApps()}</ul>}
+          {isLoggedIn && <ul className={styles.appList}>{renderMenu(apps)}</ul>}
         </div>
         <div className={styles.content}>
           <div className={styles.header}>

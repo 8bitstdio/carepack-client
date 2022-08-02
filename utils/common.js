@@ -62,7 +62,7 @@ export const appItems = [
 
 export const profileTabs = [
   {
-    name: "Channels",
+    name: "Posts",
     href: "/",
   },
   {

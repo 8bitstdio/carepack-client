@@ -42,4 +42,3 @@ const Subscriber = ({ sub }) => (
 );
 
 export default Subscriber;
-

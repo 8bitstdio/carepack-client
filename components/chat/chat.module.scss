@@ -8,6 +8,19 @@
         flex-direction: column;
         flex: 1;
 
+        .header {
+            border-bottom: 1px #EEE solid;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+
+            h4 {
+                font-size: 1.6rem;
+                font-weight: bold;
+            }
+        }
+
         .editor {
             display: flex; 
             flex-direction: column;

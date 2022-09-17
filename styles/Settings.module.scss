@@ -1,20 +1,31 @@
 .main {
-    border-top: 1px #DDD solid;
     display: flex;
     height: 100%;
     width: 100%;
 
     .sideBar {
-        background: #FFF;
+        background: var(--background);
+        border-right: 1px var(--borderColor) solid;
         display: flex;
         flex: 1;
-        border-right: 1px #DDD solid;
+        align-self: stretch;
+        height: 100%;
         flex-direction: column;
-        padding-top: 25px;
+        padding: 0 20px;
+        padding-top: 30px;
+        width: 300px;
+
+        .header {
+            display: flex;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
 
         .menu {
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            margin-top: 25px;
 
             .item {
                 display: flex;
@@ -22,7 +33,7 @@
                 align-items: center;
 
                 .link {
-                    border-left: 3px transparent solid;
+                    border-radius: 10px;
                     display: flex;
                     flex: 1;
                     align-items: center;
@@ -38,7 +49,7 @@
 
                         .icon {
                             display: flex;
-                            color: var(--black);
+                            color: var(--textColor);
                         }
     
                         .text {
@@ -51,12 +62,11 @@
                     }
 
                     &:hover {
-                        background: #EEE;
+                        background: var(--highlightColor);
                     }
     
                     &.selected {
-                        background: #EEE;
-                        border-left: 3px var(--blueDark) solid;
+                        background: var(--highlightColor);
                     }
                 }
             }
@@ -67,7 +77,9 @@
         display: flex;
         flex: 2;
         flex-direction: column;
+        margin-top: 25px;
         padding: 10px 50px;
+        width: 100%;
 
         .header {
             display: flex;
@@ -75,8 +87,8 @@
 
             .title {
                 display: flex;
-                font-size: 3rem;
-                font-weight: bold;
+                font-size: 2rem;
+                font-weight: 800;
             }
         }
 
@@ -92,12 +104,12 @@
                 gap: 5px;
 
                 .value {
-                    color: #777;
+                    background: var(--borderColor);
+                    border: 2px var(--inputBorderColor) solid;
+                    border-radius: 5px;
+                    color: var(--textColor);
                     display: flex;
                     justify-content: space-between;
-                    background: #F5F5F5;
-                    border: 2px #DDD solid;
-                    border-radius: 5px;
                     padding: 10px;
 
                     .text {
@@ -107,7 +119,7 @@
 
                     .icon {
                         display: flex;
-                        color: #AAA;
+                        color: var(--textColor);
                         transform: rotateX(180deg);
                         cursor: pointer;
 
@@ -125,7 +137,8 @@
                 input {
                     display: flex;
                     flex: 1;
-                    border: 2px #DDD solid;
+                    background: var(--inputColor);
+                    border: 2px var(--inputBorderColor) solid;
                     border-radius: 5px;
                     padding: 10px;
                     font-size: 1.8rem;
@@ -134,7 +147,8 @@
 
                 textarea {
                     display: flex;
-                    border: 2px #DDD solid;
+                    background: var(--inputColor);
+                    border: 2px var(--inputBorderColor) solid;
                     border-radius: 5px;
                     padding: 10px;
                     font-size: 1.6rem;
@@ -158,9 +172,11 @@
                     border: 2px #BBB solid;
                 }
             }
+
             .button {
-                padding: 10px;
-                font-size: 2rem;
+                align-self: flex-start;
+                padding: 5px 30px;
+                font-size: 1.6rem;
             }
         }
     }

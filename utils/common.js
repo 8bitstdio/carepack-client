@@ -31,11 +31,6 @@ export const appItems = [
     icon: "public",
   },
   {
-    name: "Notifications",
-    href: "/notifications",
-    icon: "notifications",
-  },
-  {
     name: "Profile",
     href: "/account",
     icon: "account_circle",
@@ -66,6 +61,10 @@ export const profileTabs = [
     href: "/",
   },
   {
+    name: "About",
+    href: "/about",
+  },
+  {
     name: "Drops",
     href: "/drops",
   },
@@ -74,13 +73,9 @@ export const profileTabs = [
     href: "/partners",
   },
   {
-    name: "Following",
-    href: "/following",
-  },
-  {
-    name: "Followers",
-    href: "/followers",
-  },
+    name: "Subscribers",
+    href: "/subscribers",
+  }
 ];
 
 export const communityTabs = [

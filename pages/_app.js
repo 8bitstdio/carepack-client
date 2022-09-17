@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
-import { useWeb3React, Web3ReactProvider } from "@web3-react/core";
+import { Web3ReactProvider } from "@web3-react/core";
 import Head from "next/head";
-import { isEmpty } from "lodash";
+import Script from "next/script";
 
 import Web3 from "web3";
 
 import useShortcuts from "hooks/useShortcuts";
 import Layout from "../components/layout";
-import NavBar from "components/navbar";
 import HelpMenu from "components/HelpMenu";
 import { INPUT, TEXTAREA } from "utils/constants";
 
 import "react-tippy/dist/tippy.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import "../styles/globals.css";
+import ThemeProvider from "context/ThemeContext";
 
 function getLibrary(provider) {
   return new Web3(provider);
@@ -26,14 +28,12 @@ function CarePack({ Component, pageProps, props }) {
       setHelpMenuVisible(!helpMenuVisible);
     }
   });
+
   useShortcuts("Escape", () => {
     if (helpMenuVisible === true) {
       setHelpMenuVisible(false);
     }
   });
-
-  const getCurrentAccount = () =>
-    isEmpty(pageProps.viewer) ? pageProps.account : pageProps.viewer;
 
   const hideHelpMenu = () => {
     setHelpMenuVisible(false);
@@ -42,6 +42,7 @@ function CarePack({ Component, pageProps, props }) {
   const renderHelpMenu = () => {
     return <HelpMenu onCurtainClick={hideHelpMenu} />;
   };
+
   return (
     <>
       <Head>
@@ -54,10 +55,12 @@ function CarePack({ Component, pageProps, props }) {
         />
       </Head>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <Layout>
-          <Component {...pageProps} {...props} />
-          {helpMenuVisible && renderHelpMenu()}
-        </Layout>
+        <ThemeProvider>
+          <Layout>
+            <Component {...pageProps} {...props} />
+            {helpMenuVisible && renderHelpMenu()}
+          </Layout>
+        </ThemeProvider>
       </Web3ReactProvider>
     </>
   );

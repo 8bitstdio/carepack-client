@@ -1,45 +1,43 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import throttle from "lodash/throttle";
 import isEmpty from "lodash/isEmpty";
 import { useWeb3React } from "@web3-react/core";
+import Dropdown from 'react-bootstrap/Dropdown';
 import { ToastContainer, toast } from "react-toastify";
+import { Tooltip } from "react-tippy";
+import ReactTooltip from "react-tooltip";
 
 import { showSignMessage } from "utils/helper";
 import { getLocalURL } from "utils/urls";
 import { setCookie } from "utils/cookies";
+import { ThemeContext } from "context/ThemeContext";
 import useShortcuts from "hooks/useShortcuts";
 import useOutsideAlerter from "hooks/useOutsideAlerter";
 
-import Logo from "assets/Logo";
+import Logo from "components/Logo";
 
 import "react-toastify/dist/ReactToastify.css";
 import "react-tippy/dist/tippy.css";
 
 import styles from "./AppLayout.module.scss";
-import LoginButton from "components/LoginButton";
+import MenuFilter from "components/MenuFilter";
 
 const AppLayout = (props) => {
   const router = useRouter();
-  const [searchResultVisible, setSearchResultVisible] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
-  const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
+  const mobileInputRef = useRef(null);
   const searchBoxRef = useRef(null);
-  const { deactivate } = useWeb3React();
-  const { account, slug, appUrl, children, apps, hasBackButton, title } = props;
-  const isLoggedIn = !isEmpty(account);
+  const mobileSearchBoxRef = useRef(null);
+  const {account, children} = props;
 
-  const arrayContains = (needle, haystack) => haystack[0] === needle[0];
-  const getSlug = () => (slug === undefined ? [appUrl] : [appUrl, ...slug]);
-  const cleanHref = (href) => href.split("/").splice(1, href.split("/").length);
-  const checkSlug = (href, isExact = false) => {
-    return isExact
-      ? `/${href.split("/")[1]}/${slug}` === href
-      : arrayContains(getSlug(), cleanHref(href));
-  };
+  const getUrl = () => {
+    const url = router.pathname.split('/');
+    return url.length > 1 ? `/${url[1]}` : '/';
+  }
 
   useShortcuts("/", () => {
     const elem = inputRef.current;
@@ -52,7 +50,8 @@ const AppLayout = (props) => {
     }
   });
 
-  const handleLogout = async () => {
+  const handleLogout = async (evt) => {
+    evt.preventDefault();
     await fetch("/api/logout", {
       method: "POST",
       headers: {
@@ -62,6 +61,7 @@ const AppLayout = (props) => {
     });
     setCookie("wallet", "", -1);
     setCookie("cp_usign", "", -1);
+    router.push("/settings");
   };
 
   const handleLogin = async (wallet) => {
@@ -102,67 +102,36 @@ const AppLayout = (props) => {
   useShortcuts("Escape", () => {
     const elem = inputRef.current;
     document.activeElement === elem && elem.blur();
+
+    const mobileElem = mobileInputRef.current;
+    if(document.activeElement === mobileElem) {
+      mobileElem.blur();
+      setMobileSearchVisible(false);
+    }
   });
 
   useOutsideAlerter(searchBoxRef, () => {
     setSearchResultVisible(false);
   });
 
-  const renderMenu = (items) =>
-    items.map(({ name, href, icon, action }, index) => {
-      let hasAction = false;
-      let onClick = () => {};
-      if (icon === "logout") {
-        hasAction = true;
-        onClick = action(() => {
-          deactivate();
-          toast("Signed off successfully", {
-            type: "success",
-          });
-          router.reload();
-        });
-      }
+  useOutsideAlerter(mobileSearchBoxRef, () => {
+    setSearchMobileResultVisible(false);
+  });
 
-      const afterSign = () => {
-        router.push("/settings");
-      };
-
-      const signFailure = () => {
-        toast("Signature request was not accepted.", {
-          type: "error",
-          autoClose: 2000,
-          position: "top-right",
-        });
-      };
-
-      if (icon === "settings") {
-        hasAction = true;
-        onClick = action(showSignMessage(afterSign, signFailure));
-      }
-
-      const url = name === "Profile" ? `/${account?.username}` : href;
-
-      return (
-        <li key={index} className={styles.appItem}>
-          <Link href={name === "Profile" ? `/${account?.username}` : href}>
-            <a
-              className={
-                checkSlug(url)
-                  ? `${styles.appLink} ${styles.selected}`
-                  : `${styles.appLink}`
-              }
-              onClick={hasAction ? onClick : action}
-              title={name}
-            >
-              <i className={`${styles.icon} material-symbols-outlined`}>
-                {icon}
-              </i>
-              <span className={styles.appName}>{name}</span>
-            </a>
-          </Link>
-        </li>
-      );
-    });
+  const handleSettingsClick = (evt) => {
+    evt.preventDefault();
+    const afterSign = () => {
+      router.push("/settings");
+    };
+    const signFailure = () => {
+      toast("Signature request was not accepted.", {
+        type: "error",
+        autoClose: 2000,
+        position: "top-right",
+      });
+    };
+    showSignMessage(afterSign, signFailure)(evt);
+  }
 
   const performSearch = async (query) => {
     const response = await fetch(
@@ -178,6 +147,7 @@ const AppLayout = (props) => {
       const value = e.target.value;
       if (value.length > 0) {
         setSearchResultVisible(true);
+        setSearchMobileResultVisible(true);
 
         if (searchResult.length === 0) {
           setLoading(true);
@@ -186,115 +156,80 @@ const AppLayout = (props) => {
         performSearch(value);
       } else {
         setSearchResultVisible(false);
+        setSearchMobileResultVisible(false);
       }
     },
     500,
     { leading: false }
   );
 
-  const handleSearchFocus = (e) => {
-    const value = e.target.value;
-    if (value.length > 0) {
-      setSearchResultVisible(true);
-    }
-  };
+  const menuItems = [{
+    url: "/home",
+    text: 'Home',
+    icon: 'dashboard'
+  }, {
+    url: '/trending',
+    text: 'Trending',
+    icon: 'trending_up'
+  }, {
+    url: '/search',
+    text: 'Search',
+    icon: 'search'
+  }, {
+    url: '/messages',
+    text: 'Messages',
+    icon: 'inbox'
+  }, {
+    url: '/notifications',
+    text: 'Notifications',
+    icon: 'favorite'
+  },{
+    url: '/create',
+    text: 'Publish',
+    icon: 'add_circle'
+  }]
 
-  const goToProfile = () => {
-    setSearchResultVisible(!searchResultVisible);
-    setSearchResult([]);
-    inputRef.current.value = "";
-  };
-
-  const showResults = () => {
-    return searchResult.map((item, index) => (
-      <li key={index} className={styles.item}>
-        <Link href={`/${item.username}`}>
-          <a className={styles.link} onClick={goToProfile}>
-            <div className={styles.image}>
-              <Image
-                src={item.photo}
-                height="40"
-                width="40"
-                className={styles.photo}
-                layout="fixed"
-                alt="profile"
-              />
-            </div>
-            <div className={styles.details}>
-              <div className={styles.name}>{item.name}</div>
-              {item.isVerified && (
-                <div className={styles.verified}>
-                  <Image
-                    src="/images/verify.png"
-                    height="16"
-                    width="16"
-                    className={styles.photo}
-                    layout="fixed"
-                    alt="profile"
-                  />
-                </div>
-              )}
-            </div>
-          </a>
-        </Link>
-      </li>
-    ));
-  };
+  const moreMenuItems = [{
+    url: `/${account.username}`,
+    text: account.name,
+    image: {
+      url: account.photo,
+      name: account.name
+    },
+    icon: 'inbox'
+  },{
+    url: '/settings',
+    text: 'Settings',
+    icon: 'settings',
+    action: handleSettingsClick
+  },{
+    url: '/messages',
+    text: 'Logout',
+    action: handleLogout,
+    icon: 'logout'
+  }]
 
   return (
     <div className={styles.appLayout}>
-      <div className={styles.wrap}>
-        <div className={styles.sidebar}>
-          <Link href="/">
-            <a className={styles.logoLink}>
-              <Logo className={styles.logo_img} color="#000" />
-            </a>
-          </Link>
-          {!isLoggedIn && (
-            <span className={styles.loginButton}>
-              <LoginButton />
-            </span>
-          )}
-          {isLoggedIn && <ul className={styles.appList}>{renderMenu(apps)}</ul>}
-        </div>
-        <div className={styles.content}>
-          <div className={styles.header}>
-            <div className={styles.title}>
-              {hasBackButton && (
-                <i
-                  className={`${styles.icon} material-symbols-outlined`}
-                  onClick={() => router.back()}
-                >
-                  arrow_back
-                </i>
-              )}
-              <h1>{title}</h1>
-            </div>
-            <div ref={searchBoxRef} className={styles.searchBox}>
-              <input
-                type="text"
-                name="q"
-                className={styles.input}
-                placeholder="Search Carepack"
-                autoComplete="off"
-                onChange={handleSearch}
-                onFocus={handleSearchFocus}
-                ref={inputRef}
-              />
-              {searchResultVisible && (
-                <ul className={styles.result}>
-                  {showResults()}
-                  {loading && (
-                    <li className={styles.loading}>
-                      <i className={`${styles.icon} material-symbols-outlined`}>
-                        sync
-                      </i>
-                    </li>
-                  )}
-                </ul>
-              )}
-            </div>
+      <div className={styles.sideMenu}>
+        <div className={styles.container}>
+          <div className={styles.menu}>
+            <Link href="/">
+              <a className={styles.logoLink}>
+                <Logo
+                  className={styles.logo}
+                />
+              </a>
+            </Link>
+            <MenuFilter items={menuItems} />
           </div>
+          <div className={styles.account}>
+            <MenuFilter items={moreMenuItems} />
+          </div>
+        </div>
+      </div>
+      <div className={styles.wrap}>
+        <div className={styles.content}>
           {children}
         </div>
       </div>

@@ -1,22 +1,21 @@
 .button, button.button {
-    background: var(--black);
+    background: var(--buttonBackground);
     border: 1px transparent solid;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
-    color: var(--white);
+    color: var(--buttonText);
     font-weight: 700;
     font-size: 1.5rem;
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 17px;
+    padding: 6px 20px;
     transform: scale(1);
 
     &:hover {
-        background: var(--white);
-        color: var(--black);
-        border: 1px var(--black) solid;
+        background: var(--buttonHighlight);
+        color: var(--buttonText);
     }
 
     &.negative {
@@ -28,7 +27,7 @@
     &.plain {
         background: transparent;
         border: none;
-        color: inherit;
+        color: var(--buttonText);
         padding: 0;
         gap: 10px;
 
@@ -42,13 +41,12 @@
     }
 
     &.default {
-        background: #DEDEDE;
-        border: 1px #DEDEDE solid;
-        color: var(--black);
+        background: var(--buttonBackground);
+        color: var(--buttonText);
         opacity: 1;
 
         &:hover {
-            background: #D9D9D9;
+            background: var(--buttonHighlight);
         }
 
         &:active {
@@ -57,18 +55,18 @@
     }
 
     &.white {
-        background: var(--white);
-        border: 1px #DDD solid;
-        color: var(--black);
+        background: var(--buttonBackground);
+        color: var(--buttonText);
 
         &:hover {
-            background: #EEE;
-            color: var(--black);
+            background: var(--buttonHighlight);
+            color: var(--buttonText);
         }
     }
 
     &.primary {
         background: var(--blue);
+        color: var(--white);
         
         &:hover {
             background: var(--blueDark);

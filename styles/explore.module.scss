@@ -1,114 +1,21 @@
 .explore {
     display: flex;
     flex-direction: column;
-    padding: 50px;
+    margin-top: 20px;
     width: 100%;
+    max-width: var(--pageWidth);
 
     .content {
         display: flex;
         flex-direction: column;
         min-height: 100px;
-        width: 100%;
+        margin: 0 20px;
 
-        .usersList {
+        .banner {
+            background: var(--highlightColor);
+            border-radius: 20px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 40px;
-            width:00%;
-
-            .userItem {
-                border-radius: 8px;
-                box-shadow:
-                    0px 1.5px 2.2px rgba(0, 0, 0, 0.02),
-                    0px 3.6px 5.3px rgba(0, 0, 0, 0.028),
-                    0px 6.8px 10px rgba(0, 0, 0, 0.035),
-                    0px 12.1px 17.9px rgba(0, 0, 0, 0.042),
-                    0px 22.6px 33.4px rgba(0, 0, 0, 0.05),
-                    0px 54px 80px rgba(0, 0, 0, 0.07);
-
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-                position: relative;
-
-                .link {
-                    display: flex;
-                    flex-direction: column;
-                    transition: all ease 0.2s;
-                    height: 250px;
-
-                    &:active {
-                        box-shadow: 0px 0px 3px rgba(0,0,0,0.5);
-                    }
-
-                    .picture {
-                        background: red;
-                        display: flex;
-                        flex: 3;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        overflow: hidden;
-                    }
-    
-                    .account_info {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                        flex: 1;
-                        padding: 10px;
-
-                        .info {
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-
-                            .name {
-                                font-size: 1.8rem;
-                                font-weight: bold;
-                            }
-                        }
-
-                        .username {
-                            font-size: 1.6rem;
-                            font-weight: 400;
-                        }
-                    }
-                }
-            }
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 50px;
-            margin-bottom: 50px;
-            gap: 5px;
-
-            li {
-                display: flex;
-                overflow: hidden;
-
-                a.link {
-                    border: 2px #DDD solid;
-                    border-radius: 5px;
-                    font-size: 1.8rem;
-                    padding: 5px 15px;
-                    opacity: 0.8;
-
-                    &:hover {
-                        background: #F1F1F1;
-                    }
-
-                    &.selected {
-                        border: 2px var(--blue) solid;
-                        color: var(--blue);
-                        font-weight: bold;
-                    }
-                }
-            }
+            min-height: 250px;
         }
     }
 }

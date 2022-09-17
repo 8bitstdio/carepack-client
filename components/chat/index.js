@@ -7,7 +7,7 @@ export default function Chat({ account }) {
     <div className={styles.main}>
       <div className={styles.content}>
         <div className={styles.header}>
-          <h4>Follower Chat</h4>
+          <h4>Subscriber Chat</h4>
         </div>
         <ul className={styles.updates}></ul>
         <Composer account={account} />

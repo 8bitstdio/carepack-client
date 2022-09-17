@@ -1,12 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Image from "next/image";
 
-import NavBar from "components/navbar";
-import Header from "components/header";
-import Link from "next/link";
-
-import Footer from "components/footer";
 import AppLayout from "components/layout/AppLayout";
 
 import apiURL from "/utils/urls";
@@ -14,86 +8,18 @@ import { getAccount } from "/utils/helper";
 import { appItems } from "utils/common";
 
 import styles from "/styles/explore.module.scss";
+import { getSubscribers, getSubscribed } from "utils/helper";
+import Header from "components/header";
+import { useEffect } from "react";
+import { Button } from "react-bootstrap";
 
 export default function ExplorePage(props) {
-  const { account, users } = props;
+  const { account } = props;
   const router = useRouter();
 
-  const renderAccounts = () => {
-    return users.map((user) => {
-      return (
-        user.id != account.id && (
-          <li className={styles.userItem} key={user.id}>
-            <Link href={`/${user.username}`}>
-              <a className={styles.link}>
-                <div className={styles.picture}>
-                  {user.photo && (
-                    <Image
-                      src={user.photo}
-                      alt={user.name}
-                      className={styles.photo}
-                      height={250}
-                      width={250}
-                      layout="fixed"
-                      loading="lazy"
-                    />
-                  )}
-                </div>
-                <div className={styles.account_info}>
-                  <div className={styles.info}>
-                    <div className={styles.name}>{user.name}</div>
-                    {user.isVerified && (
-                      <Image
-                        src="/images/verify.png"
-                        alt="Verified"
-                        className={styles.verified}
-                        layout="fixed"
-                        height={16}
-                        width={16}
-                      />
-                    )}
-                  </div>
-                  <div className={styles.username}>@{user.username}</div>
-                </div>
-              </a>
-            </Link>
-          </li>
-        )
-      );
-    });
-  };
-
-  const renderPagination = () => {
-    const { pages } = props;
-    return pages.map((page, index) => {
-      console.log(router.query.page, page, typeof page);
-      const selected =
-        parseInt(router.query.page) === page ||
-        (router.query.page === undefined && page === 1);
-      return (
-        <li key={index}>
-          <Link href={`/home?page=${page}`}>
-            <a
-              className={
-                selected ? `${styles.link} ${styles.selected}` : styles.link
-              }
-            >
-              {page}
-            </a>
-          </Link>
-        </li>
-      );
-    });
-  };
-
-  const renderList = (withPagination) => (
-    <>
-      <ul className={styles.usersList}>{renderAccounts()}</ul>
-      {withPagination && (
-        <ul className={styles.pagination}>{renderPagination()}</ul>
-      )}
-    </>
-  );
+  const loginToFB = () => {
+    
+  }
 
   return (
     <>
@@ -111,9 +37,16 @@ export default function ExplorePage(props) {
         title={"Home"}
         appUrl="home"
         appName="Home"
+        subscribed={account.subscribed}
       >
         <div className={styles.explore}>
-          <div className={styles.content}>{renderList()}</div>
+          <Header title={`Howdy, ${account.name}`}/>
+          <div className={styles.content}>
+            <div className={styles.header}>
+              <Button type="primary" onClick={loginToFB}>Login to Facebook</Button>
+            </div>
+            <div className={styles.banner}></div>
+          </div>
         </div>
       </AppLayout>
     </>
@@ -121,6 +54,8 @@ export default function ExplorePage(props) {
 }
 
 export async function getServerSideProps(ctx) {
+  const ig_url = '';
+
   const accountData = await getAccount(ctx, true, true);
   const { data: users } = await fetch(`${apiURL}/api/users`).then((res) =>
     res.json()
@@ -133,10 +68,16 @@ export async function getServerSideProps(ctx) {
     }
     return pages;
   };
+  const subscribers = await getSubscribers(accountData?.props?.account);
+  const subscribed = await getSubscribed(accountData?.props?.account);
   return {
     ...accountData,
     props: {
-      ...accountData.props,
+      account: {
+        ...accountData?.props?.account,
+        subscribers: subscribers.data || [],
+        subscribed: subscribed.data || [],
+      },
       users,
       pages: getPageNumbers(),
     },

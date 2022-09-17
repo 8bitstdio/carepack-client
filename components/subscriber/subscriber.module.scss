@@ -1,5 +1,5 @@
 .subscriber {
-    border-top: 1px #EEE solid;
+    border-top: 1px var(--borderColor) solid;
     display: flex;
     padding: 20px;
     gap: 10px;
@@ -9,7 +9,7 @@
     }
 
     &:hover {
-        background-color: #FAFAFA;
+        background-color: var(--itemHighlight);
     }
 
     .photo {

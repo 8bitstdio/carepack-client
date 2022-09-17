@@ -1,26 +1,25 @@
+import { useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { isEmpty } from "lodash";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
-import { getAccount } from "utils/helper";
+import { getAccount, getSubscribed, getSubscribers} from "utils/helper";
 import { settingsMenu } from "utils/common";
+import { ThemeContext } from "context/ThemeContext";
 import Button from "components/button";
 import { toast } from "react-toastify";
-
-import styles from "/styles/Settings.module.scss";
 import { getLocalURL } from "utils/urls";
 import { appItems } from "utils/common";
 import AppLayout from "components/layout/AppLayout";
 
+import styles from "/styles/Settings.module.scss";
+
 export default function SettingsPage(props) {
   const { account } = props;
   const router = useRouter();
+  const theme = useContext(ThemeContext);
   const { slug } = router.query;
-
-  const goBack = () => {
-    router.back();
-  };
 
   const getTab = () => {
     if (isEmpty(slug)) {
@@ -75,6 +74,7 @@ export default function SettingsPage(props) {
     if (success) {
       toast("Profile Updated", {
         type: "success",
+        theme
       });
       router.push(`/${values.username}`);
     }
@@ -85,6 +85,7 @@ export default function SettingsPage(props) {
       navigator.clipboard.writeText(account.wallet);
       toast("Wallet address copied", {
         type: "success",
+        theme,
       });
     };
     return (
@@ -214,9 +215,11 @@ export default function SettingsPage(props) {
         title="Settings"
         appUrl="settings"
         appName="Settings"
+        following={account.following}
       >
         <div className={styles.main}>
           <div className={styles.sideBar}>
+            <h2 className={styles.header}>Settings</h2>
             <ul className={styles.menu}>{renderMenu()}</ul>
           </div>
           <div className={styles.content}>{renderTabContent()}</div>
@@ -249,10 +252,17 @@ export async function getServerSideProps(ctx) {
   }
 
   const accountData = await getAccount(ctx, true, true);
+  const subscribed = await getSubscribed(accountData.props.account);
+  const subscribers = await getSubscribers(accountData.props.account);
   return {
     ...accountData,
     props: {
       ...accountData.props,
+      account: {
+        ...accountData.props.account,
+        subscribed: subscribed.data,
+        subscribers: subscribers.data,
+      }
     },
   };
 }

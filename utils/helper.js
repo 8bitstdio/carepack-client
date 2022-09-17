@@ -2,6 +2,7 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import jwt from "jsonwebtoken";
 import { server } from "/config";
+import { getLocalURL } from "utils/urls";
 import { getTokenCookie, MAX_AGE, removeWalletCookie } from "./auth-cookies";
 import { signMessage } from "./signature";
 import { getCookie, setCookie } from "./cookies";
@@ -24,13 +25,13 @@ export const fetchDefaultOptions = () => ({
 export const showSignMessage = (cb, failure) => async (evt) => {
   evt.preventDefault();
   const AUTH_SIGNATURE_MESSAGE = `
-        Welcome to Carepack.
+      Welcome to Carepack.
 
-        Click to sign in to your account and accept the CarePack Terms of Service.
-        This will not trigger a blockchain transaction or cost any gas fees. 
+      Click to sign in to your account and accept the CarePack Terms of Service.
+      This will not trigger a blockchain transaction or cost any gas fees. 
 
-        Your authentication will reset after 48 hours.
-    `;
+      Your authentication will reset after 48 hours.
+  `;
   if (!isEmpty(getCookie("cpsign"))) {
     cb && cb();
     return;
@@ -102,6 +103,22 @@ export const getAccount = async (ctx, isProtected = true, enabled = false) => {
       account,
     },
   };
+};
+
+export const getSubscribers= async (account, cursor = 0) => {
+  if (isEmpty(account)) return ([]);
+  const subs_r = await fetch(
+    `${getLocalURL()}/api/account/subscribers?id=${account.id}&cursor=${cursor}`
+  );
+  return await subs_r.json();
+};
+
+export const getSubscribed = async (account, cursor = 0) => {
+  if (isEmpty(account)) return ([]);
+  const result = await fetch(
+    `${getLocalURL()}/api/account/subscribed?id=${account.id}&cursor=${cursor}`
+  );
+  return await result.json();
 };
 
 // print todays date in format: Day of the week, day, month.

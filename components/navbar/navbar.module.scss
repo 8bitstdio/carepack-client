@@ -1,7 +1,7 @@
 @import "../../styles/mixins.scss";
 
 .main {
-    background: var(--background);
+    background: var(--headerBackground);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,16 +46,17 @@
             }
 
             .input {
+                background: var(--searchBackground);
                 display: flex;
                 flex: 1;
-                border: 2px #DDD solid;
+                border: 2px var(--borderColor) solid;
                 border-radius: 5px;
                 font-size: 1.5rem;
                 font-weight: 500;
                 padding:8px;
 
                 &:focus {
-                    border: 2px var(--blue) solid;
+                    background: var(--searchFocusBackground);
                 }
             }
         }
@@ -82,7 +83,7 @@
                 }
 
                 a.link {
-                    color: var(--black);
+                    color: var(--textColor);
                     font-size: 3rem;
                     font-weight: 400;
                     text-decoration: none;

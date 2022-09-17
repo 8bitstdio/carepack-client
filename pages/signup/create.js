@@ -8,7 +8,7 @@ import * as Yup from 'yup'
 import { toast } from 'react-toastify';
 
 import Button from 'components/button';
-import Logo from 'assets/Logo';
+import Logo from 'components/Logo';
 
 import apiURL, {getLocalURL} from 'utils/urls';
 import { getCookie } from 'utils/cookies';

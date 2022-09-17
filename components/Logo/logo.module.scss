@@ -1,0 +1,19 @@
+@import "/styles/mixins.scss";
+
+.full {
+    display: none;
+    fill: var(--textColor);
+
+    @include respond('desktop') {
+        display: block;
+    }
+}
+
+.icon {
+    display: block;
+    fill: var(--textColor);
+
+    @include respond('desktop') {
+        display: none;
+    }
+}

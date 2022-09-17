@@ -1,6 +1,7 @@
 .profile {
     display: flex;
     flex: 1;
+    padding: 0 20px;
     width: 100%;
 
     .main {
@@ -11,77 +12,88 @@
         .header {
             display: flex;
             flex-direction: column;
-            padding: 50px;
+            padding: 50px 0;
+            padding-top: 20px;
 
             .details {
                 display: flex;
+                align-items: flex-start;
                 gap: 25px;
 
                 .avatar_holder {
-                    background: #FFF;
-                    border-radius: 50%;
+                    background: var(--background);
+                    border-radius: 10px;
+                    box-shadow:
+                        0px 2.8px 2.2px rgba(0, 0, 0, 0.07),
+                        0px 6.7px 5.3px rgba(0, 0, 0, 0.05),
+                        0px 12.5px 10px rgba(0, 0, 0, 0.042),
+                        0px 22.3px 17.9px rgba(0, 0, 0, 0.035),
+                        0px 41.8px 33.4px rgba(0, 0, 0, 0.028),
+                        0px 100px 80px rgba(0, 0, 0, 0.02);
+
+                    position: relative;
 
                     display: flex;
-                    height: 135px;
-                    width: 135px;
                     overflow: hidden;
 
-                    .avatar {
-                        background: var(--white);
-                        border: 1px #DDD solid;
-                        border-radius: 50%;
+                    .loader {
+                        background: rgba(255, 255, 255, 0.8);
                         display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        z-index: 100;
+                        height: 100%;
+                        width: 100%;
+
+                        .icon {
+                            font-size: 4rem;
+                            animation: spin .5s infinite;
+                        }
+                    }
+
+                    .curtain {
+                        display: none;
                         flex: 1;
-                        position: relative;
-                        height: 135px;
-                        width: 135px;
+                        justify-content: center;
+                        align-items: center;
+                        cursor: pointer;
+                        background: rgba(0,0,0,0.5);
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 100;
+                        height: 100%;
+                        width: 100%;
 
-                        .loader {
-                            background: rgba(255, 255, 255, 0.8);
-                            border-radius: 50%;
+                        .icon {
+                            color: #FFF;
                             display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            z-index: 100;
-                            height: 135px;
-                            width: 135px;
-
-                            .icon {
-                                font-size: 4rem;
-                                animation: spin .5s infinite;
-                            }
-                        }
-
-                        .curtain {
-                            border-radius: 50%;
-                            display: none;
                             flex: 1;
-                            justify-content: center;
                             align-items: center;
-                            cursor: pointer;
-                            background: rgba(0,0,0,0.8);
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            z-index: 100;
-                            height: 135px;
-                            width: 135px;
-
-                            .icon {
-                                color: #FFF;
-                                display: flex;
-                                flex: 1;
-                                align-items: center;
-                                justify-content: center;
-                                font-size: 3rem;
-                            }
+                            justify-content: center;
+                            font-size: 3rem;
                         }
+                    }
 
-                        &:hover .curtain {
-                            display: flex;
+                    &:hover .curtain {
+                        display: flex;
+                    }
+
+                    .avatar {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+                        height: 160px;
+                        width: 160px;
+
+                        .photo {
+                            border-radius: 10px;
                         }
                     }
                 }
@@ -120,14 +132,15 @@
                         display: flex;
 
                         .text {
+                            color: var(--textColor);
                             font-size: 2rem;
                             font-weight: 500;
                         }
 
                         .joined {
-                            background: #EEE;
+                            background: var(--highlightColor);
                             border-radius: 20px;
-                            color: #555;
+                            color: var(--textColor);
                             display: flex;
                             font-size: 1.2rem;
                             font-weight: bold;
@@ -139,6 +152,7 @@
                     }
 
                     .description {
+                        color: var(--textColor);
                         display: flex;
                         flex-direction: column;
                         font-size: 1.6rem;
@@ -150,7 +164,7 @@
 
                         .text {
                             display: inline-block;
-                            color: var(--blueDark);
+                            color: var(--linkColor);
                             font-size: 1.6rem;
                             font-weight: 600;
 
@@ -166,14 +180,11 @@
                         padding-top: 10px;
 
                         .text {
+                            color: var(--textColor);
                             display: flex;
                             font-size: 1.6rem;
                             align-items: center;
                             gap: 5px;
-
-                            &:hover {
-                                color: var(--blueDark);
-                            }
                             
                             .number {
                                 font-weight: bold;
@@ -182,11 +193,20 @@
                             .label {
                                 font-weight: 400;
                             }
+
+                            &:hover {
+                                .number {
+                                    color: var(--linkColor);
+                                }
+
+                                .label {
+                                    color: var(--linkColor);
+                                }
+                            }
                         }
                     }
 
                     .wallet {
-                        color: #212121;
                         padding: 5px 0;
                         display: flex;
                         flex: 1;
@@ -208,12 +228,12 @@
         }
 
         .navigation {
-            border-bottom: 1px #EEE solid;
+            border-bottom: 1px var(--borderColor) solid;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-self: center;
-            gap: 5px;
-            padding: 15px 0;
+            gap: 25px;
+            padding-left: 50px;
             width: 100%;
 
             .item {
@@ -222,15 +242,15 @@
                 align-items: center;
 
                 a.text {
+                    color: var(--textColor);
+                    border-bottom: 3px solid transparent;
                     display: flex;
-                    padding: 5px 20px;
-                    font-size: 1.6rem;
+                    padding: 10px;
+                    font-size: 1.7rem;
                     font-weight: bold;
 
                     &.selected {
-                        background: var(--blue);
-                        border-radius: 30px;
-                        color: var(--white);
+                        border-bottom: 4px solid var(--textColor);
                     }
                 }
             }
@@ -243,9 +263,9 @@
         }
     }
     .rightCol {
-        border-left: 1px #EEE solid;
+        border-left: 1px var(--borderColor) solid;
         display: flex;
-        width: 360px;
+        width: 450px;
     }
 }
 

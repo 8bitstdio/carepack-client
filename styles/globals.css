@@ -20,53 +20,142 @@ a {
   text-decoration: none;
 }
 
+a:active {
+  opacity: 0.6;
+}
+
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --background: #ffffff;
-  --primaryColor: #007AFF; 
-  --secondaryColor: #BB1717;
-  --input-background: #FFFFFF;
-
   --blueLight: #479EFE;
   --blue: #007AFF;
   --blueDark: #0062CD;
 
-  --red: #DD4343;
-  --redLight: #f78d88;
-  --redDark: #d31d13;
-
-  --purple: #7B56FF;
-  --green: #00B48B;
-  --greenDark: #008164;
-  --greenLight: #44D7B6;
-  --green100: #F4FFFD;
-  --green200: #EBFFFA;
-  --green300: #7FE2C9;
-  --green600: #013E30;
-
-  --yellow: #f5f0ae;
-  --yellowDark: #fcc55c;
-
-  --orange: #f7941e;
-  --orangeDark: #f76707;
-
-  --aqua: #b1e2be;
-  --aquaDark: #9cd3ab;
-
-  --white: #FFF;
-  --white100: #FAF6EB;
-  --white200: #f1ecd5;
-
-  --black: #000000;
-
   --selectionColor: #007AFF;
   --placeholderColor: #8E8E8E;
 
-  --pageWidth: 1200px;
+  --pageWidth: 1280px;
 }
+
+:root[color-theme="dark"] {
+  --background: #1A1A1A;
+  --backgroundSecondary: #303030;
+  --highlightColor: #3a3a3a;
+  --itemHighlight: #2D2D2D;
+  --bgBorder: #363636;
+  --headerBackground: #262626;
+  --borderColor: #363636;
+  --textColor: #FFF;
+  --textInvertColor: #262626;
+  --paneColor: #FFFFFF;
+  --sideBarHighlight: #363636;
+  --primaryColor: #007AFF;
+  --primaryColorDark: #0575cb;
+  --secondaryColor: #BB1717;
+  --secondaryColorDark: #da8d00;
+  --default: #2EA5FF;
+  --success: rgb(52, 199, 89);
+  --info: #2EA5FF;
+  --warning: #FDF2D6;
+  --danger: #eb0a86;
+  --gray: #E3E3E3;
+  --black: #262626;
+  --red: #F00000;
+  --blackHighlight: #363636;
+  --white: #FFF;
+  --logoColor: #FFFFFF;
+  --headerBorderColor: var(--borderColor);
+  --trackColor: #363636;
+  --trackTextColor: #778594;
+  --trackShadow: 0px 2px 5px rgba(0,0,0,0.15);
+  --linkColor: var(--blue);
+  --inputColor: #363636;
+  --inputTextColor: #EEEEEE;
+  --inputBorderColor: #464646;
+  --inputShadow: 0px 2px 2px rgba(0,0,0,0.2);
+  --sidebarColor: #303030;
+  --buttonBackground: #FFFFFF;
+  --buttonHighlight: #E3E3E3;
+  --buttonText: #000000;
+
+  --searchBackground: #323232;
+  --searchFocusBackground: #464646;
+  --searchFocusBorderColor: var(--primaryColor);
+  --searchResultBackground: #323232;
+  --searchResultHighlightColor: #383838;
+
+  --sidebarSeparatorShadow: #222;
+  --sidebarSeparatorColor: #363636;
+  --sidebarItemHighlight: #464646;
+
+  --tooltipBg: #363636;
+  --tooltipText: #FFFFFF;
+}
+
+:root[color-theme="light"] {
+  --background: #FFFFFF;
+  --highlightColor: #EEE;
+  --itemHighlight: #F8F8F8;
+  --bgBorder: #DDDDDD;
+  --buttonShadow: 0px 2px 5px rgba(0,0,0,0.15);
+  --headerBackground: var(--white);
+  --borderColor: #EEE;
+  --textColor: var(--black);
+  --textInvertColor: #FAFAFA;
+  --textHighlightColor: #868686;
+  --pane-color: #FFFFFF;
+  --sideBarHighlight: #EEEEEE;
+  --primaryColor: #007aff;
+  --primaryColorDark: #026ee3;
+  --secondaryColor: #ffa600;
+  --secondaryColorDark: #da8d00;
+  --default: #2EA5FF;
+  --success: #34c759;
+  --info: #2EA5FF;
+  --warning: #FDF2D6;
+  --danger: #eb0a86;
+  --gray: #E3E3E3;
+  --black: #212121;
+  --red: #F00000;
+  --white: #FFFFFF;
+  --blackHighlight: #363636;
+  --logoColor: #000;
+  --headerBorderColor: #FFF;
+  --trackColor: #EDF1F5;
+  --trackTextColor: #778594;
+  --trackShadow: 0px 5px 5px -5px rgba(0,0,0,0.3);
+  --trackTextColor: #778594;
+  --trackShadow: 0px 2px 5px rgba(0,0,0,0.15);
+  --linkColor: var(--blueDark);
+  --inputColor: #FFF;
+  --inputBorderColor: rgba(0,0,0,0.15);
+  --inputTextColor: #262626;
+  --inputShadow: 0px 1px 2px 0px rgba(0,0,0,0.2);
+  --sidebarColor: #F3F3F3;
+  --buttonBackground: #000000;
+  --buttonHighlight: #333333;
+  --buttonText: #FFFFFF;
+  --searchBackground: #EAEAEA;
+  --searchFocusBackground: #FFF;
+  --searchFocusBorderColor: var(--primaryColor);
+  --searchResultBackground: #FFFFFF;
+  --searchResultHighlightColor: #F6F6F6;
+  --searchBoxShadow: 0px 0px 5px rgba(0,0,0,0.15);
+
+  --sidebarSeparatorShadow: #FFF;
+  --sidebarSeparatorColor: #DDD;
+  --sidebarItemHighlight: #DDD;
+
+  --tooltipBg: #FFFFFF;
+  --tooltipText: #212121;
+}
+
+* {
+  color: var(--textColor);
+}
+
 
 .Toastify__toast {
   font-size: 1.8rem;

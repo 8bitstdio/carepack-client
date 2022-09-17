@@ -1,33 +1,39 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import NextImage from "next/image";
+import isEmpty from 'lodash/isEmpty';
+import get from 'lodash/get';
+import { useS3Upload } from "next-s3-upload";
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tippy";
 
-import { useS3Upload } from "next-s3-upload";
-import { get, isEmpty } from "lodash";
+import { ThemeContext } from "context/ThemeContext";
 
+import Chat from "components/chat";
 import Button from "components/button";
 import AppLayout from "components/layout/AppLayout";
-import Chat from "components/chat";
-import Subscriber from "components/subscriber";
-import Drops from "components/Drops";
-import Partners from "components/Partners";
+import ProfileTabs from "components/ProfileTabs";
 
-import { truncate_address, getAccount } from "/utils/helper";
-import { showSignMessage } from "utils/helper";
+import {
+  truncate_address,
+  getAccount,
+  getSubscribed,
+  getSubscribers,
+  showSignMessage
+} from "/utils/helper";
 import { getLocalURL } from "utils/urls";
-import { appItems, profileTabs } from "utils/common";
+import { appItems } from "utils/common";
 
 import styles from "/styles/Profile.module.scss";
 
 export default function Profile(props) {
   let { uploadToS3, files } = useS3Upload();
+  const theme = useContext(ThemeContext);
   const coverInput = useRef(null);
   const profileInput = useRef(null);
-  const { account, viewer, isSubscribed, followers, following } = props;
+  const { account, viewer, isSubscribed } = props;
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
   const { slug } = router.query;
@@ -114,44 +120,13 @@ export default function Profile(props) {
     }
   };
 
-  const currentTab = () => {
-    if (isEmpty(slug)) {
-      return "/";
-    }
-    return `/${slug[0]}`;
-  };
-
-  const renderTabs = () => {
-    return profileTabs.map(({ name, href }, index) => (
-      <li key={index} className={styles.item}>
-        <Link href={`/${account.username}${href}`}>
-          <a
-            className={`${styles.text}${
-              currentTab() === href ? " " + styles.selected : ""
-            }`}
-          >
-            {name}
-          </a>
-        </Link>
-      </li>
-    ));
-  };
-
   const formatDate = (date) => {
     const d = new Date(date);
     const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sept",
-      "Oct",
-      "Nov",
-      "Dec",
+      "Jan","Feb","Mar",
+      "Apr","May","Jun",
+      "Jul","Aug","Sept",
+      "Oct","Nov","Dec",
     ];
     const month = `${months[d.getMonth()]}`;
     const day = `0${d.getDate()}`.slice(-2);
@@ -160,10 +135,6 @@ export default function Profile(props) {
   };
 
   const isOwner = () => viewer.username === account.username;
-
-  const renderChannels = () => {
-    return <Chat account={viewer} />;
-  };
 
   const followUser = async () => {
     const user_id = account.id;
@@ -177,6 +148,10 @@ export default function Profile(props) {
     });
     const { success } = await response.json();
     if (success) {
+      toast("Subscription added",{
+        theme,
+        type: 'success'
+      });
       refreshData();
     }
   };
@@ -193,6 +168,10 @@ export default function Profile(props) {
     });
     const { success } = await response.json();
     if (success) {
+      toast("Subscription removed",{
+        theme,
+        type: 'success'
+      });
       refreshData();
     }
   };
@@ -201,18 +180,20 @@ export default function Profile(props) {
     return isSubscribed ? (
       <li className={styles.action}>
         <Button onClick={unfollowUser} type="default">
-          Unfollow
+          Unsubscribe
         </Button>
       </li>
     ) : (
       <li className={styles.action}>
-        <Button onClick={followUser}>Follow</Button>
+        <Button onClick={followUser}>Subscribe</Button>
       </li>
     );
   };
 
   const partnerUser = () => {
-    alert(`Partner with ${account.username}`);
+    toast(`Partner with ${account.username}`, {
+      theme
+    });
   };
 
   const onSuccess = () => {
@@ -252,44 +233,11 @@ export default function Profile(props) {
     );
   };
 
-  const renderFollowers = () =>
-    followers.map((sub, index) => <Subscriber sub={sub} key={index} />);
-
-  const renderFollowing = () =>
-    following.map((user, index) => <Subscriber sub={user} key={index} />);
-
-  const renderDrops = () => {
-    return <Drops />;
-  };
-
-  const renderPartners = () => {
-    return <Partners />;
-  };
-
-  const renderContent = () => {
-    const tab = currentTab();
-    switch (tab) {
-      case "/":
-        return renderDrops();
-      case "/drops":
-        return renderDrops();
-      case "/partners":
-        return renderPartners();
-      case "/following":
-        return renderFollowing();
-      case "/followers":
-        return renderFollowers();
-      default:
-        return renderDrops();
-    }
-  };
-
   const copyWallet = () => {
     navigator.clipboard.writeText(account.wallet);
     toast("Wallet copied to clipboard", {
       type: "success",
-      position: "top-right",
-      theme: "light",
+      theme
     });
   };
 
@@ -309,6 +257,7 @@ export default function Profile(props) {
         hasBackButton
         appUrl={account.username}
         appName="Account"
+        subscribed={viewer.subscribed}
       >
         <div className={styles.profile}>
           <div className={styles.main}>
@@ -330,8 +279,8 @@ export default function Profile(props) {
                     {account.photo && (
                       <NextImage
                         src={account.photo}
-                        width={135}
-                        height={135}
+                        width={160}
+                        height={160}
                         className={styles.photo}
                         layout="fixed"
                         alt="verified"
@@ -347,7 +296,7 @@ export default function Profile(props) {
                         <Tooltip
                           html={
                             <span
-                              style={{ fontWeight: "bold", fontSize: "15px" }}
+                              style={{ fontWeight: "bold", fontSize: "15px", color: "#FFFFFF" }}
                             >
                               Verified
                             </span>
@@ -379,19 +328,13 @@ export default function Profile(props) {
                     <Link href={`/${account.username}`}>
                       <a className={styles.text}>
                         <span className={styles.number}>0</span>
-                        <span className={styles.label}>Updates</span>
+                        <span className={styles.label}>Posts</span>
                       </a>
                     </Link>
-                    <Link href={`/${account.username}/following`}>
+                    <Link href={`/${account.username}/subscribers`}>
                       <a className={styles.text}>
                         <span className={styles.number}>0</span>
-                        <span className={styles.label}>Following</span>
-                      </a>
-                    </Link>
-                    <Link href={`/${account.username}/followers`}>
-                      <a className={styles.text}>
-                        <span className={styles.number}>0</span>
-                        <span className={styles.label}>Followers</span>
+                        <span className={styles.label}>Subscribers</span>
                       </a>
                     </Link>
                   </div>
@@ -422,10 +365,8 @@ export default function Profile(props) {
                 </div>
               </div>
             </div>
-            <ul className={styles.navigation}>{renderTabs()}</ul>
-            <div className={styles.content}>{renderContent()}</div>
+            <ProfileTabs slug={slug} account={account} />
           </div>
-          <div className={styles.rightCol}>{renderChannels()}</div>
         </div>
       </AppLayout>
       <form style={{ display: "none" }}>
@@ -455,24 +396,13 @@ export async function getServerSideProps(ctx) {
   const data = await response.json();
   const account = get(data, "data", {});
 
-  const getFollowers = async (cursor = 0) => {
-    const subs_r = await fetch(
-      `${getLocalURL()}/api/account/followers?id=${account.id}&cursor=${cursor}`
-    );
-    return await subs_r.json();
-  };
+  const subscribersData = await getSubscribers(account);
+  const subscribedData = await getSubscribed(account);
 
-  const getFollowing = async (cursor = 0) => {
-    const result = await fetch(
-      `${getLocalURL()}/api/account/following?id=${account.id}&cursor=${cursor}`
-    );
-    return await result.json();
-  };
+  const viewerSubscriberData = await getSubscribers(result?.props?.account);
+  const viewerSubscribedData = await getSubscribed(result?.props?.account);
 
-  const followersData = await getFollowers();
-  const followingData = await getFollowing();
-
-  const isSubscribed = followersData.data.some(
+  const isSubscribed = subscribersData.data.some(
     (item) => item.id === result.props?.account.id
   );
 
@@ -485,11 +415,17 @@ export async function getServerSideProps(ctx) {
   return {
     ...result,
     props: {
-      account,
-      viewer: { ...result?.props?.account },
+      account: {
+        ...account,
+        subscribers: subscribersData.data,
+        subscribed: subscribedData.data,
+      },
+      viewer: {
+        ...result?.props?.account,
+        subscribers: viewerSubscriberData.data,
+        subscribed: viewerSubscribedData.data,
+      },
       isSubscribed,
-      followers: followersData.data,
-      following: followingData.data,
     },
   };
 }

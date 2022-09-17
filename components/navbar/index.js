@@ -7,7 +7,7 @@ import useShortcuts from "hooks/useShortcuts";
 import LoginButton from "../LoginButton";
 
 import styles from "./navbar.module.scss";
-import Logo from "../../assets/Logo";
+import Logo from "components/Logo";
 
 const NavBar = (props) => {
   const router = useRouter();

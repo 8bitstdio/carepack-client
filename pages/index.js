@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Image from 'next/image';
+import Image from "next/image";
 import Link from "next/link";
 import isEmpty from "lodash/isEmpty";
 import { useRouter } from "next/router";
@@ -7,36 +7,30 @@ import { toast } from "react-toastify";
 
 import Footer from "components/footer";
 
-import {getAccount} from '/utils/helper';
+import { getAccount } from "/utils/helper";
 
 import styles from "../styles/Home.module.scss";
 import { useEffect } from "react";
 import NavBar from "components/navbar";
 
-const Card = ({ username, followers, image, isVerified, url="#" }) => (
-  <Link href={url}>
-    <a target="_blank" className={styles.card}>
-      <Image
-        src={image}
-        alt={username}
-        width={380}
-        height={380}
-        layout='fixed'
-      />
-      <div className={styles.metaData}>
-        <div className={styles.name}>
-          <h2>{username}</h2>
-          {isVerified && (<Image
+const Card = ({ username, followers, image, isVerified, url = "#" }) => (
+  <Link passHref href={url} target="_blank" className={styles.card}>
+    <Image src={image} alt={username} width={380} height={380} layout="fixed" />
+    <div className={styles.metaData}>
+      <div className={styles.name}>
+        <h2>{username}</h2>
+        {isVerified && (
+          <Image
             src="/images/verify.png"
             alt="verify"
-            height="20px"
-            width="20px"
+            height={20}
+            width={20}
             layout="fixed"
-          />)}
-        </div>
-        {followers && <h3>{followers} Followers</h3>}
+          />
+        )}
       </div>
-    </a>
+      {followers && <h3>{followers} Followers</h3>}
+    </div>
   </Link>
 );
 
@@ -81,7 +75,7 @@ const LandingPage = () => {
       </div>
     </>
   );
-}
+};
 
 export default function Home(props) {
   const router = useRouter();
@@ -121,8 +115,8 @@ export async function getServerSideProps(ctx) {
       redirect: {
         destination: "/home",
         permanent: true,
-      }
-    }
+      },
+    };
   }
   return account;
 }

@@ -1,17 +1,22 @@
 @import "/styles/mixins.scss";
 
 .full {
-    display: none;
-    fill: var(--textColor);
+  display: none;
+  fill: var(--textColor);
 
-    @include respond('desktop') {
-        display: block;
-    }
+  @include respond('desktop') {
+    display: block;
+  }
 }
 
 .icon {
     display: block;
     fill: var(--textColor);
+    transform: scale(1.2);
+
+    * {
+        fill: var(--textColor);
+    }
 
     @include respond('desktop') {
         display: none;

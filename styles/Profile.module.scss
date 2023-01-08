@@ -1,280 +1,343 @@
+@import "./mixins.scss";
 .profile {
+  display: flex;
+  flex: 1;
+  width: 100%;
+
+  .main {
     display: flex;
     flex: 1;
-    padding: 0 20px;
-    width: 100%;
+    flex-direction: column;
 
-    .main {
+    .cover {
+      background: var(--highlightColor);
+      border-radius: 20px;
+      display: flex;
+      height: 400px;
+      margin: 25px;
+      overflow: hidden;
+
+      .cover_holder {
+        position: relative;
         display: flex;
         flex: 1;
-        flex-direction: column;
 
-        .header {
-            display: flex;
-            flex-direction: column;
-            padding: 50px 0;
-            padding-top: 20px;
+        .avatar {
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+          height: 400px;
+          z-index: 999;
 
-            .details {
-                display: flex;
-                align-items: flex-start;
-                gap: 25px;
-
-                .avatar_holder {
-                    background: var(--background);
-                    border-radius: 10px;
-                    box-shadow:
-                        0px 2.8px 2.2px rgba(0, 0, 0, 0.07),
-                        0px 6.7px 5.3px rgba(0, 0, 0, 0.05),
-                        0px 12.5px 10px rgba(0, 0, 0, 0.042),
-                        0px 22.3px 17.9px rgba(0, 0, 0, 0.035),
-                        0px 41.8px 33.4px rgba(0, 0, 0, 0.028),
-                        0px 100px 80px rgba(0, 0, 0, 0.02);
-
-                    position: relative;
-
-                    display: flex;
-                    overflow: hidden;
-
-                    .loader {
-                        background: rgba(255, 255, 255, 0.8);
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        z-index: 100;
-                        height: 100%;
-                        width: 100%;
-
-                        .icon {
-                            font-size: 4rem;
-                            animation: spin .5s infinite;
-                        }
-                    }
-
-                    .curtain {
-                        display: none;
-                        flex: 1;
-                        justify-content: center;
-                        align-items: center;
-                        cursor: pointer;
-                        background: rgba(0,0,0,0.5);
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        z-index: 100;
-                        height: 100%;
-                        width: 100%;
-
-                        .icon {
-                            color: #FFF;
-                            display: flex;
-                            flex: 1;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 3rem;
-                        }
-                    }
-
-                    &:hover .curtain {
-                        display: flex;
-                    }
-
-                    .avatar {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        position: relative;
-                        height: 160px;
-                        width: 160px;
-
-                        .photo {
-                            border-radius: 10px;
-                        }
-                    }
-                }
-
-                .user_info {
-                    display: flex;
-                    flex: 1;
-                    flex-direction: column;
-                    gap: 5px;
-
-                    .profileActions {
-                        display: flex;
-                        flex: 1;
-                        justify-content: space-between;
-                        align-items: center;
-
-                        .name {
-                            display: flex;
-                            align-items: center;
-                            gap: 5px;
-        
-                            h2.text {
-                                display: flex;
-                                font-size: 2.5rem;
-                                font-weight: bold;
-                            }
-                        }
-
-                        .actions {
-                            display: flex;
-                            gap: 10px;
-                        }
-                    }
-
-                    .username {
-                        display: flex;
-
-                        .text {
-                            color: var(--textColor);
-                            font-size: 2rem;
-                            font-weight: 500;
-                        }
-
-                        .joined {
-                            background: var(--highlightColor);
-                            border-radius: 20px;
-                            color: var(--textColor);
-                            display: flex;
-                            font-size: 1.2rem;
-                            font-weight: bold;
-                            align-items: center;
-                            justify-content: center;
-                            padding: 0 15px;
-                            margin-left: 10px;
-                        }
-                    }
-
-                    .description {
-                        color: var(--textColor);
-                        display: flex;
-                        flex-direction: column;
-                        font-size: 1.6rem;
-                        font-weight: 400;
-                    }
-
-                    .website {
-                        display: block;
-
-                        .text {
-                            display: inline-block;
-                            color: var(--linkColor);
-                            font-size: 1.6rem;
-                            font-weight: 600;
-
-                            &:hover {
-                                text-decoration: underline;
-                            }
-                        }
-                    }
-
-                    .community {
-                        display: flex;
-                        gap: 20px;
-                        padding-top: 10px;
-
-                        .text {
-                            color: var(--textColor);
-                            display: flex;
-                            font-size: 1.6rem;
-                            align-items: center;
-                            gap: 5px;
-                            
-                            .number {
-                                font-weight: bold;
-                            }
-
-                            .label {
-                                font-weight: 400;
-                            }
-
-                            &:hover {
-                                .number {
-                                    color: var(--linkColor);
-                                }
-
-                                .label {
-                                    color: var(--linkColor);
-                                }
-                            }
-                        }
-                    }
-
-                    .wallet {
-                        padding: 5px 0;
-                        display: flex;
-                        flex: 1;
-                        align-items: center;
-                        margin: 5px 0;
-                        gap: 5px;
-
-                        .icon {
-                            display: flex;
-                        }
-
-                        .text {
-                            font-size: 1.6rem;
-                            font-weight: bold;
-                        }
-                    }
-                }
-            }
+          .photo {
+            position: relative;
+            z-index: 9999;
+          }
         }
 
-        .navigation {
-            border-bottom: 1px var(--borderColor) solid;
+        .loader {
+          background: rgba(255, 255, 255, 0.8);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 100;
+          height: 100%;
+          width: 100%;
+          z-index: 999999;
+
+          .icon {
+            font-size: 4rem;
+            animation: spin 0.5s infinite;
+          }
+        }
+
+        .curtain {
+          display: none;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 999999;
+          height: 400px;
+
+          .icon {
+            color: #fff;
             display: flex;
-            justify-content: flex-start;
-            align-self: center;
-            gap: 25px;
-            padding-left: 50px;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            font-variation-settings: "FILL" 1;
+            font-size: 3rem;
+          }
+        }
+
+        &:hover .curtain {
+          display: flex;
+        }
+      }
+    }
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      padding-bottom: 50px;
+      position: relative;
+      z-index: 999;
+
+      .details {
+        display: flex;
+        align-items: flex-start;
+        gap: 50px;
+
+        .avatar_holder {
+          background: var(--highlightColor);
+          border-radius: 60px;
+          box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15);
+          position: relative;
+
+          display: flex;
+          overflow: hidden;
+          z-index: 9999;
+
+          .avatar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 120px;
+            width: 120px;
+
+            .photo {
+              border-radius: 60px;
+            }
+
+            .photo_shadow {
+              filter: blur(5px);
+            }
+          }
+
+          .loader {
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 100;
+            height: 100%;
             width: 100%;
 
-            .item {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                a.text {
-                    color: var(--textColor);
-                    border-bottom: 3px solid transparent;
-                    display: flex;
-                    padding: 10px;
-                    font-size: 1.7rem;
-                    font-weight: bold;
-
-                    &.selected {
-                        border-bottom: 4px solid var(--textColor);
-                    }
-                }
+            .icon {
+              font-size: 4rem;
+              animation: spin 0.5s infinite;
             }
+          }
+
+          .curtain {
+            display: none;
+            flex: 1;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 100;
+            height: 100%;
+            width: 100%;
+
+            .icon {
+              color: #fff;
+              display: flex;
+              flex: 1;
+              align-items: center;
+              justify-content: center;
+              font-size: 3rem;
+              font-variation-settings: "FILL" 1;
+            }
+          }
+
+          &:hover .curtain {
+            display: flex;
+          }
         }
 
-        .content {
+        .user_info {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+
+          .profileActions {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            align-items: center;
+
+            .name {
+              display: flex;
+              align-items: center;
+              gap: 5px;
+
+              h2.text {
+                display: flex;
+                font-size: 2.5rem;
+                font-weight: bold;
+              }
+            }
+
+            .actions {
+              display: flex;
+              gap: 10px;
+            }
+          }
+
+          .username {
+            display: flex;
+
+            .text {
+              color: var(--textColor);
+              font-size: 1.5rem;
+              font-weight: 500;
+            }
+          }
+
+          .description {
+            color: var(--textColor);
             display: flex;
             flex-direction: column;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin: 10px 0px;
+          }
+
+          .website {
+            display: block;
+
+            .text {
+              display: inline-block;
+              color: var(--linkColor);
+              font-size: 1.6rem;
+              font-weight: 600;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          }
+
+          .community {
+            display: flex;
+            gap: 20px;
+
+            .text {
+              display: flex;
+              font-size: 1.5rem;
+              align-items: center;
+              gap: 5px;
+
+              .number {
+                color: var(--textColor);
+              }
+
+              .label {
+                color: var(--textColor);
+                font-size: 1.5rem;
+                font-weight: 400;
+              }
+            }
+          }
+
+          .wallet {
+            display: flex;
             flex: 1;
+            align-items: center;
+            gap: 5px;
+
+            .icon {
+              display: flex;
+            }
+
+            .text {
+              font-size: 1.6rem;
+              font-weight: bold;
+            }
+          }
+
+          .joined {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            gap: 5px;
+
+            .icon {
+              display: flex;
+            }
+
+            .text {
+              font-size: 1.5rem;
+              font-weight: bold;
+            }
+          }
         }
+      }
     }
-    .rightCol {
-        border-left: 1px var(--borderColor) solid;
+
+    .navigation {
+      border-bottom: 1px var(--borderColor) solid;
+      display: flex;
+      justify-content: flex-start;
+      align-self: center;
+      gap: 25px;
+      padding-left: 50px;
+      width: 100%;
+
+      .item {
         display: flex;
-        width: 450px;
+        justify-content: center;
+        align-items: center;
+
+        a.text {
+          color: var(--textColor);
+          border-bottom: 3px solid transparent;
+          display: flex;
+          padding: 10px;
+          font-size: 1.7rem;
+          font-weight: bold;
+
+          &.selected {
+            border-bottom: 4px solid var(--textColor);
+          }
+        }
+      }
     }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+  }
 }
 
-
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

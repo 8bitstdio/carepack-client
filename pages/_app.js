@@ -1,7 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import Router from "next/router";
+import NProgress from "nprogress";
+
 import { Web3ReactProvider } from "@web3-react/core";
+import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
-import Script from "next/script";
 
 import Web3 from "web3";
 
@@ -11,14 +14,21 @@ import HelpMenu from "components/HelpMenu";
 import { INPUT, TEXTAREA } from "utils/constants";
 
 import "react-tippy/dist/tippy.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "nprogress/nprogress.css";
 
-import "../styles/globals.css";
+import "../styles/globals.scss";
 import ThemeProvider from "context/ThemeContext";
 
 function getLibrary(provider) {
   return new Web3(provider);
 }
+
+//Route Events.
+NProgress.configure({ showSpinner: false });
+Router.events.on("routeChangeStart", () => NProgress.start());
+Router.events.on("routeChangeComplete", () => NProgress.done());
+Router.events.on("routeChangeError", () => NProgress.done());
 
 function CarePack({ Component, pageProps, props }) {
   const [helpMenuVisible, setHelpMenuVisible] = useState(false);
@@ -55,12 +65,14 @@ function CarePack({ Component, pageProps, props }) {
         />
       </Head>
       <Web3ReactProvider getLibrary={getLibrary}>
-        <ThemeProvider>
-          <Layout>
-            <Component {...pageProps} {...props} />
-            {helpMenuVisible && renderHelpMenu()}
-          </Layout>
-        </ThemeProvider>
+        <SessionProvider session={pageProps.session}>
+          <ThemeProvider>
+            <Layout>
+              <Component {...pageProps} {...props} />
+              {helpMenuVisible && renderHelpMenu()}
+            </Layout>
+          </ThemeProvider>
+        </SessionProvider>
       </Web3ReactProvider>
     </>
   );

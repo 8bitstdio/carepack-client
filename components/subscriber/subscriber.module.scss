@@ -1,46 +1,48 @@
 .subscriber {
-    border-top: 1px var(--borderColor) solid;
+  border-radius: 10px;
+  display: flex;
+  padding: 10px 15px;
+  gap: 10px;
+  margin: 10px;
+
+  &:first-child {
+    border-top: 0;
+  }
+
+  &:hover {
+    background-color: var(--itemHighlight);
+  }
+
+  .photo {
     display: flex;
-    padding: 20px;
-    gap: 10px;
+    border-radius: 100px;
+  }
 
-    &:first-child {
-        border-top: 0;
+  .details {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex: 1;
+
+    .name {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .text {
+        font-size: 1.6rem;
+        font-weight: bold;
+      }
     }
 
-    &:hover {
-        background-color: var(--itemHighlight);
+    .username {
+      display: flex;
+      align-items: center;
+
+      .text {
+        font-size: 1.5rem;
+        font-weight: 400;
+      }
     }
-
-    .photo {
-        display: flex;
-        border-radius: 100px;
-    }
-
-    .details {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-
-        .name {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-
-            .text {
-                font-size: 1.6rem;
-                font-weight: bold;
-            }
-        }
-
-        .username {
-            display: flex;
-            align-items: center;
-
-            .text {
-                font-size: 1.5rem;
-                font-weight: 400;
-            }
-        }
-    }
+  }
 }

@@ -1,19 +1,14 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import throttle from "lodash/throttle";
 import isEmpty from "lodash/isEmpty";
-import { useWeb3React } from "@web3-react/core";
-import Dropdown from 'react-bootstrap/Dropdown';
 import { ToastContainer, toast } from "react-toastify";
-import { Tooltip } from "react-tippy";
-import ReactTooltip from "react-tooltip";
 
 import { showSignMessage } from "utils/helper";
 import { getLocalURL } from "utils/urls";
 import { setCookie } from "utils/cookies";
-import { ThemeContext } from "context/ThemeContext";
 import useShortcuts from "hooks/useShortcuts";
 import useOutsideAlerter from "hooks/useOutsideAlerter";
 
@@ -27,17 +22,13 @@ import MenuFilter from "components/MenuFilter";
 
 const AppLayout = (props) => {
   const router = useRouter();
+  const [searchResultVisible, setSearchResultVisible] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
   const mobileInputRef = useRef(null);
   const searchBoxRef = useRef(null);
-  const mobileSearchBoxRef = useRef(null);
-  const {account, children} = props;
-
-  const getUrl = () => {
-    const url = router.pathname.split('/');
-    return url.length > 1 ? `/${url[1]}` : '/';
-  }
+  const { account, children } = props;
 
   useShortcuts("/", () => {
     const elem = inputRef.current;
@@ -104,7 +95,7 @@ const AppLayout = (props) => {
     document.activeElement === elem && elem.blur();
 
     const mobileElem = mobileInputRef.current;
-    if(document.activeElement === mobileElem) {
+    if (document.activeElement === mobileElem) {
       mobileElem.blur();
       setMobileSearchVisible(false);
     }
@@ -112,10 +103,6 @@ const AppLayout = (props) => {
 
   useOutsideAlerter(searchBoxRef, () => {
     setSearchResultVisible(false);
-  });
-
-  useOutsideAlerter(mobileSearchBoxRef, () => {
-    setSearchMobileResultVisible(false);
   });
 
   const handleSettingsClick = (evt) => {
@@ -131,7 +118,7 @@ const AppLayout = (props) => {
       });
     };
     showSignMessage(afterSign, signFailure)(evt);
-  }
+  };
 
   const performSearch = async (query) => {
     const response = await fetch(
@@ -142,12 +129,56 @@ const AppLayout = (props) => {
     setLoading(false);
   };
 
+  const goToProfile = () => {
+    setSearchResultVisible(!searchResultVisible);
+    setSearchResult([]);
+    inputRef.current.value = "";
+  };
+
+  const showResults = () => {
+    return searchResult.map((item, index) => (
+      <li key={index} className={styles.item}>
+        <Link
+          href={`/${item.username}`}
+          className={styles.link}
+          onClick={goToProfile}
+          passHref
+        >
+          <div className={styles.image}>
+            <Image
+              src={item.photo}
+              height="40"
+              width="40"
+              className={styles.photo}
+              layout="fixed"
+              alt="profile"
+            />
+          </div>
+          <div className={styles.details}>
+            <div className={styles.name}>{item.name}</div>
+            {item.isVerified && (
+              <div className={styles.verified}>
+                <Image
+                  src="/images/verify.png"
+                  height="16"
+                  width="16"
+                  className={styles.photo}
+                  layout="fixed"
+                  alt="profile"
+                />
+              </div>
+            )}
+          </div>
+        </Link>
+      </li>
+    ));
+  };
+
   const handleSearch = throttle(
     async (e) => {
       const value = e.target.value;
       if (value.length > 0) {
         setSearchResultVisible(true);
-        setSearchMobileResultVisible(true);
 
         if (searchResult.length === 0) {
           setLoading(true);
@@ -156,70 +187,88 @@ const AppLayout = (props) => {
         performSearch(value);
       } else {
         setSearchResultVisible(false);
-        setSearchMobileResultVisible(false);
       }
     },
     500,
     { leading: false }
   );
 
-  const menuItems = [{
-    url: "/home",
-    text: 'Home',
-    icon: 'dashboard'
-  }, {
-    url: '/trending',
-    text: 'Trending',
-    icon: 'trending_up'
-  }, {
-    url: '/search',
-    text: 'Search',
-    icon: 'search'
-  }, {
-    url: '/messages',
-    text: 'Messages',
-    icon: 'inbox'
-  }, {
-    url: '/notifications',
-    text: 'Notifications',
-    icon: 'favorite'
-  },{
-    url: '/create',
-    text: 'Publish',
-    icon: 'add_circle'
-  }]
+  const handleSearchFocus = (e) => {
+    const value = e.target.value;
+    if (value.length > 0) {
+      setSearchResultVisible(true);
+    }
+  };
 
-  const moreMenuItems = [{
-    url: `/${account.username}`,
-    text: account.name,
-    image: {
-      url: account.photo,
-      name: account.name
+  const menuItems = [
+    {
+      url: "/search",
+      text: "Search",
+      icon: "search",
     },
-    icon: 'inbox'
-  },{
-    url: '/settings',
-    text: 'Settings',
-    icon: 'settings',
-    action: handleSettingsClick
-  },{
-    url: '/messages',
-    text: 'Logout',
-    action: handleLogout,
-    icon: 'logout'
-  }]
+    {
+      url: "/home",
+      text: "Home",
+      icon: "home",
+    },
+    {
+      url: "/podcasts",
+      text: "Podcasts",
+      icon: "podcasts",
+    },
+    {
+      url: "/gaming",
+      text: "Gaming",
+      icon: "videogame_asset",
+    },
+    {
+      url: "/sports",
+      text: "Sports",
+      icon: "sports_basketball",
+    },
+    {
+      url: "/subscriptions",
+      text: "Subscriptions",
+      icon: "subscriptions",
+    },
+    {
+      url: "/upload",
+      text: "Upload",
+      icon: "upload",
+    },
+  ];
 
-  return (
-    <div className={styles.appLayout}>
+  const moreMenuItems = [
+    {
+      url: `/${account.username}`,
+      text: account.name,
+      image: {
+        url: account.photo,
+        name: account.name,
+      },
+      icon: "inbox",
+    },
+    {
+      url: "/settings",
+      text: "Settings",
+      icon: "settings",
+      action: handleSettingsClick,
+    },
+    {
+      url: "/logout",
+      text: "Logout",
+      action: handleLogout,
+      icon: "logout",
+    },
+  ];
+
+  const renderSidemenu = () => {
+    return (
       <div className={styles.sideMenu}>
         <div className={styles.container}>
           <div className={styles.menu}>
-            <Link href="/">
-              <a className={styles.logoLink}>
-                <Logo
-                  className={styles.logo}
-                />
-              </a>
+            <Link href="/" passHref className={styles.logoLink}>
+                <Logo className={styles.logo} />
             </Link>
             <MenuFilter items={menuItems} />
           </div>
@@ -228,9 +277,15 @@ const AppLayout = (props) => {
           </div>
         </div>
       </div>
-      <div className={styles.wrap}>
-        <div className={styles.content}>
-          {children}
+    );
+  };
+
+  return (
+    <div className={styles.appLayout}>
+      <div className={styles.container}>
+        <div className={styles.wrap}>
+          {renderSidemenu()}
+          <div className={styles.content}>{children}</div>
         </div>
       </div>
       <ToastContainer

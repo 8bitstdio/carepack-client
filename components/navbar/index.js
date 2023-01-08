@@ -8,6 +8,7 @@ import LoginButton from "../LoginButton";
 
 import styles from "./navbar.module.scss";
 import Logo from "components/Logo";
+import SearchBox from "components/SearchBox";
 
 const NavBar = (props) => {
   const router = useRouter();
@@ -68,17 +69,16 @@ const NavBar = (props) => {
             index === 0 ? `${styles.item} ${styles.searchIcon}` : styles.item
           }
         >
-          <Link href={href}>
-            <a
-              className={
-                path === href
-                  ? `${styles.link} ${styles.selected} material-symbols-outlined`
-                  : `${styles.link} material-symbols-outlined`
-              }
-              title={name}
-            >
-              {icon}
-            </a>
+          <Link
+            href={href}
+            className={
+              path === href
+                ? `${styles.link} ${styles.selected} material-symbols-outlined`
+                : `${styles.link} material-symbols-outlined`
+            }
+            title={name}
+          >
+            {icon}
           </Link>
         </li>
       );
@@ -91,20 +91,11 @@ const NavBar = (props) => {
   return (
     <div id="navbar" className={styles.main}>
       <div className={getMode()}>
-        <Link href="/">
-          <a className={styles.logo_link}>
-            <Logo className={styles.logo_img} color="#000" />
-          </a>
+        <Link passHref href="/" className={styles.logo_link}>
+          <Logo className={styles.logo_img} />
         </Link>
         <div className={styles.search}>
-          <input
-            ref={inputRef}
-            type="text"
-            placeholder="Search Communities and Users"
-            name="q"
-            autoComplete="off"
-            className={styles.input}
-          />
+          <SearchBox placeholder="Search Carepack" />
         </div>
         <ul role="navigation" className={styles.nav}>
           {renderMenu()}

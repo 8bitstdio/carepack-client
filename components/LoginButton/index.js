@@ -114,9 +114,9 @@ const LoginButton = (props) => {
   }, [connected, account, login]);
 
   const renderAccount = () => {
-    return account?.avatar ? (
+    return account?.photo ? (
       <span className={styles.icon}>
-        <Image src={account?.avatar} alt="account" width={40} height={40} />
+        <Image src={account?.photo} alt="account" width={40} height={40} />
       </span>
     ) : (
       <span className={`${styles.icon} material-symbols-outlined`}>
@@ -160,30 +160,36 @@ const LoginButton = (props) => {
         {menuVisible && (
           <ul className={styles.menu}>
             <li className={styles.item}>
-              <Link href={`/${props.account.username}`}>
-                <a className={styles.link} onClick={closeMenu}>
-                  <span className="material-symbols-outlined">person</span>
-                  <span className={styles.text}>Profile</span>
-                </a>
+              <Link
+                passHref
+                href={`/${props.account.username}`}
+                className={styles.link}
+                onClick={closeMenu}
+              >
+                <span className="material-symbols-outlined">person</span>
+                <span className={styles.text}>Profile</span>
               </Link>
             </li>
             <li className={styles.item}>
-              <Link href={`/settings`}>
-                <a
-                  className={styles.link}
-                  onClick={showSignMessage(afterSign, signFailure)}
-                >
-                  <span className="material-symbols-outlined">settings</span>
-                  <span className={styles.text}>Settings</span>
-                </a>
+              <Link
+                href={`/settings`}
+                className={styles.link}
+                onClick={showSignMessage(afterSign, signFailure)}
+                passHref
+              >
+                <span className="material-symbols-outlined">settings</span>
+                <span className={styles.text}>Settings</span>
               </Link>
             </li>
             <li className={styles.item}>
-              <Link href="/">
-                <a className={styles.link} onClick={disconnect}>
-                  <span className="material-symbols-outlined">logout</span>
-                  <span className={styles.text}>Logout</span>
-                </a>
+              <Link
+                href="/"
+                className={styles.link}
+                onClick={disconnect}
+                passHref
+              >
+                <span className="material-symbols-outlined">logout</span>
+                <span className={styles.text}>Logout</span>
               </Link>
             </li>
           </ul>
@@ -193,7 +199,7 @@ const LoginButton = (props) => {
   };
 
   const afterLogin = () => {
-    return props.hasMenu ? (
+    return props.hasMenu || props.account ? (
       renderMenu()
     ) : (
       <Button asLink href="/" onClick={(evt) => evt.preventDefault()}>

@@ -1,78 +1,78 @@
 .helpMenu {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	width: 100vw;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 9999;
 
-	.curtain {
-		display: flex;
-		background: rgba(0, 0, 0, 0.8); 
-		flex: 1;
-		height: 100vh;
-		width: 100vw;
-		position: absolute;
-		top: 0;
-		left: 0;
-	}
-	
-	.pane {
-		background: #FFF;
-		border-radius: 10px;
-		display: flex;
-		flex-direction: column;
-		min-height: 200px;
-		min-width: 400px;
-		z-index: 99999;
+  .curtain {
+    display: flex;
+    background: var(--black);
+    opacity: 0.8;
+    flex: 1;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
-		.header {
-			border-bottom: 1px #EEE solid;
-			display: flex;
-			padding: 10px;
-			
-			h1 {
-				font-size: 2rem;
-				font-weight: bold;
-			}
-		}
+  .pane {
+    background: var(--background);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: 200px;
+    min-width: 400px;
+    z-index: 99999;
 
-		
-		.content {
-			display: flex;
-			flex-direction: column;
-			padding: 20px;
+    .header {
+      border-bottom: 1px var(--borderColor) solid;
+      display: flex;
+      padding: 10px;
 
-			.command_list {
-				display: flex;
-				flex-direction: column;
-				gap: 10px;
+      h1 {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+    }
 
-				&__item {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
+    .content {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
 
-					.label {
-						display: flex;
-						font-size: 1.6rem;
-						font-weight: 400;
-					}
+      .command_list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
-					.value {
-						background-color: var(--black);
-						border-radius: 5px;
-						color: var(--white);
-						display: flex;
-						font-size: 1.5rem;
-						font-weight: 500;
-						padding: 5px 10px;
-					}
-				}
-			}
-		}
-	}
+        &__item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .label {
+            display: flex;
+            font-size: 1.6rem;
+            font-weight: 400;
+          }
+
+          .value {
+            background-color: var(--highlightColor);
+            border-radius: 5px;
+            color: var(--textColor);
+            display: flex;
+            font-size: 1.5rem;
+            font-weight: 500;
+            padding: 5px 10px;
+          }
+        }
+      }
+    }
+  }
 }

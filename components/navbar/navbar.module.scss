@@ -1,102 +1,82 @@
 @import "../../styles/mixins.scss";
 
 .main {
-    background: var(--headerBackground);
-    display: flex;
-    justify-content: center;
+  background: var(--background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  position: fixed;
+  padding: 0 20px;
+  top: 0;
+  width: 100%;
+  z-index: var(--zNavIndex);
+  transition: all ease 0.3s;
+
+  .wrap {
+    display: inherit;
+    justify-content: space-between;
     align-items: center;
-    height: 80px;
-    position: fixed;
-    top: 0;
+    height: inherit;
     width: 100%;
-    z-index: 1000;
-    transition: all ease 0.3s;
 
-    .wrap {
-        display: inherit;
-        justify-content: space-between;
-        align-items: center;
-        height: inherit;
-        width: var(--pageWidth);
-
-        &.full {
-            width: 100%;
-        }
-
-        .logo_link {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 11px 0;
-
-            svg.logo_img {
-                path {
-                    fill: var(--black);
-                }
-            }
-        }
-
-        .search {
-            display: none;
-            flex: 1;
-            margin: 0 20px;
-
-            @include respond('desktop') {
-                display: flex;
-            }
-
-            .input {
-                background: var(--searchBackground);
-                display: flex;
-                flex: 1;
-                border: 2px var(--borderColor) solid;
-                border-radius: 5px;
-                font-size: 1.5rem;
-                font-weight: 500;
-                padding:8px;
-
-                &:focus {
-                    background: var(--searchFocusBackground);
-                }
-            }
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            list-style: none;
-
-            li.item {
-                display: flex;
-                margin-left: 40px;
-
-                &.searchIcon {
-                    display: flex;
-
-                    @include respond('desktop') {
-                        display: none;
-                    }
-                }
-
-                &:last-child {
-                    margin-left: 40px;
-                }
-
-                a.link {
-                    color: var(--textColor);
-                    font-size: 3rem;
-                    font-weight: 400;
-                    text-decoration: none;
-
-                    &.selected {
-                        font-variation-settings: 'FILL' 1;
-                    }
-                }
-            }
-        }
+    &.full {
+      width: 100%;
     }
+
+    .logo_link {
+      display: flex;
+      flex: 1;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 11px;
+    }
+
+    .search {
+      display: flex;
+      flex: 2;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .nav {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: flex-end;
+      list-style: none;
+
+      li.item {
+        display: flex;
+        margin-left: 40px;
+
+        &.searchIcon {
+          display: flex;
+
+          @include respond(laptop) {
+            display: none;
+          }
+        }
+
+        &:last-child {
+          margin-left: 40px;
+        }
+
+        a.link {
+          color: var(--textColor);
+          font-size: 3rem;
+          font-weight: 400;
+          text-decoration: none;
+
+          &.selected {
+            font-variation-settings: "FILL" 1;
+          }
+        }
+      }
+    }
+  }
 }
 
 .sticky {
-    box-shadow: 0px 0px 15px rgb(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px rgb(0, 0, 0, 0.1);
 }

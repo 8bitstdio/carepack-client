@@ -2,8 +2,9 @@ $breakpoints: (
   mobile: (min-width: 320px),
   tablet: (min-width: 481px),
   laptop: (min-width: 768px),
-  desktop: (min-width: 1025px),
-  tv: (min-width: 1201px),
+  regular: (min-width: 1200px),
+  desktop: (min-width: 1600px),
+  tv: (min-width: 1700px),
 );
 
 @mixin respond($breakpoint) {

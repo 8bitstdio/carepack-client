@@ -1,0 +1,34 @@
+.error {
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    color: var(--textColor);
+
+    .title {
+        display: flex;
+        font-size: 10rem;
+        font-weight: bold;
+        padding: 0;
+        margin: 0;
+    }
+
+    .subtitle {
+        display: flex;
+        font-size: 2.5rem;
+        text-align: center;
+        line-height: 3rem;
+        width: 950px;
+        color: #888;
+    }
+
+    a {
+        display: flex;
+        font-size: 2.5rem;
+        font-weight: bold;
+        padding: 10px 30px;
+    }
+}

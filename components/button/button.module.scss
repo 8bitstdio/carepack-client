@@ -1,77 +1,92 @@
-.button, button.button {
-    background: var(--buttonBackground);
-    border: 1px transparent solid;
-    border-radius: 50px;
-    cursor: pointer;
+.button,
+button.button {
+  background: var(--buttonBackground);
+  border: 1px transparent solid;
+  border-radius: 50px;
+  cursor: pointer;
+  color: var(--buttonText);
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 20px;
+  transform: scale(1);
+
+  &:hover {
+    background: var(--buttonHighlight);
     color: var(--buttonText);
-    font-weight: 700;
-    font-size: 1.5rem;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 20px;
-    transform: scale(1);
+  }
+
+  &.negative {
+    &:hover {
+      background: var(--red);
+    }
+  }
+
+  &.plain {
+    background: transparent;
+    border: none;
+    color: var(--buttonText);
+    padding: 0;
+    gap: 10px;
 
     &:hover {
-        background: var(--buttonHighlight);
-        color: var(--buttonText);
+      border: inherit;
     }
 
-    &.negative {
-        &:hover {
-            background: var(--red);
-        }
+    &:active {
+      opacity: 0.8;
+    }
+  }
+
+  &.default {
+    background: var(--buttonBackground);
+    color: var(--buttonText);
+    opacity: 1;
+
+    &:hover {
+      background: var(--buttonHighlight);
     }
 
-    &.plain {
-        background: transparent;
-        border: none;
-        color: var(--buttonText);
-        padding: 0;
-        gap: 10px;
+    &:active {
+      opacity: 0.8;
+    }
+  }
 
-        &:hover {
-            border: inherit;
-        }
+  &.actioned {
+    background: var(--highlightColor);
+    color: var(--buttonTextInvert);
+    opacity: 1;
 
-        &:active {
-            opacity: 0.8;
-        }
+    &:hover {
+      opacity: 0.9;
     }
 
-    &.default {
-        background: var(--buttonBackground);
-        color: var(--buttonText);
-        opacity: 1;
-
-        &:hover {
-            background: var(--buttonHighlight);
-        }
-
-        &:active {
-            opacity: 0.8;
-        }
+    &:active {
+      opacity: 0.8;
     }
+  }
 
-    &.white {
-        background: var(--buttonBackground);
-        color: var(--buttonText);
+  &.white {
+    background: var(--buttonBackground);
+    color: var(--buttonText);
 
-        &:hover {
-            background: var(--buttonHighlight);
-            color: var(--buttonText);
-        }
+    &:hover {
+      background: var(--buttonHighlight);
+      color: var(--buttonText);
     }
+  }
 
-    &.primary {
-        background: var(--blue);
-        color: var(--white);
-        
-        &:hover {
-            background: var(--blueDark);
-            border: 1px transparent solid;
-            color: #FFF;
-        }
+  &.primary {
+    background: var(--blue);
+    color: var(--white);
+
+    &:hover {
+      background: var(--blueDark);
+      border: 1px transparent solid;
+      color: #fff;
     }
+  }
 }

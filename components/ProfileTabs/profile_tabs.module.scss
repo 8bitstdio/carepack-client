@@ -1,39 +1,45 @@
 .main {
+  display: flex;
+  flex-direction: column;
+
+  .navigation {
+    display: flex;
+    justify-content: flex-start;
+    align-self: center;
+    gap: 25px;
+    padding: 0 50px;
+    width: 100%;
+
+    .item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      a.text {
+        background: var(--highlightColor);
+        border-radius: 8px;
+        color: var(--textColor);
+        display: flex;
+        padding: 5px 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+
+        &:hover {
+          background: var(--highlightColor);
+        }
+
+        &.selected,
+        &.selected:hover {
+          background: var(--textColor);
+          color: var(--background);
+        }
+      }
+    }
+  }
+
+  .content {
     display: flex;
     flex-direction: column;
-
-    .navigation {
-        border-bottom: 1px var(--borderColor) solid;
-        display: flex;
-        justify-content: flex-start;
-        align-self: center;
-        gap: 25px;
-        padding-left: 50px;
-        width: 100%;
-
-        .item {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            a.text {
-                color: var(--textColor);
-                border-bottom: 4px solid transparent;
-                display: flex;
-                padding: 10px;
-                font-size: 1.7rem;
-                font-weight: bold;
-
-                &.selected {
-                    border-bottom: 4px solid var(--textColor);
-                }
-            }
-        }
-    }
-    
-    .content {
-        display: flex;
-        flex-direction: column;
-        flex: 1;
-    }
+    flex: 1;
+  }
 }

@@ -1,67 +1,71 @@
 @import "/styles/mixins.scss";
 
 .menu {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  gap: 20px;
+
+  .item {
     display: flex;
     flex: 1;
-    flex-direction: column;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    gap: 20px;
 
-    .item {
-        display: flex;
+    .link {
+      color: var(--textColor);
+      display: flex;
+      border-radius: 8px;
+      align-items: center;
+      padding: 10px 15px;
+      text-decoration: none;
+      cursor: pointer;
+      gap: 20px;
+      transition: all ease 0.3s;
+
+      @include respond("desktop") {
         flex: 1;
+      }
 
-        .link {
-            color: var(--textColor);
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            text-decoration: none;
-            cursor: pointer;
-            gap: 20px;
+      .icon {
+        font-size: 2.5rem;
+        font-variation-settings: "FILL" 0;
+        border-radius: 50px;
+      }
 
-            @include respond('desktop') {
-                flex: 1;
-            }
+      .text {
+        display: none;
+        font-size: 1.6rem;
+        font-weight: 400;
 
-            .icon {
-                font-size: 3.2rem;
-                font-variation-settings: 'FILL' 0;
-                border-radius: 50px;
-            }
-
-            .photo {
-                border: 2px var(--gray) solid !important;
-            }
-
-            .text {
-                display: none;
-                font-size: 1.6rem;
-                font-weight: 400;
-
-                @include respond('desktop') {
-                    display: initial;
-                }
-            }
-
-            &.selected {
-                .icon {
-                    font-variation-settings: 'FILL' 1;
-                    font-weight: bold;
-                }
-                .photo {
-                    border: 2px var(--textColor) solid !important;
-                }
-                .text {
-                    font-weight: bold;
-                }
-            }
-
-            &:hover {
-                background: var(--highlightColor);
-                border-radius: 10px;
-            }
+        @include respond("desktop") {
+          display: initial;
         }
+      }
+
+      &.selected {
+        background: var(--selectedColor);
+        color: var(--white);
+        opacity: 1;
+
+        .icon {
+          font-variation-settings: "FILL" 0;
+          color: var(--white);
+        }
+
+        .text {
+          color: var(--white);
+          font-weight: 800;
+        }
+
+        &:hover {
+          background: var(--selectedColor);
+        }
+      }
+
+      &:hover {
+        background: var(--highlightColor);
+      }
     }
+  }
 }

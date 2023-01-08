@@ -105,8 +105,26 @@ export const getAccount = async (ctx, isProtected = true, enabled = false) => {
   };
 };
 
-export const getSubscribers= async (account, cursor = 0) => {
-  if (isEmpty(account)) return ([]);
+export const getTimeOfDay = () => {
+  var today = new Date();
+  var curHr = today.getHours();
+  var time = null;
+
+  if (curHr > 5 && curHr < 12) {
+    var time = "Good Morning";
+  } else if (curHr < 18) {
+    var time = "Good Afternoon";
+  } else if (curHr < 22) {
+    var time = "Good Evening";
+  } else {
+    var time = "Goodnight";
+  }
+
+  return time;
+};
+
+export const getSubscribers = async (account, cursor = 0) => {
+  if (isEmpty(account)) return [];
   const subs_r = await fetch(
     `${getLocalURL()}/api/account/subscribers?id=${account.id}&cursor=${cursor}`
   );
@@ -114,9 +132,16 @@ export const getSubscribers= async (account, cursor = 0) => {
 };
 
 export const getSubscribed = async (account, cursor = 0) => {
-  if (isEmpty(account)) return ([]);
+  if (isEmpty(account)) return [];
   const result = await fetch(
     `${getLocalURL()}/api/account/subscribed?id=${account.id}&cursor=${cursor}`
+  );
+  return await result.json();
+};
+
+export const getSubCount = async (account) => {
+  const result = await fetch(
+    `${getLocalURL()}/api/account/analytics?id=${account.id}`
   );
   return await result.json();
 };

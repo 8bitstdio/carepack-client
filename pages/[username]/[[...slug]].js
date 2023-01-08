@@ -3,15 +3,14 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import NextImage from "next/image";
-import isEmpty from 'lodash/isEmpty';
-import get from 'lodash/get';
+import isEmpty from "lodash/isEmpty";
+import get from "lodash/get";
 import { useS3Upload } from "next-s3-upload";
 import { toast } from "react-toastify";
 import { Tooltip } from "react-tippy";
 
 import { ThemeContext } from "context/ThemeContext";
 
-import Chat from "components/chat";
 import Button from "components/button";
 import AppLayout from "components/layout/AppLayout";
 import ProfileTabs from "components/ProfileTabs";
@@ -21,12 +20,14 @@ import {
   getAccount,
   getSubscribed,
   getSubscribers,
-  showSignMessage
+  showSignMessage,
 } from "/utils/helper";
 import { getLocalURL } from "utils/urls";
 import { appItems } from "utils/common";
 
 import styles from "/styles/Profile.module.scss";
+import Subscriber from "components/Subscriber";
+import { getSubCount } from "utils/helper";
 
 export default function Profile(props) {
   let { uploadToS3, files } = useS3Upload();
@@ -36,6 +37,7 @@ export default function Profile(props) {
   const { account, viewer, isSubscribed } = props;
   const router = useRouter();
   const [isUploading, setIsUploading] = useState(false);
+  const [isCoverUploading, setIsCoverUploading] = useState(false);
   const { slug } = router.query;
 
   const refreshData = () => {
@@ -44,6 +46,7 @@ export default function Profile(props) {
 
   useEffect(() => {
     setIsUploading(false);
+    setIsCoverUploading(false);
   }, [account, viewer]);
 
   const triggerUpload = (type) => (e) => {
@@ -58,9 +61,23 @@ export default function Profile(props) {
   const renderPictureUploader = () => {
     return (
       <div className={styles.curtain} onClick={triggerUpload("profile")}>
-        <i className={`${styles.icon} material-symbols-outlined`}>
-          photo_camera
-        </i>
+        <i className={`${styles.icon} material-symbols-outlined`}>edit</i>
+        {files.map((file, index) => (
+          <div key={index} className={styles.progress_holder}>
+            <div
+              className={styles.progress}
+              style={{ width: `${file.progress}%` }}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderCoverUploader = () => {
+    return (
+      <div className={styles.curtain} onClick={triggerUpload("cover")}>
+        <i className={`${styles.icon} material-symbols-outlined`}>edit</i>
         {files.map((file, index) => (
           <div key={index} className={styles.progress_holder}>
             <div
@@ -76,57 +93,121 @@ export default function Profile(props) {
   const handleUpload = (type) => async (e) => {
     e.preventDefault();
     const file = e.target.files[0];
-    toast("Uploading Profile Picture", {
-      type: "info",
-    });
 
-    if (type === "profile" && e.target.files.length > 0) {
-      setIsUploading(true);
-      let reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function (evt) {
-        let img = new Image();
-        img.src = evt.target.result;
-        img.onload = async function () {
-          if (img.width >= 175 && img.height >= 175) {
-            const { url } = await uploadToS3(file);
-            const data = {
-              name: account.name,
-              username: account.username,
-              description: account.description,
-              website: account.website,
-              email: account.email,
-              photo: url,
-              wallet: account.wallet,
-              id: account.id,
-            };
-            const response = await fetch(`${getLocalURL()}/api/editAccount`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            });
-            const { success } = await response.json();
-            if (success) {
-              toast("Picture Updated", {
-                type: "success",
-              });
-              refreshData();
+    if (e.target.files.length > 0) {
+      if (type === "profile") {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (evt) {
+          let img = new Image();
+          img.src = evt.target.result;
+          img.onload = async function () {
+            if (img.width >= 175 && img.height >= 175) {
+              try {
+                toast("Uploading Profile Photo", {
+                  type: "info",
+                });
+                setIsUploading(true);
+                console.log("file to upload", file);
+                const { url } = await uploadToS3(file);
+                const data = {
+                  name: account.name,
+                  username: account.username,
+                  description: account.description,
+                  website: account.website,
+                  email: account.email,
+                  photo: url,
+                  cover: account.cover,
+                  wallet: account.wallet,
+                  id: account.id,
+                };
+                const response = await fetch(
+                  `${getLocalURL()}/api/editAccount`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data),
+                  }
+                );
+                const { success } = await response.json();
+                if (success) {
+                  toast("Picture Updated", {
+                    type: "success",
+                  });
+                  refreshData();
+                }
+              } catch (error) {
+                alert(`Something went wrong. ${error}`);
+              }
+            } else {
+              alert("Photo image must be 175 by 175 minimum");
             }
-          }
+          };
         };
-      };
+      } else if (type === "cover") {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function (evt) {
+          let img = new Image();
+          img.src = evt.target.result;
+          img.onload = async function () {
+            if (img.width >= 1500 && img.height >= 500) {
+              toast("Uploading Cover Photo", {
+                type: "info",
+              });
+              setIsCoverUploading(true);
+              const { url } = await uploadToS3(file);
+              const data = {
+                name: account.name,
+                username: account.username,
+                description: account.description,
+                website: account.website,
+                email: account.email,
+                cover: url,
+                photo: account.photo,
+                wallet: account.wallet,
+                id: account.id,
+              };
+              const response = await fetch(`${getLocalURL()}/api/editAccount`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              });
+              const { success } = await response.json();
+              if (success) {
+                toast("Cover Updated", {
+                  type: "success",
+                });
+                refreshData();
+              }
+            } else {
+              alert("Cover image must be 1500 by 500 minimum");
+            }
+          };
+        };
+      }
     }
   };
 
   const formatDate = (date) => {
     const d = new Date(date);
     const months = [
-      "Jan","Feb","Mar",
-      "Apr","May","Jun",
-      "Jul","Aug","Sept",
-      "Oct","Nov","Dec",
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
     const month = `${months[d.getMonth()]}`;
     const day = `0${d.getDate()}`.slice(-2);
@@ -148,9 +229,9 @@ export default function Profile(props) {
     });
     const { success } = await response.json();
     if (success) {
-      toast("Subscription added",{
+      toast("Subscription added", {
         theme,
-        type: 'success'
+        type: "success",
       });
       refreshData();
     }
@@ -168,9 +249,9 @@ export default function Profile(props) {
     });
     const { success } = await response.json();
     if (success) {
-      toast("Subscription removed",{
+      toast("Subscription removed", {
         theme,
-        type: 'success'
+        type: "success",
       });
       refreshData();
     }
@@ -179,20 +260,20 @@ export default function Profile(props) {
   const renderFollowButton = () => {
     return isSubscribed ? (
       <li className={styles.action}>
-        <Button onClick={unfollowUser} type="default">
+        <Button onClick={unfollowUser} type="actioned">
           Unsubscribe
         </Button>
       </li>
     ) : (
       <li className={styles.action}>
-        <Button onClick={followUser}>Subscribe</Button>
+        <Button onClick={followUser}>Subscribe 9.99 AED</Button>
       </li>
     );
   };
 
   const partnerUser = () => {
     toast(`Partner with ${account.username}`, {
-      theme
+      theme,
     });
   };
 
@@ -222,13 +303,6 @@ export default function Profile(props) {
     ) : (
       <>
         {renderFollowButton()}
-        {isLoggedIn && (
-          <li className={styles.action}>
-            <Button onClick={partnerUser} type="primary">
-              Partner
-            </Button>
-          </li>
-        )}
       </>
     );
   };
@@ -237,9 +311,14 @@ export default function Profile(props) {
     navigator.clipboard.writeText(account.wallet);
     toast("Wallet copied to clipboard", {
       type: "success",
-      theme
+      theme,
     });
   };
+
+  const renderSubscribers = () =>
+    account.subscribers.map((sub, index) => (
+      <Subscriber sub={sub} key={index} />
+    ));
 
   return (
     <>
@@ -251,16 +330,37 @@ export default function Profile(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <AppLayout
-        apps={appItems}
         account={viewer}
-        title={account.name}
-        hasBackButton
         appUrl={account.username}
         appName="Account"
         subscribed={viewer.subscribed}
       >
         <div className={styles.profile}>
           <div className={styles.main}>
+            <div className={styles.cover}>
+              <div className={styles.cover_holder}>
+                <div className={styles.avatar}>
+                  {viewer.username === account.username &&
+                    renderCoverUploader()}
+                  {isCoverUploading && (
+                    <div className={styles.loader}>
+                      <i className={`${styles.icon} material-symbols-outlined`}>
+                        rotate_right
+                      </i>
+                    </div>
+                  )}
+                  {account.cover && (
+                    <NextImage
+                      src={account.cover}
+                      className={styles.photo}
+                      layout="fill"
+                      objectFit="cover"
+                      alt="verified"
+                    />
+                  )}
+                </div>
+              </div>
+            </div>
             <div className={styles.header}>
               <div className={styles.details}>
                 <div className={styles.avatar_holder}>
@@ -279,8 +379,8 @@ export default function Profile(props) {
                     {account.photo && (
                       <NextImage
                         src={account.photo}
-                        width={160}
-                        height={160}
+                        width={120}
+                        height={120}
                         className={styles.photo}
                         layout="fixed"
                         alt="verified"
@@ -296,7 +396,11 @@ export default function Profile(props) {
                         <Tooltip
                           html={
                             <span
-                              style={{ fontWeight: "bold", fontSize: "15px", color: "#FFFFFF" }}
+                              style={{
+                                fontWeight: "bold",
+                                fontSize: "15px",
+                                color: "#FFFFFF",
+                              }}
                             >
                               Verified
                             </span>
@@ -320,24 +424,24 @@ export default function Profile(props) {
                   </div>
                   <div className={styles.username}>
                     <span className={styles.text}>@{account.username}</span>
-                    <span className={styles.joined}>
-                      Joined {formatDate(account.created_at)}
-                    </span>
                   </div>
                   <div className={styles.community}>
-                    <Link href={`/${account.username}`}>
-                      <a className={styles.text}>
-                        <span className={styles.number}>0</span>
-                        <span className={styles.label}>Posts</span>
-                      </a>
-                    </Link>
-                    <Link href={`/${account.username}/subscribers`}>
-                      <a className={styles.text}>
-                        <span className={styles.number}>0</span>
-                        <span className={styles.label}>Subscribers</span>
-                      </a>
-                    </Link>
+                    <div className={styles.text}>
+                      <span className={styles.number}>
+                        {account.subscriberCount}
+                      </span>
+                      <span className={styles.label}>
+                        {account.subscriberCount > 1
+                          ? "Subscribers"
+                          : "Subscriber"}
+                      </span>
+                    </div>
                   </div>
+                  {account.description && (
+                    <div className={styles.description}>
+                      {account.description}
+                    </div>
+                  )}
                   <div className={styles.wallet}>
                     <Button type="plain" onClick={copyWallet}>
                       <i className={`${styles.icon} material-symbols-outlined`}>
@@ -348,17 +452,23 @@ export default function Profile(props) {
                       </span>
                     </Button>
                   </div>
-                  {account.description && (
-                    <div className={styles.description}>
-                      {account.description}
-                    </div>
-                  )}
+                  <div className={styles.joined}>
+                    <i className={`${styles.icon} material-symbols-outlined`}>
+                      calendar_month
+                    </i>
+                    <span className={styles.text}>
+                      Joined {formatDate(account.created_at)}
+                    </span>
+                  </div>
                   {account.website && (
                     <div className={styles.website}>
-                      <Link href={account.website}>
-                        <a className={styles.text} target="_blank">
-                          {account.website.replace("http://", "")}
-                        </a>
+                      <Link
+                        passHref
+                        href={account.website}
+                        className={styles.text}
+                        target="_blank"
+                      >
+                        {account.website.replace("http://", "")}
                       </Link>
                     </div>
                   )}
@@ -374,6 +484,12 @@ export default function Profile(props) {
           type="file"
           onChange={handleUpload("profile")}
           ref={profileInput}
+          accept="image/*"
+        />
+        <input
+          type="file"
+          onChange={handleUpload("cover")}
+          ref={coverInput}
           accept="image/*"
         />
       </form>
@@ -396,8 +512,15 @@ export async function getServerSideProps(ctx) {
   const data = await response.json();
   const account = get(data, "data", {});
 
+  if (isEmpty(account)) {
+    return {
+      notFound: true,
+    };
+  }
+
   const subscribersData = await getSubscribers(account);
   const subscribedData = await getSubscribed(account);
+  const subCount = await getSubCount(account);
 
   const viewerSubscriberData = await getSubscribers(result?.props?.account);
   const viewerSubscribedData = await getSubscribed(result?.props?.account);
@@ -419,6 +542,7 @@ export async function getServerSideProps(ctx) {
         ...account,
         subscribers: subscribersData.data,
         subscribed: subscribedData.data,
+        subscriberCount: subCount.data.sub_count,
       },
       viewer: {
         ...result?.props?.account,

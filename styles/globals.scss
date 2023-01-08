@@ -1,0 +1,272 @@
+@import url("https://fonts.googleapis.com/css2?family=Acme&family=Fredoka:wght@300;400;500;600;700&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Righteous&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  background-color: var(--background);
+  color: var(--black);
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 10px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:active {
+  opacity: 0.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --blueLight: #479efe;
+  --blue: #007aff;
+  --blueDark: #0062cd;
+
+  --selectionColor: #007aff;
+  --placeholderColor: #8e8e8e;
+
+  --pageWidth: 1280px;
+  --zSideIndex: 1000;
+  --zNavIndex: 2000;
+  --progressIndex: 9999999999;
+}
+
+.darkMode {
+  --background: rgb(14, 14, 16);
+  --background200: rgb(24, 24, 27);
+  --background300: rgb(31, 31, 35);
+  --selectedColor: #007aff;
+  --highlightColor: #2a2a2a;
+  --itemHighlight: #2d2d2d;
+  --bgBorder: #363636;
+  --headerBackground: #262626;
+  --borderColor: #313131;
+  --textColor: #fff;
+  --textInvertColor: #262626;
+  --paneColor: #ffffff;
+  --sideBarHighlight: #363636;
+  --sidebarColor: #0f0f0f;
+  --primaryColor: #007aff;
+  --primaryColorDark: #0575cb;
+  --secondaryColor: #bb1717;
+  --secondaryColorDark: #da8d00;
+  --default: #2ea5ff;
+  --success: rgb(52, 199, 89);
+  --info: #2ea5ff;
+  --warning: #fdf2d6;
+  --danger: #eb0a86;
+  --gray: #e3e3e3;
+  --black: #262626;
+  --red: #f00000;
+  --blackHighlight: #363636;
+  --white: #fff;
+  --gray: #bbb;
+  --logoColor: #ffffff;
+  --headerBorderColor: var(--borderColor);
+  --trackColor: #363636;
+  --trackTextColor: #778594;
+  --trackShadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  --linkColor: var(--blue);
+  --inputColor: #212121;
+  --inputTextColor: #eeeeee;
+  --inputBorderColor: #363636;
+  --inputShadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  --buttonBackground: #ffffff;
+  --buttonHighlight: #e3e3e3;
+  --buttonText: #000000;
+  --buttonTextInvert: #ffffff;
+
+  --searchBackground: #212121;
+  --searchFocusBackground: #464646;
+  --searchFocusBorderColor: var(--primaryColor);
+  --searchResultBackground: #323232;
+  --searchResultHighlightColor: #323232;
+
+  --sidebarSeparatorShadow: #222;
+  --sidebarSeparatorColor: #363636;
+  --sidebarItemHighlight: #464646;
+
+  --tooltipBg: #363636;
+  --tooltipText: #ffffff;
+}
+
+.lightMode {
+  --background: rgb(255, 255, 255);
+  --background200: rgb(250, 250, 250);
+  --background300: rgb(245, 245, 245);
+  --backgroundSecondary: #eee;
+  --selectedColor: #007aff;
+  --highlightColor: rgb(238, 238, 238);
+  --itemHighlight: #f8f8f8;
+  --bgBorder: #dddddd;
+  --buttonShadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  --headerBackground: var(--white);
+  --borderColor: #e1e1e1;
+  --textColor: var(--black);
+  --textInvertColor: #fafafa;
+  --textHighlightColor: #868686;
+  --pane-color: #ffffff;
+  --sideBarHighlight: #eeeeee;
+  --primaryColor: #007aff;
+  --primaryColorDark: #026ee3;
+  --secondaryColor: #ffa600;
+  --secondaryColorDark: #da8d00;
+  --default: #2ea5ff;
+  --success: #34c759;
+  --info: #2ea5ff;
+  --warning: #fdf2d6;
+  --danger: #eb0a86;
+  --gray: #e3e3e3;
+  --black: #212121;
+  --red: #f00000;
+  --white: #ffffff;
+  --blackHighlight: #363636;
+  --logoColor: #000;
+  --headerBorderColor: #fff;
+  --trackColor: #edf1f5;
+  --trackTextColor: #778594;
+  --trackShadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.3);
+  --trackTextColor: #778594;
+  --trackShadow: 0px 2px 5px rgba(0, 0, 0, 0.15);
+  --linkColor: var(--blueDark);
+  --inputColor: #fff;
+  --inputBorderColor: rgba(0, 0, 0, 0.15);
+  --inputTextColor: #262626;
+  --inputShadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  --sidebarColor: #ffffff;
+  --buttonBackground: #000000;
+  --buttonHighlight: #333333;
+  --buttonText: #ffffff;
+  --buttonTextInvert: #000000;
+  --searchBackground: #fff;
+  --searchFocusBackground: #fff;
+  --searchFocusBorderColor: var(--primaryColor);
+  --searchResultBackground: #eeeeee;
+  --searchResultHighlightColor: #f6f6f6;
+  --searchBoxShadow: 0px 0px 5px rgba(0, 0, 0, 0.15);
+
+  --sidebarSeparatorShadow: #fff;
+  --sidebarSeparatorColor: #ddd;
+  --sidebarItemHighlight: #ddd;
+
+  --tooltipBg: #ffffff;
+  --tooltipText: #212121;
+}
+
+:root[color-theme="dark"] {
+  @extend .darkMode;
+}
+
+:root[color-theme="light"] {
+  @extend .lightMode;
+}
+
+* {
+  color: var(--textColor);
+}
+
+.Toastify__toast {
+  font-size: 1.8rem;
+}
+
+::selection {
+  background: var(--selectionColor);
+  color: var(--white);
+}
+
+input::placeholder {
+  color: var(--placeholderColor);
+}
+
+// nprogress bar
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: var(--blue);
+
+  position: fixed;
+  z-index: var(--progressIndex);
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px var(--blue), 0 0 5px var(--blue);
+  opacity: 1;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+  -ms-transform: rotate(3deg) translate(0px, -4px);
+  transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: var(--blue);
+  border-left-color: var(--blue);
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+  animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes nprogress-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

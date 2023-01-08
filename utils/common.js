@@ -61,21 +61,21 @@ export const profileTabs = [
     href: "/",
   },
   {
-    name: "About",
-    href: "/about",
+    name: "Upcoming",
+    href: "/upcoming",
   },
   {
-    name: "Drops",
-    href: "/drops",
+    name: "Reposts",
+    href: "/reposts",
+  },
+  {
+    name: "Likes",
+    href: "/likes",
   },
   {
     name: "Partners",
     href: "/partners",
   },
-  {
-    name: "Subscribers",
-    href: "/subscribers",
-  }
 ];
 
 export const communityTabs = [

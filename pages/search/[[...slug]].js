@@ -5,10 +5,11 @@ import isEmpty from "lodash/isEmpty";
 import { getAccount } from "/utils/helper";
 import { appItems } from "utils/common";
 
-import styles from "/styles/notifications.module.scss";
+import styles from "/styles/search.module.scss";
 import AppLayout from "components/layout/AppLayout";
+import SearchBox from "components/SearchBox";
 
-export default function NotificationsPage(props) {
+export default function SearchPage(props) {
   const { account } = props;
   const router = useRouter();
 
@@ -25,11 +26,11 @@ export default function NotificationsPage(props) {
       <AppLayout
         apps={appItems}
         account={account}
-        title="Notifications"
-        appUrl="notifications"
-        appName="Notifications"
+        title="Search"
       >
-        <div className={styles.notifications}>hello</div>
+        <div className={styles.main}>
+          <SearchBox />
+        </div>
       </AppLayout>
     </>
   );

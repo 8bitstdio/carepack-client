@@ -1,0 +1,14 @@
+.main {
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    display: flex;
+    padding: 10px 30px;
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+  }
+}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { isEmpty } from "lodash";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
-import { getAccount, getSubscribed, getSubscribers} from "utils/helper";
+import { getAccount, getSubscribed, getSubscribers } from "utils/helper";
 import { settingsMenu } from "utils/common";
 import { ThemeContext } from "context/ThemeContext";
 import Button from "components/button";
@@ -36,18 +36,20 @@ export default function SettingsPage(props) {
   const renderMenu = () =>
     settingsMenu.map((item, index) => (
       <li key={index} className={styles.item}>
-        <Link href={`/settings${item.href}`}>
-          <a className={isSelected(item.href)}>
-            <div className={styles.holder}>
-              <i className={`${styles.icon} material-symbols-outlined`}>
-                {item.icon}
-              </i>
-              <span className={styles.text}>{item.name}</span>
-            </div>
+        <Link
+          passHref
+          href={`/settings${item.href}`}
+          className={isSelected(item.href)}
+        >
+          <div className={styles.holder}>
             <i className={`${styles.icon} material-symbols-outlined`}>
-              chevron_right
+              {item.icon}
             </i>
-          </a>
+            <span className={styles.text}>{item.name}</span>
+          </div>
+          <i className={`${styles.icon} material-symbols-outlined`}>
+            chevron_right
+          </i>
         </Link>
       </li>
     ));
@@ -74,7 +76,7 @@ export default function SettingsPage(props) {
     if (success) {
       toast("Profile Updated", {
         type: "success",
-        theme
+        theme,
       });
       router.push(`/${values.username}`);
     }
@@ -219,7 +221,6 @@ export default function SettingsPage(props) {
       >
         <div className={styles.main}>
           <div className={styles.sideBar}>
-            <h2 className={styles.header}>Settings</h2>
             <ul className={styles.menu}>{renderMenu()}</ul>
           </div>
           <div className={styles.content}>{renderTabContent()}</div>
@@ -262,7 +263,7 @@ export async function getServerSideProps(ctx) {
         ...accountData.props.account,
         subscribed: subscribed.data,
         subscribers: subscribers.data,
-      }
+      },
     },
   };
 }

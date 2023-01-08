@@ -1,183 +1,188 @@
 .main {
-    display: flex;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex: 1;
+  width: 100%;
 
-    .sideBar {
-        background: var(--background);
-        border-right: 1px var(--borderColor) solid;
+  .sideBar {
+    background: var(--background);
+    display: flex;
+    flex: 1;
+    height: 100%;
+    flex-direction: column;
+    padding: 0 20px;
+    width: 300px;
+
+    .header {
+      display: flex;
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .item {
         display: flex;
         flex: 1;
-        align-self: stretch;
-        height: 100%;
-        flex-direction: column;
-        padding: 0 20px;
-        padding-top: 30px;
-        width: 300px;
+        align-items: center;
 
-        .header {
-            display: flex;
-            font-size: 2.2rem;
-            font-weight: 800;
-        }
+        .link {
+          border-radius: 10px;
+          display: flex;
+          flex: 1;
+          align-items: center;
+          justify-content: space-between;
+          padding: 15px 10px;
+          gap: 10px;
+          font-size: 1.6rem;
+          font-weight: 400;
 
-        .menu {
+          .holder {
             display: flex;
-            flex-direction: column;
             gap: 10px;
-            margin-top: 25px;
 
-            .item {
-                display: flex;
-                flex: 1;
-                align-items: center;
-
-                .link {
-                    border-radius: 10px;
-                    display: flex;
-                    flex: 1;
-                    align-items: center;
-                    justify-content: space-between;
-                    padding: 15px 10px;
-                    gap: 10px;
-                    font-size: 1.6rem;
-                    font-weight: 400;
-
-                    .holder {
-                        display: flex;
-                        gap: 10px;
-
-                        .icon {
-                            display: flex;
-                            color: var(--textColor);
-                        }
-    
-                        .text {
-                            display: flex;
-                        }
-                    }
-
-                    .icon {
-                        color: #888;
-                    }
-
-                    &:hover {
-                        background: var(--highlightColor);
-                    }
-    
-                    &.selected {
-                        background: var(--highlightColor);
-                    }
-                }
+            .icon {
+              display: flex;
+              color: var(--textColor);
             }
-        }
-    }
 
-    .content {
+            .text {
+              display: flex;
+            }
+          }
+
+          .icon {
+            color: #888;
+          }
+
+          &:hover {
+            background: var(--highlightColor);
+          }
+
+          &.selected {
+            background: var(--highlightColor);
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+    padding: 0 50px;
+    width: 100%;
+
+    .header {
+      display: flex;
+      margin-bottom: 20px;
+
+      .title {
         display: flex;
-        flex: 2;
-        flex-direction: column;
-        margin-top: 25px;
-        padding: 10px 50px;
-        width: 100%;
-
-        .header {
-            display: flex;
-            margin-bottom: 20px;
-
-            .title {
-                display: flex;
-                font-size: 2rem;
-                font-weight: 800;
-            }
-        }
-
-        .form {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-            gap: 30px;
-
-            .input {
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-
-                .value {
-                    background: var(--borderColor);
-                    border: 2px var(--inputBorderColor) solid;
-                    border-radius: 5px;
-                    color: var(--textColor);
-                    display: flex;
-                    justify-content: space-between;
-                    padding: 10px;
-
-                    .text {
-                        font-size: 1.8rem;
-                        font-weight: 500;
-                    }
-
-                    .icon {
-                        display: flex;
-                        color: var(--textColor);
-                        transform: rotateX(180deg);
-                        cursor: pointer;
-
-                        &:hover {
-                            color: #777;
-                        }
-                    }
-                }
-
-                label {
-                    font-size: 1.8rem;
-                    font-weight: 600;
-                }
-
-                input {
-                    display: flex;
-                    flex: 1;
-                    background: var(--inputColor);
-                    border: 2px var(--inputBorderColor) solid;
-                    border-radius: 5px;
-                    padding: 10px;
-                    font-size: 1.8rem;
-                    width: 100%;
-                }
-
-                textarea {
-                    display: flex;
-                    background: var(--inputColor);
-                    border: 2px var(--inputBorderColor) solid;
-                    border-radius: 5px;
-                    padding: 10px;
-                    font-size: 1.6rem;
-                    width: 100%;
-                    height: 125px;
-                    resize: none;
-                }
-            }
-
-            .checkbox {
-                display: flex;
-                align-items: center;
-                gap: 5px;
-
-                label {
-                    font-size: 1.6rem;
-                    font-weight: bold;
-                }
-
-                input {
-                    border: 2px #BBB solid;
-                }
-            }
-
-            .button {
-                align-self: flex-start;
-                padding: 5px 30px;
-                font-size: 1.6rem;
-            }
-        }
+        font-size: 2rem;
+        font-weight: 800;
+      }
     }
+
+    .form {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 30px;
+
+      .input {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        .value {
+          background: var(--inputBorderColor);
+          border: 2px var(--inputBorderColor) solid;
+          border-radius: 5px;
+          color: var(--textColor);
+          display: flex;
+          justify-content: space-between;
+          padding: 10px;
+
+          .text {
+            font-size: 1.8rem;
+            font-weight: 500;
+          }
+
+          .icon {
+            display: flex;
+            color: var(--textColor);
+            transform: rotateX(180deg);
+            cursor: pointer;
+
+            &:hover {
+              color: #777;
+            }
+          }
+        }
+
+        label {
+          font-size: 1.8rem;
+          font-weight: 600;
+        }
+
+        input {
+          display: flex;
+          flex: 1;
+          background: var(--inputColor);
+          border: 2px var(--inputBorderColor) solid;
+          border-radius: 5px;
+          padding: 10px;
+          font-size: 1.8rem;
+          width: 100%;
+          outline: none;
+
+          &:focus {
+            border: 2px var(--blue) solid;
+          }
+        }
+
+        textarea {
+          display: flex;
+          background: var(--inputColor);
+          border: 2px var(--inputBorderColor) solid;
+          border-radius: 5px;
+          padding: 10px;
+          font-size: 1.6rem;
+          width: 100%;
+          height: 125px;
+          resize: none;
+          outline: none;
+
+          &:focus {
+            border: 2px var(--blue) solid;
+          }
+        }
+      }
+
+      .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        label {
+          font-size: 1.6rem;
+          font-weight: bold;
+        }
+
+        input {
+          border: 2px #bbb solid;
+        }
+      }
+
+      .button {
+        align-self: flex-start;
+        padding: 5px 30px;
+        font-size: 1.6rem;
+      }
+    }
+  }
 }
